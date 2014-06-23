@@ -23,6 +23,7 @@ package net.finkn.inputspec.tools;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -170,4 +171,14 @@ public class UnitTest {
 
   // The Range limit assertions are too simple to be tested here.
   // They are also exercised in RangeTest.
+
+  @Test
+  public void assertStreamEmptyShouldSucceedIfNoItemsInStream() {
+    assertStreamEmpty(Stream.of());
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertStreamEmptyShouldFailIfAnyItemsInStream() {
+    assertStreamEmpty(Stream.of(1));
+  }
 }

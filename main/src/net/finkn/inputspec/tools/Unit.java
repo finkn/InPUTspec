@@ -87,6 +87,13 @@ public class Unit {
   private Unit() {
   }
 
+  public static <T> void assertStreamEmpty(Stream<T> stream) {
+    long count = stream.count();
+    if (count > 0) {
+      throw new AssertionError("Stream not empty. (" + count + " items)");
+    }
+  }
+
   public static void assertRangeHasNoLimits(Range r) {
     String msg = "Range was not supposed to have any limits.";
     assertNonePresent(msg, r.inclMin(), r.exclMin(), r.inclMax(), r.exclMax());

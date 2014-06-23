@@ -36,6 +36,7 @@ import org.junit.runners.Suite.SuiteClasses;
     GeneratorTest.class,
     GeneratorExceptionMessageTest.class,
     RangeTest.class,
+    ParamCfgTest.class,
 })
 public class Tests {
 }
