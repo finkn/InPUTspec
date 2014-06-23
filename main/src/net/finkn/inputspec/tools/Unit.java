@@ -270,16 +270,57 @@ public class Unit {
     assertNoneMatch(iterations, getDefaultNoneMatchMsg(), gen, pred);
   }
 
+  /**
+   * Asserts that all values returned by the supplier satisfy the predicate.
+   * At most {@code iterations} values will be examined. If it turns out that
+   * a value does not match, then that value is handed to the {@code toMsg}
+   * function, and the resulting message is used to throw an AssertionError.
+   *
+   * @param iterations
+   *          the maximum number of values to examine before concluding the test
+   * @param toMsg
+   *          a Function mapping values to error messages
+   * @param pred
+   *          the Predicate that all values are expected to satisfy
+   */
   public static <T> void assertAllMatch(int iterations,
       Function<T, String> toMsg, Supplier<T> gen, Predicate<T> pred) {
     assertAllMatch(toMsg, getLimitedStream(iterations, gen), pred);
   }
 
+  /**
+   * Asserts that some value returned by the supplier satisfies the predicate.
+   * At most {@code iterations} values will be examined. If it turns out that
+   * no value matches, then the {@code toMsg} function is expected to return
+   * an error message, and the resulting message is used to throw an
+   * AssertionError. Since no specific values failed to match, the function
+   * is called with {@code null}.
+   *
+   * @param iterations
+   *          the maximum number of values to examine before concluding the test
+   * @param toMsg
+   *          a Function mapping values to error messages
+   * @param pred
+   *          the Predicate that some values are expected to satisfy
+   */
   public static <T> void assertSomeMatch(int iterations,
       Function<T, String> toMsg, Supplier<T> gen, Predicate<T> pred) {
     assertSomeMatch(toMsg, getLimitedStream(iterations, gen), pred);
   }
 
+  /**
+   * Asserts that no values returned by the supplier satisfy the predicate.
+   * At most {@code iterations} values will be examined. If it turns out that
+   * a value does match, then that value is handed to the {@code toMsg}
+   * function, and the resulting message is used to throw an AssertionError.
+   *
+   * @param iterations
+   *          the maximum number of values to examine before concluding the test
+   * @param toMsg
+   *          a Function mapping values to error messages
+   * @param pred
+   *          the Predicate that no values are expected to satisfy
+   */
   public static <T> void assertNoneMatch(int iterations,
       Function<T, String> toMsg, Supplier<T> gen, Predicate<T> pred) {
     assertNoneMatch(toMsg, Stream.generate(gen).limit(iterations), pred);
@@ -287,11 +328,8 @@ public class Unit {
 
   /**
    * Asserts that all elements in the stream satisfy the predicate. This version
-   * of {@link #assertAllMatch(Function, Stream, Predicate)} uses a default
-   * {@code toMsg} function.
+   * uses a default function for mapping values to error messages.
    *
-   * @param stream
-   * @param pred
    * @see #assertAllMatch(Function, Stream, Predicate)
    */
   public static <T> void assertAllMatch(Stream<T> stream, Predicate<T> pred) {
@@ -309,21 +347,27 @@ public class Unit {
    * @param stream
    *          a Stream of values
    * @param pred
-   *          a Predicate which all elements are expected to satisfy
+   *          the Predicate that all elements are expected to satisfy
    */
   public static <T> void assertAllMatch(Function<T, String> toMsg,
       Stream<T> stream, Predicate<T> pred) {
     reportMatch(toMsg, stream, pred.negate());
   }
 
+  /**
+   * Asserts that some element in the stream satisfies the predicate. This
+   * version uses a default function for mapping values to error messages.
+   *
+   * @see #assertSomeMatch(Function, Stream, Predicate)
+   */
   public static <T> void assertSomeMatch(Stream<T> stream, Predicate<T> pred) {
     assertSomeMatch(getDefaultSomeMatchMsg(), stream, pred);
   }
 
   /**
-   * Asserts that some element in the stream satisfy the predicate. If it turns
-   * out that no elements match, then an assertion error is thrown, using the
-   * message returned by the {@code toMsg} function. Since no one offending
+   * Asserts that some element in the stream satisfies the predicate. If it
+   * turns out that no elements match, then an assertion error is thrown, using
+   * the message returned by the {@code toMsg} function. Since no one offending
    * element can be identified in this case, toMsg is called with {@code null}.
    *
    * @param toMsg
@@ -331,7 +375,7 @@ public class Unit {
    * @param stream
    *          a Stream of values
    * @param pred
-   *          a Predicate which some elements are expected to satisfy
+   *          the Predicate that some elements are expected to satisfy
    */
   public static <T> void assertSomeMatch(Function<T, String> toMsg,
       Stream<T> stream, Predicate<T> pred) {
@@ -340,6 +384,12 @@ public class Unit {
     }
   }
 
+  /**
+   * Asserts that no elements in the stream satisfy the predicate. This version
+   * uses a default function for mapping values to error messages.
+   *
+   * @see #assertNoneMatch(Function, Stream, Predicate)
+   */
   public static <T> void assertNoneMatch(Stream<T> stream, Predicate<T> pred) {
     assertNoneMatch(getDefaultNoneMatchMsg(), stream, pred);
   }
@@ -355,7 +405,7 @@ public class Unit {
    * @param stream
    *          a Stream of values
    * @param pred
-   *          a Predicate which no elements are expected to satisfy
+   *          the Predicate that no elements are expected to satisfy
    */
   public static <T> void assertNoneMatch(Function<T, String> toMsg,
       Stream<T> stream, Predicate<T> pred) {
