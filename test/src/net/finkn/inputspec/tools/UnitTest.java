@@ -20,6 +20,7 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -124,4 +125,49 @@ public class UnitTest {
   public void getExceptionMessageShouldReturnEmptyOptionalWhenNothingThrown() {
     assertFalse(getExceptionMessage(() -> { }).isPresent());
   }
+
+  @Test
+  public void assertAllPresentShouldSucceedIfNoValuesMissing() {
+    Optional<String> optional1 = Optional.of("Hello");
+    Optional<String> optional2 = Optional.of("World");
+    assertAllPresent(optional1, optional2);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertAllPresentShouldFailIfAnyValuesMissing() {
+    Optional<String> optional1 = Optional.of("Hello");
+    Optional<String> optional2 = Optional.ofNullable(null);
+    assertAllPresent(optional1, optional2);
+  }
+
+  @Test
+  public void assertSomePresentShouldSucceedIfAtLeastOnePresent() {
+    Optional<String> optional1 = Optional.of("Hello");
+    Optional<String> optional2 = Optional.ofNullable(null);
+    assertSomePresent(optional1, optional2);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertSomePresentShouldFailIfNoValuesPresent() {
+    Optional<String> optional1 = Optional.ofNullable(null);
+    Optional<String> optional2 = Optional.ofNullable(null);
+    assertSomePresent(optional1, optional2);
+  }
+
+  @Test
+  public void assertNonePresentShouldSucceedIfNoValuesPresent() {
+    Optional<String> optional1 = Optional.ofNullable(null);
+    Optional<String> optional2 = Optional.ofNullable(null);
+    assertNonePresent(optional1, optional2);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertNonePresentShouldFailIfAnyValuesPresent() {
+    Optional<String> optional1 = Optional.of("Hello");
+    Optional<String> optional2 = Optional.ofNullable(null);
+    assertNonePresent(optional1, optional2);
+  }
+
+  // The Range limit assertions are too simple to be tested here.
+  // They are also exercised in RangeTest.
 }
