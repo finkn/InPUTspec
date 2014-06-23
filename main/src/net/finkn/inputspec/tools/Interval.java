@@ -37,6 +37,8 @@ import java.util.Optional;
  * <p>
  * This class is not meant for production. For one, it doesn't handle BigDecimal
  * limits, so it wouldn't be able to handle all parameter configurations.
+ * <p>
+ * This class is immutable.
  * 
  * @version 1.0
  * @author Christoffer Fink

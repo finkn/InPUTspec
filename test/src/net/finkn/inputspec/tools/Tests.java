@@ -31,6 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     IntervalContainmentTest.class,
     IntervalParsingTest.class,
+    UnitTest.class,
+    UnitIterationsTest.class,
+    GeneratorTest.class,
+    GeneratorExceptionMessageTest.class,
 })
 public class Tests {
 }
