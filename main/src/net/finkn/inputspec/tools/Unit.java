@@ -280,6 +280,8 @@ public class Unit {
    *          the maximum number of values to examine before concluding the test
    * @param toMsg
    *          a Function mapping values to error messages
+   * @param gen
+   *          the Supplier of values to be examined
    * @param pred
    *          the Predicate that all values are expected to satisfy
    */
@@ -300,6 +302,8 @@ public class Unit {
    *          the maximum number of values to examine before concluding the test
    * @param toMsg
    *          a Function mapping values to error messages
+   * @param gen
+   *          the Supplier of values to be examined
    * @param pred
    *          the Predicate that some values are expected to satisfy
    */
@@ -318,6 +322,8 @@ public class Unit {
    *          the maximum number of values to examine before concluding the test
    * @param toMsg
    *          a Function mapping values to error messages
+   * @param gen
+   *          the Supplier of values to be examined
    * @param pred
    *          the Predicate that no values are expected to satisfy
    */
@@ -340,7 +346,7 @@ public class Unit {
    * Asserts that all elements in the stream satisfy the predicate. If it turns
    * out that not all elements match, then the first offending value is handed
    * to the {@code toMsg} function, and the resulting message is used to throw
-   * an assertion error.
+   * an AssertionError.
    *
    * @param toMsg
    *          a Function mapping values to error messages
@@ -366,7 +372,7 @@ public class Unit {
 
   /**
    * Asserts that some element in the stream satisfies the predicate. If it
-   * turns out that no elements match, then an assertion error is thrown, using
+   * turns out that no elements match, then an AssertionError is thrown, using
    * the message returned by the {@code toMsg} function. Since no one offending
    * element can be identified in this case, toMsg is called with {@code null}.
    *
@@ -398,7 +404,7 @@ public class Unit {
    * Asserts that no elements in the stream satisfy the predicate. If it turns
    * out that some element does match, then the first offending value is handed
    * to the {@code toMsg} function, and the resulting message is used to throw
-   * an assertion error.
+   * an AssertionError.
    *
    * @param toMsg
    *          a Function mapping values to error messages
