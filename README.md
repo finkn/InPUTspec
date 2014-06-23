@@ -14,10 +14,11 @@ further divided into a user-friendly manual and a specification intended for
 implementation developers. However, developers will have to provide
 implementation-specific instructions for their implementation.
 
+
 License
 -------
 
-The MIT License (MIT)
+This project uses the MIT license:
 
 Copyright (c) 2014 Christoffer Fink
 
