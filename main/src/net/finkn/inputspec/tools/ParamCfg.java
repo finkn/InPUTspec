@@ -33,7 +33,9 @@ import java.util.stream.Stream;
  * @author Christoffer Fink
  */
 public class ParamCfg {
+  /** Default parameter ID used by the Builder. */
   public static final String DEFAULT_ID = "X";
+  /** Default parameter type used by the Builder. */
   public static final String DEFAULT_TYPE = "integer";
 
   // TODO: Use Optionals?
@@ -78,6 +80,7 @@ public class ParamCfg {
     return nested.stream();
   }
 
+  /** Returns a builder that can create instances of this class. */
   public static Builder builder() {
     return new Builder();
   }
@@ -126,7 +129,7 @@ public class ParamCfg {
     private String fixed;
     private final List<ParamCfg> nested = new ArrayList<>();
     private ParamType paramType = ParamType.NUMERIC;
-    private Range range = Range.getInstance();
+    private Range range = Range.EMPTY;
 
     private Builder() {
     }
