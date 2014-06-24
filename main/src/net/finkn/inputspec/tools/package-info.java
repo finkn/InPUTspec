@@ -46,6 +46,20 @@ SOFTWARE.
  * the test in a readable form. The project does not get cluttered up with
  * a large number of XML files.
  *
+ * <h3>Builder error checking</h3>
+ * Because the purpose of this project is to probe InPUT4j to map its behavior,
+ * tests cannot make any assumptions about how it should behave. In other
+ * words, a configuration builder cannot know which configurations are valid;
+ * finding that out is exactly what it will be used for. So builders cannot
+ * impose rules on configurations. They have to allow strange configurations
+ * so that InPUT4j's reaction can be observed. The only error checking they
+ * can do is related to what makes sense to the builder itself.
+ * <p>
+ * Test writers who use the builders to simplify their tests need to keep this
+ * in mind. Just because the builder is willing to produce a configuration
+ * this does <strong>not</strong> mean that the configuration must therefore be
+ * valid, or even legal!
+ *
  * @author Christoffer Fink
  */
 package net.finkn.inputspec.tools;
