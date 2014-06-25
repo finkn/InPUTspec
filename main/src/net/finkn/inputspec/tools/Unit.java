@@ -79,6 +79,7 @@ import java.util.stream.Stream;
  * a proportionately long time to do so.
  *
  * @see net.finkn.inputspec.tools.Generator
+ * @version 1.0
  * @author Christoffer Fink
  */
 public class Unit {
@@ -111,10 +112,7 @@ public class Unit {
 
   @SafeVarargs
   public static <T> void assertAllPresent(String msg, Optional<T>... optionals) {
-    Stream<Optional<T>> stream = Stream.of(optionals);
-    Predicate<Optional<T>> pred = x -> x.isPresent();
-    Function<Optional<T>, String> toMsg = x -> msg;
-    assertAllMatch(toMsg, stream, pred);
+    presentTest(Unit::assertAllMatch, msg, optionals);
   }
 
   @SafeVarargs
@@ -124,10 +122,7 @@ public class Unit {
 
   @SafeVarargs
   public static <T> void assertSomePresent(String msg, Optional<T>... optionals) {
-    Stream<Optional<T>> stream = Stream.of(optionals);
-    Predicate<Optional<T>> pred = x -> x.isPresent();
-    Function<Optional<T>, String> toMsg = x -> msg;
-    assertSomeMatch(toMsg, stream, pred);
+    presentTest(Unit::assertSomeMatch, msg, optionals);
   }
 
   @SafeVarargs
@@ -137,10 +132,7 @@ public class Unit {
 
   @SafeVarargs
   public static <T> void assertNonePresent(String msg, Optional<T>... optionals) {
-    Stream<Optional<T>> stream = Stream.of(optionals);
-    Predicate<Optional<T>> pred = x -> x.isPresent();
-    Function<Optional<T>, String> toMsg = x -> msg;
-    assertNoneMatch(toMsg, stream, pred);
+    presentTest(Unit::assertNoneMatch, msg, optionals);
   }
 
   /**
@@ -423,6 +415,22 @@ public class Unit {
   public static <T> void assertNoneMatch(Function<T, String> toMsg,
       Stream<T> stream, Predicate<T> pred) {
     reportMatch(toMsg, stream, pred);
+  }
+
+  // Makes some conversions and applies the test to the arguments.
+  @SafeVarargs
+  private static <T> void presentTest(PresentTest<T> test, String msg,
+      Optional<T>... optionals) {
+    Stream<Optional<T>> stream = Stream.of(optionals);
+    Predicate<Optional<T>> pred = x -> x.isPresent();
+    Function<Optional<T>, String> toMsg = x -> msg;
+    test.test(toMsg, stream, pred);
+  }
+
+  @FunctionalInterface
+  private interface PresentTest<T> {
+    public void test(Function<Optional<T>, String> toMsg,
+        Stream<Optional<T>> stream, Predicate<Optional<T>> pred);
   }
 
   private static <T> void reportMatch(Function<T, String> toMsg,
