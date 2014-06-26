@@ -68,7 +68,8 @@
     <junit printsummary="no" haltonerror="yes" haltonfailure="yes" fork="yes">
       <formatter type="brief" usefile="false" />
       <classpath refid="test.classpath" />
-      <test name="${tests.all}" />
+      <test name="${testcase}" if="testcase" />
+      <test name="${tests.all}" unless="testcase" />
     </junit>
   </target>
 </project>
