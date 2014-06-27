@@ -181,4 +181,28 @@ public class UnitTest {
   public void assertStreamEmptyShouldFailIfAnyItemsInStream() {
     assertStreamEmpty(Stream.of(1));
   }
+
+  @Test
+  public void assertStringContainsAllShouldSucceedIfAllMatch() {
+    String s = "Hello World";
+    assertStringContainsAll(s, "Hello", "World", "lo Wo", "");
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertStringContainsAllShouldFailIfAnyDoesNotMatch() {
+    String s = "Hello World";
+    assertStringContainsAll(s, "Hello", "World", "onetwothree DEATH!");
+  }
+
+  @Test
+  public void assertStringContainsNoneShouldSucceedIfNoneMatch() {
+    String s = "Hello World";
+    assertStringContainsNone(s, "undead", "parrot", "is the", "only");
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertStringContainsNoneShouldFailIfAnyMatch() {
+    String s = "Hello World";
+    assertStringContainsNone(s, "diabetic", "cannibal", "in the", "World");
+  }
 }

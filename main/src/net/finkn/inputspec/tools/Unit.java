@@ -20,6 +20,8 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import java.util.Collection;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -86,6 +88,40 @@ public class Unit {
   public static final int DEFAULT_ITERATIONS = 20;
 
   private Unit() {
+  }
+
+  /**
+   * Asserts that the {@code string} contains all of the {@code expected}
+   * strings.
+   *
+   * @param expected
+   *          some number of strings, all of which should be substrings of
+   *          {@code string}
+   */
+  public static void assertStringContainsAll(String string, String... expected) {
+    assertStringContainsAll(string, Arrays.asList(expected));
+  }
+  public static void assertStringContainsAll(String string, Collection<String> expected) {
+    String format = "'%s' not contained in '%s'";
+    assertAllMatch(s -> String.format(format, s, string), expected.stream(),
+        s -> string.contains(s));
+  }
+
+  /**
+   * Asserts that the {@code string} contains none of the {@code expected}
+   * strings.
+   *
+   * @param expected
+   *          some number of strings, none of which should be substrings of
+   *          {@code string}
+   */
+  public static void assertStringContainsNone(String string, String... expected) {
+    assertStringContainsNone(string, Arrays.asList(expected));
+  }
+  public static void assertStringContainsNone(String string, Collection<String> expected) {
+    String format = "'%s' contained in '%s'";
+    assertNoneMatch(s -> String.format(format, s, string), expected.stream(),
+        s -> string.contains(s));
   }
 
   public static <T> void assertStreamEmpty(Stream<T> stream) {
