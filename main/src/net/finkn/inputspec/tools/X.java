@@ -20,24 +20,20 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import se.miun.itm.input.util.Q;
 
-/**
- * @author Christoffer Fink
- */
-@RunWith(Suite.class)
-@SuiteClasses({
-    IntervalContainmentTest.class,
-    IntervalParsingTest.class,
-    UnitTest.class,
-    UnitIterationsTest.class,
-    GeneratorTest.class,
-    GeneratorExceptionMessageTest.class,
-    RangeTest.class,
-    ParamCfgTest.class,
-    XmlTest.class,
-})
-public class Tests {
+/** Contains XML-related constants. */
+public class X {
+  public static final String PREFIX = Q.MY_NAMESPACE_PREFIX;
+  // Tags
+  public static final String NPARAM = Q.NPARAM;
+  public static final String SPARAM = Q.SPARAM;
+  // Attributes
+  public static final String ID = Q.ID_ATTR;
+  public static final String TYPE = Q.TYPE_ATTR;
+  public static final String FIXED = Q.FIXED_ATTR;
+  public static final String INCLMIN = Q.INCL_MIN;
+  public static final String INCLMAX = Q.EXCL_MIN;
+  public static final String EXCLMIN = Q.INCL_MAX;
+  public static final String EXCLMAX = Q.EXCL_MAX;
 }
