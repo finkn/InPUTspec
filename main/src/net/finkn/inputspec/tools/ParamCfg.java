@@ -51,6 +51,7 @@ public class ParamCfg {
   private final Range range;
   private final Collection<ParamCfg> nested;
   private final ParamType paramType;
+  private final Xml xml = Xml.getInstance().prefix(X.PREFIX);
 
   private ParamCfg(String id, String type, String fixed, Range range,
       Collection<ParamCfg> nested, ParamType paramType) {
@@ -96,10 +97,7 @@ public class ParamCfg {
   }
 
   String xml(int level) {
-    String tag = getTag();
-    Map<String, Optional<? extends Object>> attrib = getAttributes();
-    List<String> children = getChildren(level);
-    return Xml.getInstance().level(level).e(tag, attrib, children);
+    return xml.level(level).e(getTag(), getAttributes(), getChildren(level));
   }
 
   private String getTag() {
@@ -117,10 +115,7 @@ public class ParamCfg {
     return attrib;
   }
   private List<String> getChildren(int level) {
-    List<String> tmp = getNested()
-      .map(x -> x.xml(level + 1))
-      .collect(Collectors.toList());
-    return tmp;
+    return getNested().map(x -> x.xml(level + 1)).collect(Collectors.toList());
   }
 
   /**
