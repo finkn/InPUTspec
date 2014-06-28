@@ -25,6 +25,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Map;
 
+/**
+ * Helper class for producing XML strings.
+ * Indentation can be controlled by getting an instance with the desired
+ * {@link #level(int) indentation level}.
+ * Unless an instance is created with the desired
+ * {@link #prefix(String) prefix}, none is used.
+ * <p>
+ * This class is immutable.
+ *
+ * @version 1.0
+ * @author Christoffer Fink
+ */
 public class Xml {
   private final static String DEFAULT_INDENT = "  ";
 
@@ -39,18 +51,25 @@ public class Xml {
     this.indent = getIndent(indentation, level);
   }
 
+  /** Alias for {@link #e(String, Map, List) e(tag, emptyMap, emptyList)}. */
   public String e(String tag) {
     return e(tag, Collections.emptyMap(), Collections.emptyList());
   }
 
+  /** Alias for {@link #e(String, Map, List) e(tag, map, emptyList)}. */
   public String e(String tag, Map<String, Optional<? extends Object>> attrib) {
     return e(tag, attrib, Collections.emptyList());
   }
 
+  /** Alias for {@link #e(String, Map, List) e(tag, emptyMap, list)}. */
   public String e(String tag, List<String> children) {
     return e(tag, Collections.emptyMap(), children);
   }
 
+  /**
+   * Creates an XML element string based on the tag, attributes and children.
+   * The element is indented by padding the string.
+   */
   public String e(String tag, Map<String, Optional<? extends Object>> attrib,
       List<String> children) {
     tag = getPrefixed(tag);
@@ -60,14 +79,17 @@ public class Xml {
     return sb.toString();
   }
 
+  /** Returns a default instance without prefix or indentation. */
   public static Xml getInstance() {
     return new Xml(Optional.ofNullable(null), 0);
   }
 
+  /** Returns an instance with the given prefix. */
   public Xml prefix(String prefix) {
     return new Xml(Optional.ofNullable(prefix), level);
   }
 
+  /** Returns an instance with the given (nonnegative) indentation level. */
   public Xml level(int level) {
     if (level < 0) {
       String msg = "Cannot set negative indentation level";
