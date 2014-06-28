@@ -25,9 +25,14 @@ import se.miun.itm.input.util.Q;
 /** Contains XML-related constants. */
 public class X {
   public static final String PREFIX = Q.MY_NAMESPACE_PREFIX;
+  public static final String INPUT_URL = "http://theinput.org";
+  public static final String NS = "http://www.w3.org/2001/XMLSchema-instance";
+  public static final String XMLNS = "xmlns:xsi";
+  public static final String SCHEMA = "xsi:schemaLocation";
   // Tags
   public static final String NPARAM = Q.NPARAM;
   public static final String SPARAM = Q.SPARAM;
+  public static final String DESIGN_SPACE = Q.DESIGN_SPACE_ROOT;
   // Attributes
   public static final String ID = Q.ID_ATTR;
   public static final String TYPE = Q.TYPE_ATTR;
@@ -36,4 +41,14 @@ public class X {
   public static final String INCLMAX = Q.EXCL_MIN;
   public static final String EXCLMIN = Q.INCL_MAX;
   public static final String EXCLMAX = Q.EXCL_MAX;
+  public static final String MAPPING_REF = Q.REF_ATTR;
+
+  public static final String SPACE_NS = Q.DESIGN_SPACE_NAMESPACE_ID;
+  public static final String SPACE_XMLNS = "xmlns:" + PREFIX;
+  public static final String SPACE_SCHEMA = getSpaceSchema();
+
+
+  private static String getSpaceSchema() {
+    return String.format("%s %s/%s.xsd", SPACE_NS, INPUT_URL, DESIGN_SPACE);
+  }
 }

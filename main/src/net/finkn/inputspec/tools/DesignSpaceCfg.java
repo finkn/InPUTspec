@@ -20,15 +20,22 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import net.finkn.inputspec.tools.X;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * A Design Space configuration.
  * This class is immutable.
  *
+ * @version 1.0
  * @author Christoffer Fink
  */
 public class DesignSpaceCfg {
@@ -38,6 +45,7 @@ public class DesignSpaceCfg {
   private final Optional<String> mappingRef;
   private final Optional<MappingCfg> mapping;
   private final Collection<ParamCfg> parameters;
+  private final Xml xml = Xml.getInstance().prefix(X.PREFIX);
 
   private DesignSpaceCfg(String id, String ref, MappingCfg mapping,
       Collection<ParamCfg> params) {
@@ -65,6 +73,24 @@ public class DesignSpaceCfg {
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  public String xml() {
+    return xml.e(X.DESIGN_SPACE, getAttributes(), getChildren());
+  }
+
+  private Map<String, Optional<? extends Object>> getAttributes() {
+    Map<String, Optional<? extends Object>> attrib = new HashMap<>();
+    attrib.put(X.XMLNS, Optional.of(X.NS));
+    attrib.put(X.SPACE_XMLNS, Optional.of(X.SPACE_NS));
+    attrib.put(X.SCHEMA, Optional.of(X.SPACE_SCHEMA));
+    attrib.put(X.ID, id);
+    attrib.put(X.MAPPING_REF, mappingRef);
+    return attrib;
+  }
+
+  private List<String> getChildren() {
+    return getParameters().map(x -> x.xml(1)).collect(Collectors.toList());
   }
 
   public static class Builder {
