@@ -208,4 +208,29 @@ public class ParamCfgTest {
     assertTrue(param.getNested().anyMatch(p -> p.getId().equals("X")));
     assertTrue(param.getNested().anyMatch(p -> p.getId().equals("Y")));
   }
+
+  @Test
+  public void xmlShouldIncludeAllAttributesAndChildren() {
+    ParamCfg p1 = ParamCfg.builder()
+      .id("X").interval("[1,3[").fixed("2").build();
+    ParamCfg p2 = ParamCfg.builder()
+      .id("Y").interval("]1,3]").type("float").build();
+    ParamCfg p3 = ParamCfg.builder()
+      .id("Z").structured().add(p1, p2).build();
+    String xml;
+
+    xml = p1.xml();
+    assertStringContainsAll(xml, X.ID, X.TYPE, X.FIXED, X.INCLMIN, X.EXCLMAX,
+      X.NPARAM, ParamCfg.DEFAULT_TYPE, "X", "1", "3", "2");
+    assertStringContainsNone(xml, X.EXCLMIN, X.INCLMAX, X.SPARAM);
+
+    xml = p2.xml();
+    assertStringContainsAll(xml, X.ID, X.TYPE, X.INCLMAX, X.EXCLMIN,
+      X.NPARAM, "Y", "1", "3", "float");
+    assertStringContainsNone(xml, X.FIXED, X.INCLMIN, X.EXCLMAX, X.SPARAM);
+
+    xml = p3.xml();
+    assertStringContainsAll(xml, X.ID, X.TYPE, X.FIXED, X.INCLMIN, X.EXCLMIN,
+      X.INCLMAX, X.EXCLMAX, X.NPARAM, X.SPARAM, "X", "Y", "Z");
+  }
 }

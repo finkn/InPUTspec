@@ -20,16 +20,22 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import net.finkn.inputspec.tools.X;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * A parameter configuration. This class is immutable.
  *
- * @version 0.9
+ * @version 1.0
  * @author Christoffer Fink
  */
 public class ParamCfg {
@@ -83,6 +89,38 @@ public class ParamCfg {
   /** Returns a builder that can create instances of this class. */
   public static Builder builder() {
     return new Builder();
+  }
+
+  public String xml() {
+    return xml(0);
+  }
+
+  String xml(int level) {
+    String tag = getTag();
+    Map<String, Optional<? extends Object>> attrib = getAttributes();
+    List<String> children = getChildren(level);
+    return Xml.getInstance().level(level).e(tag, attrib, children);
+  }
+
+  private String getTag() {
+    return paramType.equals(ParamType.NUMERIC) ? X.NPARAM : X.SPARAM;
+  }
+  private Map<String, Optional<? extends Object>> getAttributes() {
+    Map<String, Optional<? extends Object>> attrib = new HashMap<>();
+    attrib.put(X.ID, Optional.ofNullable(getId()));
+    attrib.put(X.TYPE, Optional.ofNullable(getType()));
+    attrib.put(X.FIXED, Optional.ofNullable(getFixed()));
+    attrib.put(X.INCLMIN, range.inclMin());
+    attrib.put(X.EXCLMIN, range.exclMin());
+    attrib.put(X.INCLMAX, range.inclMax());
+    attrib.put(X.EXCLMAX, range.exclMax());
+    return attrib;
+  }
+  private List<String> getChildren(int level) {
+    List<String> tmp = getNested()
+      .map(x -> x.xml(level + 1))
+      .collect(Collectors.toList());
+    return tmp;
   }
 
   /**
@@ -251,6 +289,7 @@ public class ParamCfg {
         return new ParamCfg(id, type, fixed, Range.EMPTY, nested, paramType);
       }
     }
+
 
     private static String getNParamType(String type) {
       return type != null ? type : DEFAULT_TYPE;
