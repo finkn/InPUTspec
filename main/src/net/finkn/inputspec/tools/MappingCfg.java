@@ -20,25 +20,5 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
-/**
- * @author Christoffer Fink
- */
-@RunWith(Suite.class)
-@SuiteClasses({
-    IntervalContainmentTest.class,
-    IntervalParsingTest.class,
-    UnitTest.class,
-    UnitIterationsTest.class,
-    GeneratorTest.class,
-    GeneratorExceptionMessageTest.class,
-    RangeTest.class,
-    ParamCfgTest.class,
-    XmlTest.class,
-    DesignSpaceCfgTest.class,
-})
-public class Tests {
+public class MappingCfg {
 }
