@@ -29,9 +29,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 public class XmlTest {
   private final String tag = "tag name";
   private final String prefix = "prefix";
