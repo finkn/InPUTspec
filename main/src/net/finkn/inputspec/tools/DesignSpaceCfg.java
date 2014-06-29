@@ -21,7 +21,12 @@ SOFTWARE.
 package net.finkn.inputspec.tools;
 
 import net.finkn.inputspec.tools.X;
+import se.miun.itm.input.model.InPUTException;
+import se.miun.itm.input.model.design.DesignSpace;
+import se.miun.itm.input.model.design.IDesignSpace;
 
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -75,8 +80,17 @@ public class DesignSpaceCfg {
     return new Builder();
   }
 
+  public IDesignSpace getDesignSpace() throws InPUTException {
+    return new DesignSpace(getDesignSpaceStream(xml()));
+  }
+
+  private static InputStream getDesignSpaceStream(String xml) {
+    return new ByteArrayInputStream(xml.getBytes());
+  }
+
   public String xml() {
-    return xml.e(X.DESIGN_SPACE, getAttributes(), getChildren());
+    String root = xml.e(X.DESIGN_SPACE, getAttributes(), getChildren());
+    return xml.declaration() + "\n" + root;
   }
 
   private Map<String, Optional<? extends Object>> getAttributes() {

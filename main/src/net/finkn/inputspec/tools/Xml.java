@@ -79,6 +79,10 @@ public class Xml {
     return sb.toString();
   }
 
+  public String declaration() {
+    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+  }
+
   /** Returns a default instance without prefix or indentation. */
   public static Xml getInstance() {
     return new Xml(Optional.ofNullable(null), 0);

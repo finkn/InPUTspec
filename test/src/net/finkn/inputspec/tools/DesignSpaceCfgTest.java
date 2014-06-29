@@ -24,6 +24,8 @@ import static net.finkn.inputspec.tools.Unit.assertStreamEmpty;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import se.miun.itm.input.model.design.IDesignSpace;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -114,5 +116,19 @@ public class DesignSpaceCfgTest {
     DesignSpaceCfg two = builder.param(second).build();
     assertThat(1L, is(equalTo(one.getParameters().count())));
     assertThat(2L, is(equalTo(two.getParameters().count())));
+  }
+
+  @Test
+  public void designSpaceShouldHaveMatchingId() throws Throwable {
+    String id = "DesignSpaceId";
+    IDesignSpace space = builder.id(id).build().getDesignSpace();
+    assertEquals(id, space.getId());
+  }
+
+  @Test
+  public void designSpaceShouldSupportParameterIds() throws Throwable {
+    ParamCfg param = ParamCfg.builder().build();
+    IDesignSpace space = builder.param(param).build().getDesignSpace();
+    assertTrue(space.getSupportedParamIds().contains(param.getId()));
   }
 }
