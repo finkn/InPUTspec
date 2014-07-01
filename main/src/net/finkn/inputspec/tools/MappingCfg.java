@@ -21,4 +21,16 @@ SOFTWARE.
 package net.finkn.inputspec.tools;
 
 public class MappingCfg {
+  private MappingCfg() {
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static class Builder {
+    public MappingCfg build() {
+      return new MappingCfg();
+    }
+  }
 }
