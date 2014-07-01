@@ -107,6 +107,17 @@ public class DesignSpaceCfg {
     return getParameters().map(x -> x.xml(1)).collect(Collectors.toList());
   }
 
+  /**
+   * Builder of design space configurations.
+   * The defaults will create a design space with no parameters, no code
+   * mapping, and a "TestSpace" ID.
+   * <p>
+   * All settings are optional. The ID and code mapping can be set to
+   * {@code null} which will cause that setting to be ignored.
+   *
+   * @version 0.9
+   * @author Christoffer Fink
+   */
   public static class Builder {
     private String id = DEFAULT_ID;
     private String ref;
