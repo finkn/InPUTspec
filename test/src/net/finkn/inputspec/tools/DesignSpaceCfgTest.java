@@ -36,18 +36,18 @@ public class DesignSpaceCfgTest {
   private DesignSpaceCfg.Builder builder = DesignSpaceCfg.builder();
 
   @Test
-  public void nullIdShouldBeLegal() {
-    assertNotNull(DesignSpaceCfg.builder().id(null));
+  public void nullIdShouldBeIgnored() {
+    assertFalse(builder.id(null).build().getId().isPresent());
   }
 
   @Test
-  public void nullRefShouldBeLegal() {
-    assertNotNull(DesignSpaceCfg.builder().ref(null));
+  public void nullRefShouldBeIgnored() {
+    assertFalse(builder.ref(null).build().getMappingRef().isPresent());
   }
 
   @Test
-  public void nullMappingShouldBeLegal() {
-    assertNotNull(DesignSpaceCfg.builder().mapping(null));
+  public void nullMappingShouldBeIgnored() {
+    assertFalse(builder.mapping(null).build().getMapping().isPresent());
   }
 
   @Test
@@ -130,5 +130,10 @@ public class DesignSpaceCfgTest {
     ParamCfg param = ParamCfg.builder().build();
     IDesignSpace space = builder.param(param).build().getDesignSpace();
     assertTrue(space.getSupportedParamIds().contains(param.getId()));
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void addingNullParameterShouldFail() {
+    builder.param(ParamCfg.builder().build(), null);
   }
 }

@@ -131,20 +131,25 @@ public class DesignSpaceCfg {
       return this;
     }
 
-    public Builder param(ParamCfg param) {
-      params.add(param);
+    public Builder param(ParamCfg parameter) {
+      addOrThrowIfNull(parameter);
       return this;
     }
 
     public Builder param(ParamCfg... parameters) {
-      for (ParamCfg param : parameters) {
-        params.add(param);
-      }
+      Stream.of(parameters).forEach(this::param);
       return this;
     }
 
     public DesignSpaceCfg build() {
       return new DesignSpaceCfg(id, ref, mapping, params);
+    }
+
+    private void addOrThrowIfNull(ParamCfg param) {
+      if (param == null) {
+        throw new NullPointerException("Cannot add null parameter.");
+      }
+      params.add(param);
     }
   }
 }
