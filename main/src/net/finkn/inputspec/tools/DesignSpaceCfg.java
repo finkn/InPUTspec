@@ -52,11 +52,10 @@ public class DesignSpaceCfg {
   private final Collection<ParamCfg> parameters;
   private final Xml xml = Xml.getInstance().prefix(X.PREFIX);
 
-  private DesignSpaceCfg(String id, String ref, MappingCfg mapping,
-      Collection<ParamCfg> params) {
-    this.id = Optional.ofNullable(id);
-    this.mappingRef = Optional.ofNullable(ref);
-    this.mapping = Optional.ofNullable(mapping);
+  private DesignSpaceCfg(Optional<String> id, Optional<String> ref, Optional<MappingCfg> mapping, Collection<ParamCfg> params) {
+    this.id = id;
+    this.mappingRef = ref;
+    this.mapping = mapping;
     this.parameters = new ArrayList<>(params);
   }
 
@@ -115,31 +114,29 @@ public class DesignSpaceCfg {
    * All settings are optional. The ID and code mapping can be set to
    * {@code null} which will cause that setting to be ignored.
    *
-   * @version 0.9
+   * @version 0.9.1
    * @author Christoffer Fink
    */
   public static class Builder {
-    private String id = DEFAULT_ID;
-    private String ref;
-    private MappingCfg mapping;
+    private Optional<String> id = Optional.of(DEFAULT_ID);
+    private Optional<String> ref = Optional.empty();
+    private Optional<MappingCfg> mapping = Optional.empty();
     private Collection<ParamCfg> params = new ArrayList<>();
 
     private Builder() {
     }
 
     public Builder id(String id) {
-      this.id = id;
+      this.id = Optional.ofNullable(id);
       return this;
     }
 
     public Builder ref(String ref) {
-      this.ref = ref;
-      return this;
+      return setMappingXorRef(Optional.ofNullable(ref), mapping);
     }
 
     public Builder mapping(MappingCfg mapping) {
-      this.mapping = mapping;
-      return this;
+      return setMappingXorRef(ref, Optional.ofNullable(mapping));
     }
 
     public Builder param(ParamCfg parameter) {
@@ -154,6 +151,17 @@ public class DesignSpaceCfg {
 
     public DesignSpaceCfg build() {
       return new DesignSpaceCfg(id, ref, mapping, params);
+    }
+
+    private Builder setMappingXorRef(Optional<String> ref,
+        Optional<MappingCfg> mapping) {
+      if (ref.isPresent() && mapping.isPresent()) {
+        String msg = "Cannot set both mapping and a mapping reference.";
+        throw new IllegalStateException(msg);
+      }
+      this.ref = ref;
+      this.mapping = mapping;
+      return this;
     }
 
     private void addOrThrowIfNull(ParamCfg param) {

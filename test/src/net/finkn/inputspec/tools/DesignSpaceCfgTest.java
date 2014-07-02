@@ -136,4 +136,24 @@ public class DesignSpaceCfgTest {
   public void addingNullParameterShouldFail() {
     builder.param(ParamCfg.builder().build(), null);
   }
+
+  // These two are basically the same. They make sure the order doesn't matter.
+  @Test(expected = IllegalStateException.class)
+  public void settingRefAndThenMappingShouldFail() {
+    MappingCfg mapping = MappingCfg.builder().build();
+    builder.ref("code mapping reference").mapping(mapping);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void settingMappingAndThenRefShouldFail() {
+    MappingCfg mapping = MappingCfg.builder().build();
+    builder.mapping(mapping).ref("code mapping reference");
+  }
+
+  // Setting both mapping and ref is OK as long as one has been "unset" first.
+  @Test
+  public void settingMappingAndRefAfterNullShouldSucceed() {
+    MappingCfg mapping = MappingCfg.builder().build();
+    builder.mapping(mapping).mapping(null).ref("code mapping reference");
+  }
 }
