@@ -75,7 +75,7 @@ public class UnitExceptionTest {
   }
 
   @Test(expected = AssertionError.class)
-  public void assertExcaptionMessageMatchesShouldFailIfRegexDoesNotMatch() {
+  public void assertExceptionMessageMatchesShouldFailIfRegexDoesNotMatch() {
     String msg = "Custom exception message.";
     String regex = "^exception.*\\.$";
     assertExceptionMessageMatches(getThrower(msg), regex);
