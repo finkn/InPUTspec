@@ -23,12 +23,9 @@ package net.finkn.inputspec.v050;
 import net.finkn.inputspec.tools.DesignSpaceCfg;
 import net.finkn.inputspec.tools.Generator;
 import net.finkn.inputspec.tools.ParamCfg;
+import net.finkn.inputspec.tools.TestCleanup;
 
-import org.junit.After;
 import org.junit.Test;
-
-import se.miun.itm.input.model.mapping.Mappings;
-import se.miun.itm.input.model.param.ParamStore;
 
 /**
  * These tests demonstrate how InPUT handles various boolean literals.
@@ -36,17 +33,11 @@ import se.miun.itm.input.model.param.ParamStore;
  * @author Christoffer Fink
  * @version 1.0
  */
-public class BooleanLiteralsTest {
+public class BooleanLiteralsTest extends TestCleanup {
   // This counter is used to make sure that each DesignSpace that is created
   // gets a unique ID. This is required to prevent design spaces with the
   // same ID from being cached.
   private static long counter = 0;
-
-  @After
-  public void tearDown() {
-    ParamStore.releaseAllParamStores();
-    Mappings.releaseAllMappings();
-  }
 
   /**
    * This test acts like a lemma. By using literals that are clearly invalid, it
