@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import static net.finkn.inputspec.tools.Unit.*;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 public class UnitTest {
   private static final Predicate<Integer> neg = x -> false;
@@ -122,9 +123,16 @@ public class UnitTest {
     assertEquals(msg, result);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void assertExceptionMatchesShouldFailUnlessAnExceptionIsThrown() {
+    // Since this catcher always accepts, we can be sure that the failure
+    // bypasses the actual matching test.
+    assertExceptionMatches(() -> {}, x -> true);
+  }
+
   @Test
   public void getExceptionMessageShouldReturnEmptyOptionalWhenNothingThrown() {
-    assertFalse(getExceptionMessage(() -> { }).isPresent());
+    assertFalse(getExceptionMessage(() -> {}).isPresent());
   }
 
   @Test
@@ -204,5 +212,37 @@ public class UnitTest {
   public void assertStringContainsNoneShouldFailIfAnyMatch() {
     String s = "Hello World";
     assertStringContainsNone(s, "diabetic", "cannibal", "in the", "World");
+  }
+
+  @Test
+  public void assertThrowsExceptionShouldSucceedIfRunnableThrowsException() {
+    assertThrowsException(getThrower("Whatever"));
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertThrowExceptionsShouldFailUnlessRunnableThrowsException() {
+    assertThrowsException(() -> {});
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertThrowsNothingShouldFailIfRunnableThrowsException() {
+    assertThrowsNothing(getThrower("Whatever"));
+  }
+
+  @Test
+  public void assertThrowNothingShouldSucceedUnlessRunnableThrowsException() {
+    assertThrowsNothing(() -> {});
+  }
+
+  @Test
+  public void getExceptionShouldReturnEmptyOptionalIfNothingThrown() {
+    assertFalse(getException(() -> { }).isPresent());
+  }
+
+  @Test
+  public void getExceptionShouldReturnTheExceptionThatWasThrown() {
+    AssertionError e = new AssertionError("My exception");
+    Runnable r = () -> { throw e; };
+    assertThat(getException(r).get(), is(equalTo(e)));
   }
 }

@@ -81,7 +81,7 @@ import java.util.stream.Stream;
  * a proportionately long time to do so.
  *
  * @see net.finkn.inputspec.tools.Generator
- * @version 1.0
+ * @version 1.1
  * @author Christoffer Fink
  */
 public class Unit {
@@ -197,6 +197,17 @@ public class Unit {
     };
   }
 
+  public static void assertThrowsException(Runnable runnable) {
+    if (!getException(runnable).isPresent()) {
+      throw new AssertionError("Expected an exception.");
+    }
+  }
+  public static void assertThrowsNothing(Runnable runnable) {
+    if (getException(runnable).isPresent()) {
+      throw new AssertionError("Expected no exception.");
+    }
+  }
+
   /**
    * Asserts that an exception with the expected error message is thrown.
    *
@@ -241,13 +252,13 @@ public class Unit {
    */
   public static void assertExceptionMatches(Function<Throwable, String> toMsg,
       Runnable thrower, Predicate<Throwable> catcher) {
-    try {
-      thrower.run();
-      throw new IllegalArgumentException("thrower was supposed to throw!");
-    } catch (Throwable e) {
-      if (!catcher.test(e)) {
-        throw new AssertionError(toMsg.apply(e));
-      }
+    Optional<Throwable> exception = getException(thrower);
+    String msg = "thrower was supposed to throw an exception!";
+    IllegalArgumentException missing = new IllegalArgumentException(msg);
+    Throwable e = exception.orElseThrow(() -> missing);
+
+    if (!catcher.test(e)) {
+      throw new AssertionError(toMsg.apply(e));
     }
   }
 
@@ -255,11 +266,20 @@ public class Unit {
    * Returns the message for any exceptions thrown when running the Runnable.
    */
   public static Optional<String> getExceptionMessage(Runnable thrower) {
+    Optional<Throwable> exception = getException(thrower);
+    if (exception.isPresent()) {
+      return Optional.of(exception.get().getMessage());
+    } else {
+      return Optional.empty();
+    }
+  }
+
+  public static Optional<Throwable> getException(Runnable thrower) {
     try {
       thrower.run();
-      return Optional.ofNullable(null);
+      return Optional.empty();
     } catch (Throwable e) {
-      return Optional.ofNullable(e.getMessage());
+      return Optional.of(e);
     }
   }
 
