@@ -30,6 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    BasicDesignSpaceTest.class,
     BooleanLiteralsTest.class,
 })
 public class Spec {
