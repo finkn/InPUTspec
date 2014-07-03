@@ -32,6 +32,7 @@ import org.junit.runners.Suite.SuiteClasses;
     IntervalContainmentTest.class,
     IntervalParsingTest.class,
     UnitTest.class,
+    UnitExceptionTest.class,
     UnitIterationsTest.class,
     GeneratorTest.class,
     GeneratorExceptionMessageTest.class,

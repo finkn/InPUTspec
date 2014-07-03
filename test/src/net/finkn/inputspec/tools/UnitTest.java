@@ -20,16 +20,14 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import static net.finkn.inputspec.tools.Unit.*;
+
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.junit.Test;
-
-import static net.finkn.inputspec.tools.Unit.*;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 public class UnitTest {
   private static final Predicate<Integer> neg = x -> false;
@@ -80,59 +78,6 @@ public class UnitTest {
         msg);
     assertExceptionMessageMatches(() -> assertNoneMatch(x -> msg, num, pos),
         msg);
-  }
-
-  @Test
-  public void getThrowerShouldReturnConsumerThatUsesTheGivenFunction() {
-    try {
-      getThrower(x -> "" + x).accept(3);
-      fail("Expected to get an exception to examine.");
-    } catch (AssertionError e) {
-      assertEquals("3", e.getMessage());
-    }
-  }
-
-  @Test
-  public void getThrowerShouldReturnRunnableThatThrowsExceptionWithTheMsg() {
-    try {
-      getThrower("3").run();
-      fail("Expected to get an exception to examine.");
-    } catch (AssertionError e) {
-      assertEquals("3", e.getMessage());
-    }
-  }
-
-  @Test
-  public void assertExceptionMessageMatchesShouldSucceedIfRegexMatches() {
-    String msg = "Custom exception message.";
-    String regex = ".*exception.*\\.$";
-    assertExceptionMessageMatches(getThrower(msg), regex);
-  }
-
-  @Test(expected = AssertionError.class)
-  public void assertExcaptionMessageMatchesShouldFailIfRegexDoesNotMatch() {
-    String msg = "Custom exception message.";
-    String regex = "^exception.*\\.$";
-    assertExceptionMessageMatches(getThrower(msg), regex);
-  }
-
-  @Test
-  public void getExceptionMessageShouldReturnTheExceptionMessage() {
-    String msg = "Custom exception message.";
-    String result = getExceptionMessage(getThrower(msg)).get();
-    assertEquals(msg, result);
-  }
-
-  @Test(expected = IllegalArgumentException.class)
-  public void assertExceptionMatchesShouldFailUnlessAnExceptionIsThrown() {
-    // Since this catcher always accepts, we can be sure that the failure
-    // bypasses the actual matching test.
-    assertExceptionMatches(() -> {}, x -> true);
-  }
-
-  @Test
-  public void getExceptionMessageShouldReturnEmptyOptionalWhenNothingThrown() {
-    assertFalse(getExceptionMessage(() -> {}).isPresent());
   }
 
   @Test
@@ -212,37 +157,5 @@ public class UnitTest {
   public void assertStringContainsNoneShouldFailIfAnyMatch() {
     String s = "Hello World";
     assertStringContainsNone(s, "diabetic", "cannibal", "in the", "World");
-  }
-
-  @Test
-  public void assertThrowsExceptionShouldSucceedIfRunnableThrowsException() {
-    assertThrowsException(getThrower("Whatever"));
-  }
-
-  @Test(expected = AssertionError.class)
-  public void assertThrowExceptionsShouldFailUnlessRunnableThrowsException() {
-    assertThrowsException(() -> {});
-  }
-
-  @Test(expected = AssertionError.class)
-  public void assertThrowsNothingShouldFailIfRunnableThrowsException() {
-    assertThrowsNothing(getThrower("Whatever"));
-  }
-
-  @Test
-  public void assertThrowNothingShouldSucceedUnlessRunnableThrowsException() {
-    assertThrowsNothing(() -> {});
-  }
-
-  @Test
-  public void getExceptionShouldReturnEmptyOptionalIfNothingThrown() {
-    assertFalse(getException(() -> { }).isPresent());
-  }
-
-  @Test
-  public void getExceptionShouldReturnTheExceptionThatWasThrown() {
-    AssertionError e = new AssertionError("My exception");
-    Runnable r = () -> { throw e; };
-    assertThat(getException(r).get(), is(equalTo(e)));
   }
 }
