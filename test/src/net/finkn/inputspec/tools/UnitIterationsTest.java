@@ -27,6 +27,13 @@ import java.util.function.Predicate;
 
 import org.junit.Test;
 
+/**
+ * Tests related to iteration limits.
+ * This class keeps {@link UnitTest} from getting too cluttered.
+ *
+ * @see UnitTest
+ * @author Christoffer Fink
+ */
 public class UnitIterationsTest {
   private final Generator<Integer> gen = Generator.fromSupplier(() -> 0);
   private final int limit = 3;

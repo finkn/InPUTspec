@@ -27,6 +27,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * Exception-related tests.
+ * This class keeps {@link UnitTest} from getting too cluttered.
+ *
+ * @see UnitTest
+ * @author Christoffer Fink
+ */
 public class UnitExceptionTest {
   @Test
   public void getExceptionShouldReturnEmptyOptionalIfNothingThrown() {

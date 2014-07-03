@@ -29,6 +29,13 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
+/**
+ * Tests some of the tools in Unit.
+ *
+ * @see UnitExceptionTest
+ * @see UnitIterationsTest
+ * @author Christoffer Fink
+ */
 public class UnitTest {
   private static final Predicate<Integer> neg = x -> false;
   private static final Predicate<Integer> pos = neg.negate();
