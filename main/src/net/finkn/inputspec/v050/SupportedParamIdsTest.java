@@ -61,7 +61,7 @@ public class SupportedParamIdsTest extends TestCleanup {
 
   /**
    * This test demonstrates that the IDs of array elements (such as "X.1")
-   * <strong>not</strong> members in the set of parameter IDs that
+   * are <strong>not</strong> members in the set of parameter IDs that
    * <strong>design spaces</strong> support.
    */
   @Test
