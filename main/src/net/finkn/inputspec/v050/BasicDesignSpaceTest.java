@@ -30,6 +30,7 @@ import net.finkn.inputspec.tools.DesignSpaceCfg;
 import net.finkn.inputspec.tools.ParamCfg;
 import net.finkn.inputspec.tools.TestCleanup;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import se.miun.itm.input.model.design.IDesignSpace;
@@ -45,6 +46,12 @@ public class BasicDesignSpaceTest extends TestCleanup {
   private final ParamCfg paramCfg = ParamCfg.builder().build();
   private final DesignSpaceCfg spaceCfg = DesignSpaceCfg.builder()
       .param(paramCfg).build();
+  private IDesignSpace space;
+
+  @Before
+  public void setup() throws Throwable {
+    this.space = spaceCfg.getDesignSpace();
+  }
 
   /**
    * This test shows that {@code getSupportedParamIds()} contains the IDs of
@@ -52,7 +59,7 @@ public class BasicDesignSpaceTest extends TestCleanup {
    */
   @Test
   public void supportedParamIdsContainsIdOfTheParameter() throws Throwable {
-    Set<String> ids = spaceCfg.getDesignSpace().getSupportedParamIds();
+    Set<String> ids = space.getSupportedParamIds();
     assertThat(1, is(equalTo(ids.size())));
     assertThat(ids, hasItem(paramCfg.getId()));
   }
@@ -63,11 +70,7 @@ public class BasicDesignSpaceTest extends TestCleanup {
    */
   @Test
   public void nextProducesSomeValueWhenUsingSupportedId() throws Throwable {
-    IDesignSpace space = spaceCfg.getDesignSpace();
-    String id = paramCfg.getId();
-    // Make sure this ID is supported.
-    assertThat(space.getSupportedParamIds(), hasItem(id));
-    assertThat(space.next(id), is(not(nullValue())));
+    assertThat(space.next(paramCfg.getId()), is(not(nullValue())));
   }
 
   /**
@@ -76,7 +79,6 @@ public class BasicDesignSpaceTest extends TestCleanup {
    */
   @Test
   public void nextProducesNullValueWhenUsingUnsupportedId() throws Throwable {
-    IDesignSpace space = spaceCfg.getDesignSpace();
     String id = "Nonexistent";
     // Make sure this ID is not supported.
     assertThat(space.getSupportedParamIds(), not(hasItem(id)));
