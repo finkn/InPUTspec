@@ -32,6 +32,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     BasicDesignSpaceTest.class,
     BooleanLiteralsTest.class,
+    SupportedParamIdsTest.class,
 })
 public class Spec {
 }

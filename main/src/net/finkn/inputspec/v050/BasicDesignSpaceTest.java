@@ -40,6 +40,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * InPUT. Note that these are very basic tests. Corner cases are dealt with
  * elsewhere.
  *
+ * @see net.finkn.inputspec.v050.SupportedParamIdsTest
  * @author Christoffer Fink
  */
 public class BasicDesignSpaceTest extends TestCleanup {
@@ -56,6 +57,7 @@ public class BasicDesignSpaceTest extends TestCleanup {
   /**
    * This test shows that {@code getSupportedParamIds()} contains the IDs of
    * parameters defined in the design space, and nothing else.
+   * @see net.finkn.inputspec.v050.SupportedParamIdsTest
    */
   @Test
   public void supportedParamIdsContainsIdOfTheParameter() throws Throwable {
