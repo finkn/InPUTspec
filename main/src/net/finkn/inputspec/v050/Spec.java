@@ -31,6 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     BasicDesignSpaceTest.class,
+    BasicDesignTest.class,
     BooleanLiteralsTest.class,
     SupportedParamIdsTest.class,
 })
