@@ -48,11 +48,11 @@ public class DesignSpaceCfg {
 
   private final Optional<String> id;
   private final Optional<String> mappingRef;
-  private final Optional<MappingCfg> mapping;
+  private final Optional<CodeMappingCfg> mapping;
   private final Collection<ParamCfg> parameters;
   private final Xml xml = Xml.getInstance().prefix(X.PREFIX);
 
-  private DesignSpaceCfg(Optional<String> id, Optional<String> ref, Optional<MappingCfg> mapping, Collection<ParamCfg> params) {
+  private DesignSpaceCfg(Optional<String> id, Optional<String> ref, Optional<CodeMappingCfg> mapping, Collection<ParamCfg> params) {
     this.id = id;
     this.mappingRef = ref;
     this.mapping = mapping;
@@ -63,7 +63,7 @@ public class DesignSpaceCfg {
     return id;
   }
 
-  public Optional<MappingCfg> getMapping() {
+  public Optional<CodeMappingCfg> getMapping() {
     return mapping;
   }
 
@@ -120,7 +120,7 @@ public class DesignSpaceCfg {
   public static class Builder {
     private Optional<String> id = Optional.of(DEFAULT_ID);
     private Optional<String> ref = Optional.empty();
-    private Optional<MappingCfg> mapping = Optional.empty();
+    private Optional<CodeMappingCfg> mapping = Optional.empty();
     private Collection<ParamCfg> params = new ArrayList<>();
 
     private Builder() {
@@ -135,7 +135,7 @@ public class DesignSpaceCfg {
       return setMappingXorRef(Optional.ofNullable(ref), mapping);
     }
 
-    public Builder mapping(MappingCfg mapping) {
+    public Builder mapping(CodeMappingCfg mapping) {
       return setMappingXorRef(ref, Optional.ofNullable(mapping));
     }
 
@@ -154,7 +154,7 @@ public class DesignSpaceCfg {
     }
 
     private Builder setMappingXorRef(Optional<String> ref,
-        Optional<MappingCfg> mapping) {
+        Optional<CodeMappingCfg> mapping) {
       if (ref.isPresent() && mapping.isPresent()) {
         String msg = "Cannot set both mapping and a mapping reference.";
         throw new IllegalStateException(msg);
