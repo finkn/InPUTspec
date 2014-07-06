@@ -34,6 +34,8 @@ import java.util.stream.Stream;
  * confuse the {@link MappingCfg.Type type} of a mapping with the
  * {@link #getType() type} attribute of the mapping. Furthermore, do not
  * confuse "type" and "MappingType".
+ * <p>
+ * This class is immutable.
  *
  * @author Christoffer Fink
  */
@@ -91,6 +93,7 @@ public class MappingCfg {
     return mappingType;
   }
 
+  /** Returns a builder that can create instances of this class. */
   public static Builder builder() {
     return new Builder();
   }
@@ -113,6 +116,7 @@ public class MappingCfg {
    *
    * @see #infer(ParamCfg, Class)
    * @see #infer(ParamCfg, MappingCfg)
+   * @author Christoffer Fink
    */
   public static class Builder {
     private String id;
