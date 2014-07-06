@@ -83,12 +83,17 @@ public class DesignSpaceCfgTest {
     assertEquals(id, builder.id(id).build().getId().get());
   }
 
-  // Note that the corresponding mapping test is missing for now.
-  // FIXME: Once MappingCfg has been implemented, add the test.
   @Test
-  public void builderShouldUseMappingRef() {
+  public void builderShouldUseCodeMappingRef() {
     String ref = "code mapping reference";
     assertEquals(ref, builder.ref(ref).build().getMappingRef().get());
+  }
+
+  @Test
+  public void builderShouldUseCodeMapping() {
+    CodeMappingCfg mapping = CodeMappingCfg.builder().build();
+    DesignSpaceCfg space = builder.mapping(mapping).build();
+    assertThat(mapping, is(equalTo(space.getMapping().get())));
   }
 
   @Test
