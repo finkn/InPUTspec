@@ -29,17 +29,18 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    DesignSpaceCfgTest.class,
+    GeneratorExceptionMessageTest.class,
+    GeneratorTest.class,
     IntervalContainmentTest.class,
     IntervalParsingTest.class,
-    UnitTest.class,
+    MappingCfgTest.class,
+    ParamCfgTest.class,
+    RangeTest.class,
     UnitExceptionTest.class,
     UnitIterationsTest.class,
-    GeneratorTest.class,
-    GeneratorExceptionMessageTest.class,
-    RangeTest.class,
-    ParamCfgTest.class,
+    UnitTest.class,
     XmlTest.class,
-    DesignSpaceCfgTest.class,
 })
 public class Tests {
 }
