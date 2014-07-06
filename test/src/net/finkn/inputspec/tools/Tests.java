@@ -29,6 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    CodeMappingCfgTest.class,
     DesignSpaceCfgTest.class,
     GeneratorExceptionMessageTest.class,
     GeneratorTest.class,
