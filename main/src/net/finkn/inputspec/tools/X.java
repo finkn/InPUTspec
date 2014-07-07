@@ -42,6 +42,14 @@ public class X {
   public static final String EXCLMIN = Q.INCL_MAX;
   public static final String EXCLMAX = Q.EXCL_MAX;
   public static final String MAPPING_REF = Q.REF_ATTR;
+  public static final String ADD = Q.ADD_ATTR;
+  public static final String CONSTRUCTOR = Q.CONSTR_ATTR;
+  public static final String GET = Q.GET_ATTR;
+  public static final String SET = Q.SET_ATTR;
+  public static final String COMPLEX = Q.COMPLEX;
+  public static final String MAPPING = Q.MAPPING;
+  public static final String MAPPING_TYPE = Q.MAPPING_TYPE;
+  public static final String WRAPPER = Q.WRAPPER;
 
   public static final String SPACE_NS = Q.DESIGN_SPACE_NAMESPACE_ID;
   public static final String SPACE_XMLNS = "xmlns:" + PREFIX;

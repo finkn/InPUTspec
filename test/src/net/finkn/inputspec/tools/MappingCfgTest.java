@@ -20,8 +20,11 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import static net.finkn.inputspec.tools.Unit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+
+import net.finkn.inputspec.tools.X;
 
 import org.junit.Test;
 
@@ -211,5 +214,27 @@ public class MappingCfgTest {
     ParamCfg param = ParamCfg.builder().build();
     MappingCfg mapping = MappingCfg.builder().complex().build();
     builder.infer(param, mapping);
+  }
+
+  @Test
+  public void testMappingXml() {
+    ParamCfg param = ParamCfg.builder().build();
+    MappingCfg mapping = builder.infer(param, Integer.class).build();
+    String xml = mapping.xml();
+    assertStringContainsAll(xml, X.MAPPING, X.TYPE, X.ID, param.getId());
+    assertStringContainsNone(xml, X.GET, X.SET, X.ADD, X.WRAPPER);
+  }
+
+  @Test
+  public void testWrapperXml() {
+    ParamCfg param = ParamCfg.builder().build();
+    MappingCfg mapping = builder
+      .wrapper()
+      .param(param)
+      .target(Integer.class)
+      .build();
+    String xml = mapping.xml();
+    assertStringContainsAll(xml, X.WRAPPER, X.MAPPING, param.getId());
+    assertStringContainsNone(xml, X.GET, X.SET, X.ADD);
   }
 }

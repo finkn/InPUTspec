@@ -20,6 +20,7 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,8 +38,12 @@ import java.util.stream.Stream;
  * <p>
  * This class is immutable.
  *
+ * @version 1.0
  * @author Christoffer Fink
  */
+// FIXME: Support both
+// Mapping + (Wrapper|Complex) and
+// MappingType + (Wrapper|Complex)
 public class MappingCfg {
   /**
    * Separator used when joining together parameter IDs generate a constructor
@@ -53,6 +58,7 @@ public class MappingCfg {
   private final String set;
   private final String type;
   private final Type mappingType;
+  private final Xml xml = Xml.getInstance().prefix(X.PREFIX);
 
   private MappingCfg(String id, String add, String con, String get, String set,
       String type, Type mt) {
@@ -91,6 +97,35 @@ public class MappingCfg {
 
   public Type getMappingType() {
     return mappingType;
+  }
+
+  public String xml() {
+    return xml(0);
+  }
+  String xml(int level) {
+    return xml.level(level).e(getTag(), getAttributes(), getChildren(level));
+  }
+
+  // TODO: This Mapping + (Wrapper|Complex) business is pretty awkward.
+  private String getTag() {
+    return mappingType.equals(Type.MAPPING_TYPE) ? X.MAPPING_TYPE : X.MAPPING;
+  }
+  private Map<String, Optional<? extends Object>> getAttributes() {
+    Map<String, Optional<? extends Object>> attrib = new HashMap<>();
+    attrib.put(X.ID, Optional.ofNullable(getId()));
+    attrib.put(X.TYPE, Optional.ofNullable(getType()));
+    attrib.put(X.ADD, Optional.ofNullable(getAdd()));
+    attrib.put(X.CONSTRUCTOR, Optional.ofNullable(getConstructor()));
+    attrib.put(X.GET, Optional.ofNullable(getGet()));
+    attrib.put(X.SET, Optional.ofNullable(getSet()));
+    return attrib;
+  }
+  private List<String> getChildren(int level) {
+    if (mappingType.equals(Type.WRAPPER) || mappingType.equals(Type.COMPLEX)) {
+      String tag = mappingType.equals(Type.COMPLEX) ? X.COMPLEX : X.WRAPPER;
+      return Arrays.asList(xml.level(level + 1).e(tag));
+    }
+    return Collections.emptyList();
   }
 
   /** Returns a builder that can create instances of this class. */
