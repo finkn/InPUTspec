@@ -80,11 +80,12 @@ public class DesignSpaceCfg {
   }
 
   public IDesignSpace getDesignSpace() throws InPUTException {
-    return new DesignSpace(getDesignSpaceStream(xml()));
-  }
-
-  private static InputStream getDesignSpaceStream(String xml) {
-    return new ByteArrayInputStream(xml.getBytes());
+    InputStream spaceStream = getDesignSpaceStream();
+    if (mapping.isPresent()) {
+      InputStream mappingStream = getCodeMappingStream();
+      return new DesignSpace(spaceStream, mappingStream);
+    }
+    return new DesignSpace(spaceStream);
   }
 
   public String xml() {
@@ -92,10 +93,18 @@ public class DesignSpaceCfg {
     return xml.declaration() + "\n" + root;
   }
 
+  private InputStream getCodeMappingStream() {
+    return new ByteArrayInputStream(mapping.get().xml().getBytes());
+  }
+
+  private InputStream getDesignSpaceStream() {
+    return new ByteArrayInputStream(xml().getBytes());
+  }
+
   private Map<String, Optional<? extends Object>> getAttributes() {
     Map<String, Optional<? extends Object>> attrib = new HashMap<>();
-    attrib.put(X.XMLNS, Optional.of(X.NS));
-    attrib.put(X.SPACE_XMLNS, Optional.of(X.SPACE_NS));
+    attrib.put(X.XML_XSI, Optional.of(X.NS));
+    attrib.put(X.INPUT_XMLNS, Optional.of(X.SPACE_NS));
     attrib.put(X.SCHEMA, Optional.of(X.SPACE_SCHEMA));
     attrib.put(X.ID, id);
     attrib.put(X.MAPPING_REF, mappingRef);

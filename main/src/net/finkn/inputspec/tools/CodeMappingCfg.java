@@ -20,14 +20,15 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * A Code Mapping configuration.
  * This class is immutable.
  *
+ * @version 1.0
  * @author Christoffer Fink
  */
 public class CodeMappingCfg {
@@ -36,6 +37,7 @@ public class CodeMappingCfg {
 
   private final String id;
   private final Collection<MappingCfg> mappings;
+  private final Xml xml = Xml.getInstance().prefix(X.PREFIX);
 
   private CodeMappingCfg(String id, Collection<MappingCfg> mappings) {
     this.id = id;
@@ -48,6 +50,24 @@ public class CodeMappingCfg {
 
   public Stream<MappingCfg> getMappings() {
     return mappings.stream();
+  }
+
+  public String xml() {
+    String root = xml.e(X.CODE_MAPPING, getAttributes(), getChildren());
+    return xml.declaration() + "\n" + root;
+  }
+
+  private Map<String, Optional<? extends Object>> getAttributes() {
+    Map<String, Optional<? extends Object>> attrib = new HashMap<>();
+    attrib.put(X.XML_XSI, Optional.of(X.NS));
+    attrib.put(X.INPUT_XMLNS, Optional.of(X.CODE_MAPPING_NS));
+    attrib.put(X.SCHEMA, Optional.of(X.CODE_MAPPING_SCHEMA));
+    attrib.put(X.ID, Optional.ofNullable(id));
+    return attrib;
+  }
+
+  private List<String> getChildren() {
+    return getMappings().map(x -> x.xml(1)).collect(Collectors.toList());
   }
 
   /** Returns a builder that can create instances of this class. */

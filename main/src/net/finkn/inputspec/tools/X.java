@@ -27,12 +27,14 @@ public class X {
   public static final String PREFIX = Q.MY_NAMESPACE_PREFIX;
   public static final String INPUT_URL = "http://theinput.org";
   public static final String NS = "http://www.w3.org/2001/XMLSchema-instance";
-  public static final String XMLNS = "xmlns:xsi";
+  public static final String XML_XSI = "xmlns:xsi";
   public static final String SCHEMA = "xsi:schemaLocation";
+  public static final String INPUT_XMLNS = "xmlns:" + PREFIX;
   // Tags
   public static final String NPARAM = Q.NPARAM;
   public static final String SPARAM = Q.SPARAM;
   public static final String DESIGN_SPACE = Q.DESIGN_SPACE_ROOT;
+  public static final String CODE_MAPPING = Q.MAPPINGS;
   // Attributes
   public static final String ID = Q.ID_ATTR;
   public static final String TYPE = Q.TYPE_ATTR;
@@ -52,11 +54,18 @@ public class X {
   public static final String WRAPPER = Q.WRAPPER;
 
   public static final String SPACE_NS = Q.DESIGN_SPACE_NAMESPACE_ID;
-  public static final String SPACE_XMLNS = "xmlns:" + PREFIX;
   public static final String SPACE_SCHEMA = getSpaceSchema();
+  public static final String CODE_MAPPING_NS = Q.NAMESPACE_ID + CODE_MAPPING;
+  public static final String CODE_MAPPING_SCHEMA = getCodeMappingSchema();
 
 
   private static String getSpaceSchema() {
-    return String.format("%s %s/%s.xsd", SPACE_NS, INPUT_URL, DESIGN_SPACE);
+    return getSchema(SPACE_NS, DESIGN_SPACE);
+  }
+  private static String getCodeMappingSchema() {
+    return getSchema(CODE_MAPPING_NS, CODE_MAPPING);
+  }
+  private static String getSchema(String ns, String root) {
+    return String.format("%s %s/%s.xsd", ns, INPUT_URL, root);
   }
 }
