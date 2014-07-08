@@ -25,9 +25,8 @@ import static org.junit.Assert.*;
 
 import java.util.Set;
 
-import net.finkn.inputspec.tools.DesignSpaceCfg;
-import net.finkn.inputspec.tools.ParamCfg;
-import net.finkn.inputspec.tools.TestCleanup;
+import net.finkn.inputspec.tools.*;
+import net.finkn.inputspec.tools.types.Point;
 
 import org.junit.Test;
 
@@ -82,5 +81,36 @@ public class SupportedParamIdsTest extends TestCleanup {
       .param(arrayParam).build().getDesignSpace();
     IDesign design = space.nextDesign("Design");
     assertNotEquals(space.getSupportedParamIds(), design.getSupportedParamIds());
+  }
+
+  /**
+   * This test shows that the IDs of nested parameters (such as "Point.X") are
+   * members in the set of parameter IDs that design spaces as well as designs
+   * support. That is, unlike arrays, these implicit IDs are supported, and
+   * unlike arrays, they are supported both by design spaces and designs.
+   */
+  @Test
+  public void designsAndDesignSpacesBothSupportNestedParams() throws Throwable {
+    ParamCfg pointParam = ParamCfg.builder()
+      .id("X").add()
+      .id("Y").add()
+      .structured()
+      .id("Point")
+      .build();
+    MappingCfg pointMapping = MappingCfg.builder()
+      .infer(pointParam, Point.class)
+      .build();
+    CodeMappingCfg codeMapping = CodeMappingCfg.builder()
+      .mapping(pointMapping)
+      .build();
+    DesignSpaceCfg designSpace = DesignSpaceCfg.builder()
+      .param(pointParam)
+      .mapping(codeMapping)
+      .build();
+
+    IDesignSpace space = designSpace.getDesignSpace();
+    assertThat(space.getSupportedParamIds(), hasItem("Point.X"));
+    IDesign design = space.nextDesign("Design");
+    assertEquals(space.getSupportedParamIds(), design.getSupportedParamIds());
   }
 }
