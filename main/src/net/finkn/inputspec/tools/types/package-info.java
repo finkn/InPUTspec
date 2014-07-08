@@ -18,56 +18,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-package net.finkn.inputspec.tools.types;
-
 /**
- * A simple class for testing code mappings.
- * Parameters of this type can be initialized by constructor or setter. The
- * getter and setter methods also follow the default naming convention.
- * 
+ * Types useful for testing structured parameters and code mappings.
+ *
  * @author Christoffer Fink
  */
-public class Point {
-  protected int x;
-  protected int y;
-
-  public Point() {
-  }
-
-  public Point(int x, int y) {
-    this.x = x;
-    this.y = y;
-  }
-
-  @Override
-  public String toString() {
-    return "(" + x + "," + y + ")";
-  }
-
-  public Point setX(int n) {
-    x = n;
-    return this;
-  }
-
-  public Point setY(int n) {
-    y = n;
-    return this;
-  }
-
-  public int getX() {
-    return x;
-  }
-
-  public int getY() {
-    return y;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof Point)) {
-      return false;
-    }
-    Point other = (Point) o;
-    return this.x == other.x && this.y == other.y;
-  }
-}
+package net.finkn.inputspec.tools.types;
