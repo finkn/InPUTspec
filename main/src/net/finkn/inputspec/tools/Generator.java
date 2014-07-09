@@ -160,7 +160,8 @@ public abstract class Generator<T> implements Supplier<T> {
   public final void isVariable() {
     assertSufficientIterations(iterations, 2);
     T first = this.get();
-    Function<T, String> toMsg = getToMsg(getDefaultVariabilityMsg());
+    Function<T, String> toMsg = x ->
+      getToMsg(getDefaultVariabilityMsg()).apply(first);
     Unit.assertSomeMatch(iterations - 1, toMsg, this, x -> x != first);
   }
 
