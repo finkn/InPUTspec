@@ -20,7 +20,8 @@ SOFTWARE.
 */
 /**
  * Describes InPUT v0.5.
- * This is the latest version, and it's further described in the wiki.
+ * This is the latest version, and it's further described in the
+ * <a href="https://github.com/finkn/InPUTspec/wiki">wiki</a>.
  * @author Christoffer Fink
  */
 package net.finkn.inputspec.v050;
