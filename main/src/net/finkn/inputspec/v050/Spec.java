@@ -30,6 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    ArrayTest.class,
     BasicDesignSpaceTest.class,
     BasicDesignTest.class,
     BooleanLiteralsTest.class,
