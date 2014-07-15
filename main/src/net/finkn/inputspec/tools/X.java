@@ -40,8 +40,8 @@ public class X {
   public static final String TYPE = Q.TYPE_ATTR;
   public static final String FIXED = Q.FIXED_ATTR;
   public static final String INCLMIN = Q.INCL_MIN;
-  public static final String INCLMAX = Q.EXCL_MIN;
-  public static final String EXCLMIN = Q.INCL_MAX;
+  public static final String EXCLMIN = Q.EXCL_MIN;
+  public static final String INCLMAX = Q.INCL_MAX;
   public static final String EXCLMAX = Q.EXCL_MAX;
   public static final String MAPPING_REF = Q.REF_ATTR;
   public static final String ADD = Q.ADD_ATTR;
