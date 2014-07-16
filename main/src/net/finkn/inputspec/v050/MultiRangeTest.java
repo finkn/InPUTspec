@@ -32,7 +32,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  *
  * @author Christoffer Fink
  */
-public class MultiRangeTest extends TestCleanup {
+public class MultiRangeTest {
 
   /**
    * Design spaces will generate values taken from any of the ranges when
@@ -82,8 +82,6 @@ public class MultiRangeTest extends TestCleanup {
       .inclMin("1,2,3,4,5")
       .inclMax("1")
       .build(), 20);
-
-    TestCleanup.cleanup();
 
     // 4 in 5 ranges are complete, so we expect a 80% success rate.
     assertSuccessRate(ParamCfg.builder()
