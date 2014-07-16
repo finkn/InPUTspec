@@ -44,6 +44,8 @@ public class ParamCfg {
   /** Default parameter type used by the Builder. */
   public static final String DEFAULT_TYPE = "integer";
 
+  private static final ParamCfg defaultParam = builder().build();
+
   // TODO: Use Optionals?
   private final String id;
   private final String type;
@@ -90,6 +92,11 @@ public class ParamCfg {
   /** Returns a builder that can create instances of this class. */
   public static Builder builder() {
     return new Builder();
+  }
+
+  /** Shortcut for {@code builder().build()}. **/
+  public static ParamCfg getDefault() {
+    return defaultParam;
   }
 
   public String xml() {

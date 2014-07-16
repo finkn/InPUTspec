@@ -34,6 +34,13 @@ public class ParamCfgTest {
   private final ParamCfg.Builder builder = ParamCfg.builder();
 
   @Test
+  public void getDefaultShouldReturnDefaultParamCfg() {
+    ParamCfg p1 = ParamCfg.getDefault();
+    ParamCfg p2 = builder.build();
+    assertThat(p1.xml(), is(equalTo(p2.xml())));
+  }
+
+  @Test
   public void nullIdShouldBeLegal() {
     assertNotNull(builder.id(null).build());
   }
