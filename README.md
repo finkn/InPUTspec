@@ -1,7 +1,7 @@
 InPUTspec
 =========
 
-The purpose of this project is to establish a canonical and
+The [purpose of this project][purpose] is to establish a canonical and
 language-independent specification of [InPUT][].
 
 The project consists of two major parts:
@@ -9,10 +9,8 @@ The project consists of two major parts:
 - documentation
 - a test suite
 
-The documentation is contained in the [wiki][], and is
-further divided into a user-friendly manual and a specification intended for
-implementation developers. However, developers will have to provide
-implementation-specific instructions for their implementation.
+The [documentation is contained in the wiki][wiki], which is part user
+manual, part specification intended for implementation developers.
 
 
 License
@@ -40,5 +38,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-[InPUT]: http://feldob.github.io/InPUT/
-[wiki]: https://github.com/finkn/InPUTspec/wiki
+[InPUT]:    http://feldob.github.io/InPUT/
+[wiki]:     https://github.com/finkn/InPUTspec/wiki
+[purpose]:  https://github.com/finkn/InPUTspec/wiki/Purpose
