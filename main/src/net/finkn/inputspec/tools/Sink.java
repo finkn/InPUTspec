@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 
 import se.miun.itm.input.model.InPUTException;
 import se.miun.itm.input.model.design.IDesign;
+import se.miun.itm.input.aspects.Settable;
 
 /**
  * Value sink wrapper used for testing. A sink either accepts or rejects a
@@ -105,20 +106,32 @@ public abstract class Sink<T> implements Predicate<T> {
    * Creates a sink based on a design and a parameter ID. The parameter ID must
    * be supported by the design. The sink will accept a given value if and only
    * if the parameter can be successfully set to that value.
+   * <p>
+   * This is a special version of {@link #fromSettable(Settable, String)} which
+   * adds the supported ID check.
    *
    * @throws IllegalArgumentException if the parameter ID is not supported by
    *    the design.
    */
   public static Sink<Object> fromDesign(IDesign design, String paramId) {
+    // Fail early.
     if (!design.getSupportedParamIds().contains(paramId)) {
       String id = design.getId();
       String msg = id + " does not support a parameter with ID " + paramId;
       throw new IllegalArgumentException(msg);
     }
 
+    return fromSettable(design, paramId);
+  }
+
+  /**
+   * Creates a sink based on some Settable and an ID. The sink will accept a
+   * given value if and only if the value can be successfully set.
+   */
+  public static Sink<Object> fromSettable(Settable settable, String id) {
     return fromPredicate(x -> {
       try {
-        design.setValue(paramId, x);
+        settable.setValue(id, x);
         return true;
       } catch(Exception e) {
         return false;
