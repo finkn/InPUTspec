@@ -20,15 +20,8 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.*;
+import java.util.function.*;
 
 import se.miun.itm.input.model.InPUTException;
 import se.miun.itm.input.model.design.IDesignSpace;
