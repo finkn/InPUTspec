@@ -34,6 +34,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BasicDesignSpaceTest.class,
     BasicDesignTest.class,
     BooleanLiteralsTest.class,
+    IdLiteralsTest.class,
     MultiRangeTest.class,
     SupportedParamIdsTest.class,
 })
