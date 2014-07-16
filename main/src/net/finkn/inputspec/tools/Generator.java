@@ -56,6 +56,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  *
  * @author Christoffer Fink
  * @version 1.0
+ * @see Sink
  */
 public abstract class Generator<T> implements Supplier<T> {
   private int iterations = Unit.DEFAULT_ITERATIONS;
