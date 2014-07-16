@@ -59,7 +59,14 @@ public class DesignSpaceCfgTest {
   public void defaultBuilderShouldCreateDesignSpaceWithDefaultId() {
     Optional<String> id = builder.build().getId();
     assertTrue(id.isPresent());
-    assertEquals(DesignSpaceCfg.DEFAULT_ID, id.get());
+    assertThat(id.get(), startsWith(DesignSpaceCfg.DEFAULT_ID));
+  }
+
+  @Test
+  public void builderShouldCreateDesignSpacesWithSemiUniqueIds() {
+    String id1 = builder.build().getId().get();
+    String id2 = builder.build().getId().get();
+    assertThat(id1, is(not(equalTo(id2))));
   }
 
   @Test

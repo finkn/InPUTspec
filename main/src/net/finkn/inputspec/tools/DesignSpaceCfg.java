@@ -118,24 +118,34 @@ public class DesignSpaceCfg {
   /**
    * Builder of design space configurations.
    * The defaults will create a design space with no parameters, no code
-   * mapping, and a "TestSpace" ID.
+   * mapping, and a "TestSpace_x" ID, where x is a counter. The default ID uses
+   * a counter as a suffix to avoid some of the caching issues. However, note
+   * that the builder in no way guarantees that all design spaces have unique
+   * IDs. It <em>only</em> guarantees that it will not use the same default ID
+   * more than once. The user can still force a collision.
+   * (It is also theoretically possible to make the counter overflow and loop
+   * around, but that is impossible in practice.)
    * <p>
    * All settings are optional. The ID and code mapping can be set to
    * {@code null} which will cause that setting to be ignored.
    *
-   * @version 0.9.1
+   * @version 1.0
    * @author Christoffer Fink
    */
   public static class Builder {
-    private Optional<String> id = Optional.of(DEFAULT_ID);
+    private static long counter = 0;
+
+    private Optional<String> id = Optional.empty();
     private Optional<String> ref = Optional.empty();
     private Optional<CodeMappingCfg> mapping = Optional.empty();
     private Collection<ParamCfg> params = new ArrayList<>();
+    private boolean idSet = false;
 
     private Builder() {
     }
 
     public Builder id(String id) {
+      idSet = true;
       this.id = Optional.ofNullable(id);
       return this;
     }
@@ -159,7 +169,7 @@ public class DesignSpaceCfg {
     }
 
     public DesignSpaceCfg build() {
-      return new DesignSpaceCfg(id, ref, mapping, params);
+      return new DesignSpaceCfg(getId(), ref, mapping, params);
     }
 
     private Builder setMappingXorRef(Optional<String> ref,
@@ -178,6 +188,14 @@ public class DesignSpaceCfg {
         throw new NullPointerException("Cannot add null parameter.");
       }
       params.add(param);
+    }
+
+    private Optional<String> getId() {
+      if (idSet) {
+        return id;
+      } else {
+        return Optional.of(DEFAULT_ID + "_" + counter++);
+      }
     }
   }
 }
