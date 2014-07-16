@@ -39,7 +39,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  */
 public class ArrayTest {
   private final ParamCfg arrayParam = ParamCfg.builder()
-    .type("integer[3]").build();
+    .type("integer[3]").inclMin("0").build();
   private final DesignSpaceCfg arraySpace = DesignSpaceCfg.builder()
     .param(arrayParam).build();
   private IDesignSpace space;
@@ -91,5 +91,23 @@ public class ArrayTest {
     int newX1 = design.getValue("X.1");
 
     assertThat(newX1, is(equalTo(array[0])));
+  }
+
+  /**
+   * The range limitation applies when setting individual array elements.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void settingElementToOutOfRangeValueIsIllegal() throws Throwable {
+    int value = -1;
+    design.setValue("X.1", value);
+  }
+
+  /**
+   * The range limitation applies when setting the whole array.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void settingArrayToOutOfRangeValuesIsIllegal() throws Throwable {
+    int[] array = { -1, -2, -3, };
+    design.setValue("X", array);
   }
 }
