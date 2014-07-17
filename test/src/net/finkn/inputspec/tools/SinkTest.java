@@ -27,37 +27,49 @@ import org.junit.Test;
 import se.miun.itm.input.model.design.IDesign;
 
 public class SinkTest {
+  private final Predicate<Integer> pred = x -> x > 3;
+
   @Test
-  public void sinkFromPredicateBehaviorShouldMatchPredicate() {
-    Predicate<Integer> pred = x -> x > 3;
-    Sink<Integer> sink = Sink.fromPredicate(pred);
-    sink.rejects(1, 2, 3);
-    sink.accepts(4, 5, 6);
+  public void acceptsShouldSucceedIfAllAreAccepted() {
+    Sink.fromPredicate(pred).accepts(4, 5, 6);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void acceptsShouldFailIfAnyAreRejected() {
+    Sink.fromPredicate(pred).accepts(4, 5, 1);
+  }
+
+  @Test
+  public void rejectsShouldSucceedIfAllAreRejected() {
+    Sink.fromPredicate(pred).rejects(1, 2, 3);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void rejectsShouldFailIfAllAnyAreAccepted() {
+    Sink.fromPredicate(pred).rejects(1, 2, 4);
   }
 
   @Test
   public void sinkFromIntervalBehaviorShouldMatchInterval() {
-    Sink<Number> sink = Sink.fromInterval("[1,2]");
-    sink.rejects(0, 0.5, 2.5, 3);
-    sink.accepts(1, 1.5, 2);
+    Sink.fromInterval("[1,2]")
+      .rejects(0, 0.5, 2.5, 3)
+      .accepts(1, 1.5, 2);
   }
 
   @Test
   public void sinkFromParam() throws Throwable {
-    ParamCfg param = ParamCfg.builder().interval("[1,2]").build();
-    Sink<Object> sink = Sink.fromParam(param);
-    sink.rejects(0, 3);
-    sink.accepts(1, 2);
+    Sink.fromParam(ParamCfg.builder().interval("[1,2]").build())
+      .rejects(0, 3)
+      .accepts(1, 2);
   }
 
   // Same as sinkFromParam, but the interval is different. The two tests
   // taken together show that there are no caching problems.
   @Test
   public void paramIsNotCached() throws Throwable {
-    ParamCfg param = ParamCfg.builder().interval("[3,4]").build();
-    Sink<Object> sink = Sink.fromParam(param);
-    sink.rejects(2, 5);
-    sink.accepts(3, 4);
+    Sink.fromParam(ParamCfg.builder().interval("[3,4]").build())
+      .rejects(2, 5)
+      .accepts(3, 4);
   }
 
   // Since fromParam uses fromDesign, this test is technically superfluous,
@@ -69,9 +81,9 @@ public class SinkTest {
       .param(param)
       .build();
     IDesign design = spaceCfg.getDesignSpace().nextDesign("Design");
-    Sink<Object> sink = Sink.fromDesign(design, param.getId());
-    sink.rejects(0, 3);
-    sink.accepts(1, 2);
+    Sink.fromDesign(design, param.getId())
+      .rejects(0, 3)
+      .accepts(1, 2);
   }
 
   @Test(expected = IllegalArgumentException.class)
