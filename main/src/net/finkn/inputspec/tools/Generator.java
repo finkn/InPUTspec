@@ -48,7 +48,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * either succeed silently or fail noisily (by throwing an exception).
  *
  * @author Christoffer Fink
- * @version 1.0
+ * @version 1.1
  * @see Sink
  */
 public abstract class Generator<T> implements Supplier<T> {
@@ -317,6 +317,20 @@ public abstract class Generator<T> implements Supplier<T> {
   public static Generator<Object> fromDesignSpace(IDesignSpace space,
       String paramId) {
     return new DesignSpaceGenerator<Object>(space, paramId);
+  }
+
+  /**
+   * Convenient shortcut to {@link #fromDesignSpace(IDesignSpace, String)}.
+   * @throws InPUTException if a design space cannot be created
+   * @since 1.1
+   */
+  public static Generator<Object> fromParam(ParamCfg param)
+      throws InPUTException {
+    IDesignSpace space = DesignSpaceCfg.builder()
+      .param(param)
+      .build()
+      .getDesignSpace();
+    return fromDesignSpace(space, param.getId());
   }
 
   /**

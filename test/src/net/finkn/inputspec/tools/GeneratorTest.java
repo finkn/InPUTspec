@@ -187,4 +187,18 @@ public class GeneratorTest {
     gen.get();
     assertEquals(2, gen.valuesGenerated());
   }
+
+
+  @Test
+  public void generatorFromParamWithNoLimitShouldBeVariable() throws Throwable {
+    Generator<Object> gen = Generator.fromParam(ParamCfg.getDefault());
+    gen.isVariable();
+  }
+
+  @Test
+  public void generatorFromFixedParamShouldOnlyProduceFixed() throws Throwable {
+    ParamCfg param = ParamCfg.builder().fixed(3).build();
+    Generator<Object> gen = Generator.fromParam(param);
+    gen.generatesOnly(3);
+  }
 }
