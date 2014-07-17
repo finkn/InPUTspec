@@ -316,7 +316,16 @@ public abstract class Generator<T> implements Supplier<T> {
    */
   public static Generator<Object> fromDesignSpace(IDesignSpace space,
       String paramId) {
-    return new DesignSpaceGenerator<Object>(space, paramId);
+    return fromSupplier(new Supplier<Object>() {
+      @Override
+      public Object get() throws RuntimeException {
+        try {
+          return space.next(paramId);
+        } catch (InPUTException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    });
   }
 
   /**
@@ -380,25 +389,6 @@ public abstract class Generator<T> implements Supplier<T> {
         queue.addLast(result);
       }
       return result;
-    }
-  }
-
-  private static class DesignSpaceGenerator<T> extends Generator<Object> {
-    private final IDesignSpace space;
-    private final String paramId;
-
-    public DesignSpaceGenerator(IDesignSpace space, String paramId) {
-      this.space = space;
-      this.paramId = paramId;
-    }
-
-    @Override
-    public T nextValue() throws RuntimeException {
-      try {
-        return space.next(paramId);
-      } catch (InPUTException e) {
-        throw new RuntimeException(e);
-      }
     }
   }
 }
