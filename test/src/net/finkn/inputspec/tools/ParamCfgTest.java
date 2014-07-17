@@ -112,6 +112,18 @@ public class ParamCfgTest {
   }
 
   @Test
+  public void builderShouldUseFixedNumberValue() {
+    ParamCfg param = builder.fixed(3).build();
+    assertEquals("3", param.getFixed());
+  }
+
+  @Test
+  public void builderShouldUseFixedBooleanValue() {
+    ParamCfg param = builder.fixed(true).build();
+    assertEquals("true", param.getFixed());
+  }
+
+  @Test
   public void builderShouldUseInterval() {
     ParamCfg param = builder.interval(INTERVAL).build();
     assertEquals("1.0", param.getRange().inclMin().get());
@@ -123,6 +135,13 @@ public class ParamCfgTest {
     ParamCfg param = builder.exclMin("1").exclMax("2").build();
     assertEquals("1", param.getRange().exclMin().get());
     assertEquals("2", param.getRange().exclMax().get());
+  }
+
+  @Test
+  public void builderShouldUseIntegerAndDoubleLimits() {
+    ParamCfg param = builder.exclMin(1).exclMax(2.0).build();
+    assertEquals("1", param.getRange().exclMin().get());
+    assertEquals("2.0", param.getRange().exclMax().get());
   }
 
   @Test

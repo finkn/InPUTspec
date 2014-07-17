@@ -159,7 +159,7 @@ public class ParamCfg {
    * chain multiple calls:
    * {@code builder.id("X").inclMin("5").build()}
    *
-   * @version 0.9
+   * @version 1.0
    * @author Christoffer Fink 
    */
   public static class Builder {
@@ -187,32 +187,32 @@ public class ParamCfg {
     }
 
     /** Returns a Builder with a fixed value of {@code value}. */
-    public Builder fixed(String value) {
-      this.fixed = value;
+    public Builder fixed(Object value) {
+      this.fixed = getObjectString(value);
       return this;
     }
 
     /** Returns a Builder with an updated range. */
-    public Builder inclMin(String limit) {
-      this.range = range.withInclMin(limit);
+    public Builder inclMin(Object limit) {
+      this.range = range.withInclMin(getObjectString(limit));
       return this;
     }
 
     /** Returns a Builder with an updated range. */
-    public Builder exclMin(String limit) {
-      this.range = range.withExclMin(limit);
+    public Builder exclMin(Object limit) {
+      this.range = range.withExclMin(getObjectString(limit));
       return this;
     }
 
     /** Returns a Builder with an updated range. */
-    public Builder inclMax(String limit) {
-      this.range = range.withInclMax(limit);
+    public Builder inclMax(Object limit) {
+      this.range = range.withInclMax(getObjectString(limit));
       return this;
     }
 
     /** Returns a Builder with an updated range. */
-    public Builder exclMax(String limit) {
-      this.range = range.withExclMax(limit);
+    public Builder exclMax(Object limit) {
+      this.range = range.withExclMax(getObjectString(limit));
       return this;
     }
 
@@ -292,6 +292,9 @@ public class ParamCfg {
       }
     }
 
+    private static String getObjectString(Object obj) {
+      return obj != null ? obj.toString() : null;
+    }
 
     private static String getNParamType(String type) {
       return type != null ? type : DEFAULT_TYPE;
