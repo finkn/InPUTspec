@@ -78,7 +78,7 @@
   <target name="spec" depends="test" description="Run specification tests">
     <property name="spec.v050" value="net.finkn.inputspec.v050.Spec" />
     <junit printsummary="no" haltonerror="yes" haltonfailure="yes" fork="yes">
-      <formatter type="plain" usefile="false" />
+      <formatter type="brief" usefile="false" />
       <classpath refid="test.classpath" />
       <test name="${spectest}" if="spectest" />
       <test name="${spec.v050}" unless="spectest" />
