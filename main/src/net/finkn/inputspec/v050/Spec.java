@@ -36,6 +36,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BooleanLiteralsTest.class,
     IdLiteralsTest.class,
     MultiRangeMismatchTest.class,
+    RangeTest.class,
     SingleAndMultiRangeNextTest.class,
     SupportedParamIdsTest.class,
 })
