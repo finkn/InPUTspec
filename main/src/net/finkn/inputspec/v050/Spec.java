@@ -35,7 +35,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BasicDesignTest.class,
     BooleanLiteralsTest.class,
     IdLiteralsTest.class,
-    MultiRangeTest.class,
+    MultiRangeMismatchTest.class,
     SupportedParamIdsTest.class,
 })
 public class Spec {

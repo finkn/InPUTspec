@@ -28,47 +28,12 @@ import org.junit.Test;
 import se.miun.itm.input.model.design.IDesignSpace;
 
 /**
- * These tests demonstrate how InPUT handles certain aspects of multi-ranges.
+ * These tests demonstrate how InPUT handles multi-ranges with mismatching
+ * limits.
  *
  * @author Christoffer Fink
  */
-public class MultiRangeTest {
-
-  /**
-   * Design spaces will generate values taken from any of the ranges when
-   * multiple ones are defined. This is a very basic test.
-   */
-  @Test
-  public void allRangesAreUsedToGenerateValues() throws Throwable {
-    IDesignSpace space = DesignSpaceCfg.builder()
-      .param(ParamCfg.builder()
-        .inclMin("1,5")
-        .inclMax("1,5")
-        .build())
-      .build()
-      .getDesignSpace();
-
-    Generator.fromDesignSpace(space, "X").generatesOnly(1, 5); // Overkill.
-    Generator.fromDesignSpace(space, "X").generatesAll(1, 5);
-  }
-
-  /**
-   * If a multi-range is defined using an unmatched upper limit (that is, a
-   * min limit is missing), an exception is thrown when using the configuration
-   * to create a design space. Because the configuration results in a crash, a
-   * missing min limit is illegal.
-   */
-  @Test(expected = ArrayIndexOutOfBoundsException.class)
-  public void multirangeWithMissingMinIsIllegal() throws Throwable {
-    DesignSpaceCfg.builder()
-      .param(ParamCfg.builder()
-        .inclMin("1,5")
-        .inclMax("1,5,10")
-        .build())
-      .build()
-      .getDesignSpace();
-  }
-
+public class MultiRangeMismatchTest {
   /**
    * If a multi-range is defined using an unmatched upper limit (that is, a max
    * limit is missing), generating a value for the parameter may or may not
