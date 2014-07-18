@@ -38,6 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
     MappingCfgTest.class,
     ParamCfgTest.class,
     RangeTest.class,
+    RangeTestHelperTest.class,
     SinkTest.class,
     UnitExceptionTest.class,
     UnitIterationsTest.class,
