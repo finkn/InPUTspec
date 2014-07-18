@@ -316,14 +316,11 @@ public abstract class Generator<T> implements Supplier<T> {
    */
   public static Generator<Object> fromDesignSpace(IDesignSpace space,
       String paramId) {
-    return fromSupplier(new Supplier<Object>() {
-      @Override
-      public Object get() throws RuntimeException {
-        try {
-          return space.next(paramId);
-        } catch (InPUTException e) {
-          throw new RuntimeException(e);
-        }
+    return fromSupplier(() -> {
+      try {
+        return space.next(paramId);
+      } catch (InPUTException e) {
+        throw new RuntimeException(e);
       }
     });
   }
