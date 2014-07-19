@@ -34,6 +34,24 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * @author Christoffer Fink
  */
 public class MultiRangeMismatchTest {
+
+  /**
+   * If a multi-range is defined using an unmatched upper limit (that is, a
+   * min limit is missing), an exception is thrown when using the configuration
+   * to create a design space. Because the configuration results in a crash, a
+   * missing min limit is illegal.
+   */
+  @Test(expected = ArrayIndexOutOfBoundsException.class)
+  public void multirangeWithMissingMinIsIllegal() throws Throwable {
+    DesignSpaceCfg.builder()
+      .param(ParamCfg.builder()
+        .inclMin("1,5")
+        .inclMax("1,5,10")
+        .build())
+      .build()
+      .getDesignSpace();
+  }
+
   /**
    * If a multi-range is defined using an unmatched upper limit (that is, a max
    * limit is missing), generating a value for the parameter may or may not
