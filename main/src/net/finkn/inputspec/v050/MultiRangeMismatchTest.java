@@ -29,9 +29,11 @@ import se.miun.itm.input.model.design.IDesignSpace;
 
 /**
  * These tests demonstrate how InPUT handles multi-ranges with mismatching
- * limits.
+ * limits. {@link SingleAndMultiRangeNextTest} has more tests that involve
+ * (matched) multi-range configurations.
  *
  * @author Christoffer Fink
+ * @see SingleAndMultiRangeNextTest
  */
 public class MultiRangeMismatchTest {
 
