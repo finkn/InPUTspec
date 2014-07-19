@@ -48,7 +48,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * either succeed silently or fail noisily (by throwing an exception).
  *
  * @author Christoffer Fink
- * @version 1.2
+ * @version 1.2.1
  * @see Sink
  */
 public abstract class Generator<T> implements Supplier<T> {
@@ -208,6 +208,9 @@ public abstract class Generator<T> implements Supplier<T> {
    * to pass.
    */
   public final void generatesAll(SortedSet<T> expected) {
+    if (expected.isEmpty()) {
+      return;
+    }
     Collection<T> remaining = new TreeSet<>(expected);
     int it = iterations;
     if (!iterationsSet) {
@@ -233,6 +236,9 @@ public abstract class Generator<T> implements Supplier<T> {
    * </ul>
    */
   public final void generatesAny(SortedSet<T> expected) {
+    if (expected.isEmpty()) {
+      return;
+    }
     Function<T, String> toMsg = getToMsg(x -> "Did not generate any of "
         + expected);
     Unit.assertSomeMatch(iterations, toMsg, this, x -> expected.contains(x));

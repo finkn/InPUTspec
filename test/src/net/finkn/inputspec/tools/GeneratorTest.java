@@ -80,6 +80,11 @@ public class GeneratorTest {
   // ------------------------------------------------------------------------
   // ----- Assert generated values match tests. -----
   // ------------------------------------------------------------------------
+  @Test
+  public void assertGeneratesAnyShouldSucceedIfNothingExpected() {
+    Generator.fromSeq(2).generatesAny();
+  }
+
   @Test(expected = AssertionError.class)
   public void assertGeneratesAnyShouldFailIfNoneMatch() {
     Generator.fromSeq(6, 7, 8, 9).generatesAny(1, 2, 3, 4, 5);
@@ -88,6 +93,11 @@ public class GeneratorTest {
   @Test
   public void assertGeneratesAnyShouldSucceedIfAnyMatch() {
     Generator.fromSeq(2).generatesAny(1, 2, 3, 4, 5);
+  }
+
+  @Test
+  public void assertGeneratesAllShouldSucceedIfNothingExpected() {
+    Generator.fromSeq(2).generatesAll();
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -116,6 +126,13 @@ public class GeneratorTest {
     Generator.fromSeq(3, 1, 2).generatesAll(1, 2);
   }
 
+  // All of the values that are not listed are prohibited.
+  // Since none are listed, all are prohibited.
+  @Test(expected = AssertionError.class)
+  public void assertGeneratesOnlyShouldFailIfNothingExpected() {
+    Generator.fromSeq(2).generatesOnly();
+  }
+
   @Test(expected = AssertionError.class)
   public void assertGeneratesOnlyShouldFailIfAnyMismatch() {
     Generator.fromSeq(1, 2, 3).generatesOnly(1, 2);
@@ -132,6 +149,11 @@ public class GeneratorTest {
   public void assertGeneratesOnlyShouldSucceedIfNoMismatch() {
     Generator.fromSeq(3, 4, 3, 4, 5, 6, 5, 6).generatesOnly(1, 2, 3, 4, 5, 6,
         7, 8, 9, 10);
+  }
+
+  @Test
+  public void assertGeneratesNoneShouldSucceedIfNothingProhibited() {
+    Generator.fromSeq(2).generatesNone();
   }
 
   @Test
