@@ -134,6 +134,22 @@ public class GeneratorTest {
         7, 8, 9, 10);
   }
 
+  @Test
+  public void assertGeneratesNoneShouldSucceedIfNoneAreGenerated() {
+    Generator.fromSeq(1, 2, 3).generatesNone(-1, 0, 4, 5);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void assertGeneratesNoneShouldFailIfAnyAreGenerated() {
+    Generator.fromSeq(1, 2, 3).generatesNone(-1, 0, 3, 5);
+  }
+
+  /** Demonstrates false positive. */
+  @Test
+  public void assertGeneratesNoneSucceedsIfNotEnoughIterations() {
+    Generator.fromSeq(1, 2, 3).limit(2).generatesNone(-1, 0, 3, 5);
+  }
+
   // ------------------------------------------------------------------------
   // ----- Generator from sequence tests. -----
   // ------------------------------------------------------------------------

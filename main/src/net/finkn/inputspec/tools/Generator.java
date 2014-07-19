@@ -48,7 +48,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * either succeed silently or fail noisily (by throwing an exception).
  *
  * @author Christoffer Fink
- * @version 1.1
+ * @version 1.2
  * @see Sink
  */
 public abstract class Generator<T> implements Supplier<T> {
@@ -174,6 +174,11 @@ public abstract class Generator<T> implements Supplier<T> {
     generatesOnly(getTree(expected));
   }
 
+  @SafeVarargs
+  public final void generatesNone(T... expected) {
+    generatesNone(getTree(expected));
+  }
+
   public final void generatesAll(Collection<T> expected) {
     generatesAll(new TreeSet<>(expected));
   }
@@ -184,6 +189,10 @@ public abstract class Generator<T> implements Supplier<T> {
 
   public final void generatesOnly(Collection<T> expected) {
     generatesOnly(new TreeSet<>(expected));
+  }
+
+  public final void generatesNone(Collection<T> expected) {
+    generatesNone(new TreeSet<>(expected));
   }
 
   /**
@@ -242,6 +251,21 @@ public abstract class Generator<T> implements Supplier<T> {
     Function<T, String> toMsg = getToMsg(x -> "Unexpected value " + x
         + " not in " + expected);
     Unit.assertAllMatch(iterations, toMsg, this, x -> expected.contains(x));
+  }
+
+  /**
+   * Asserts that the generator produces none of the given values.
+   * All overloaded versions of this method end up here.
+   * <ul>
+   * <li>Can produce false positives.</li>
+   * <li>Cannot produce false negatives.</li>
+   * <li>Fails fast.</li>
+   * </ul>
+   * @since 1.2
+   */
+  public final void generatesNone(SortedSet<T> prohibited) {
+    Function<T, String> toMsg = getToMsg(x -> "Prohibited value " + x);
+    Unit.assertNoneMatch(iterations, toMsg, this, x -> prohibited.contains(x));
   }
 
   private static void assertSufficientIterations(int iterations, int min) {
