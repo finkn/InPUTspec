@@ -20,16 +20,10 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
-import static net.finkn.inputspec.tools.Unit.*;
 import static net.finkn.inputspec.tools.RangeTestHelper.t;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.function.Predicate;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class RangeTestHelperTest {
