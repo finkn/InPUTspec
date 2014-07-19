@@ -2,6 +2,7 @@
 <project name="InPUTspec" default="test">
   <property name="main" location="${basedir}/main" />
   <property name="test" location="${basedir}/test" />
+  <property name="doc" location="${basedir}/doc" />
   <property name="main.src" location="${main}/src" />
   <property name="test.src" location="${test}/src" />
   <property name="main.bin" location="${main}/bin" />
@@ -83,5 +84,16 @@
       <test name="${spectest}" if="spectest" />
       <test name="${spec.v050}" unless="spectest" />
     </junit>
+  </target>
+
+  <target name="doc" description="Generate javadoc documentation">
+    <delete dir="${doc}" />
+    <javadoc destdir="${doc}" failonerror="true">
+      <arg line="-quiet" />
+      <classpath refid="main.compile.classpath" />
+      <fileset dir="${main.src}">
+        <include name="**/*.java" />
+      </fileset>
+    </javadoc>
   </target>
 </project>
