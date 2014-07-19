@@ -44,13 +44,18 @@ import org.junit.Test;
  * <p>
  * Note that the values that are listed as expected are
  * <strong>precisely</strong> those values that are expected. That is, x should
- * be produced if and only if it is among the expected values.
+ * be produced <em>if and only if</em> it is among the expected values.
+ *
+ * <p>
+ * Note that all multi-ranges in these tests are matched.
+ * {@link MultiRangeMismatchTest} examines what happens when they are not.
  *
  * @author Christoffer Fink
+ * @see MultiRangeMismatchTest
  */
 public class SingleAndMultiRangeNextTest {
 
-  private final TestCase test = TestCase.getInstance();
+  private final TestCase test = TestCase.instance;
 
   private final String singleMin = "10";
   private final String singleMax = "14";
@@ -182,13 +187,12 @@ public class SingleAndMultiRangeNextTest {
     return ParamCfg.builder();
   }
 
+  // TODO: Should probably make this public and reusable in other tests.
   private static class TestCase {
+    private static final TestCase instance = new TestCase(null, null);
+
     private final ParamCfg param;
     private final Object[] expected;
-
-    static private TestCase getInstance() {
-      return new TestCase(null, null);
-    }
 
     private TestCase(ParamCfg param, Object[] expected) {
       this.param = param;
@@ -204,6 +208,8 @@ public class SingleAndMultiRangeNextTest {
 
     private TestCase run() throws Throwable {
       Generator<Object> gen = Generator.fromParam(param);
+      // Generates all of the expected but nothing else.
+      // This test fails slowly but succeeds reasonably quickly.
       gen.limit(1000).generatesOnly(expected);
       gen.limit(10000).generatesAll(expected); // Shortcuts, so 10,000 is fine.
       return this;
