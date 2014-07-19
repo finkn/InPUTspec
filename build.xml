@@ -2,7 +2,7 @@
 <project name="InPUTspec" default="test">
   <property name="main" location="${basedir}/main" />
   <property name="test" location="${basedir}/test" />
-  <property name="doc" location="${basedir}/doc" />
+  <property name="main.doc" location="${main}/doc" />
   <property name="main.src" location="${main}/src" />
   <property name="test.src" location="${test}/src" />
   <property name="main.bin" location="${main}/bin" />
@@ -87,8 +87,8 @@
   </target>
 
   <target name="doc" description="Generate javadoc documentation">
-    <delete dir="${doc}" />
-    <javadoc destdir="${doc}" failonerror="true">
+    <delete dir="${main.doc}" />
+    <javadoc destdir="${main.doc}" failonerror="true">
       <arg line="-quiet" />
       <classpath refid="main.compile.classpath" />
       <fileset dir="${main.src}">
