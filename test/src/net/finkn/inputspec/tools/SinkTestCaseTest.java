@@ -24,10 +24,6 @@ import java.util.function.Predicate;
 
 import org.junit.Test;
 
-// FIXME: Cleanup.
-// These are just the sink-specific tests moved from RangeTestHelper.
-// For one, duplicate calls to accepts/rejects should be removed.
-
 public class SinkTestCaseTest {
 
   private final Predicate<Object> pred = x -> Double.valueOf(x.toString()) > 3;
@@ -35,46 +31,46 @@ public class SinkTestCaseTest {
   private final SinkTestCase test = SinkTestCase.getInstance()
     .sink(Sink.fromPredicate(pred));
 
+  @Test(expected = IllegalStateException.class)
+  public void duplicateAcceptsShouldFail() {
+    test.accepts(4,5,6).accepts(6,5,4);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void duplicateRejectsShouldFail() {
+    test.rejects(1,2,3).rejects(3,2,1);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void emptyTestShouldFail() {
+    runTests(test); // No tests.
+  }
+
+  @Test(expected = NullPointerException.class)
+  public void testWithoutSinkShouldFail() {
+    runTests(SinkTestCase.getInstance().accepts(1,2,3)); // No sink.
+  }
+
   // ----- Accepts -----
   @Test
-  public void singleAcceptsTestShouldSucceedIfAllAccepted() {
-    runTests(test.accepts(4));
+  public void acceptsTestShouldSucceedIfAllAccepted() {
+    runTests(test.accepts(4,5,6));
   }
 
   @Test(expected = AssertionError.class)
-  public void singleAcceptsTestShouldFailIfAnyRejected() {
-    runTests(test.accepts(3));
-  }
-
-  @Test
-  public void multipleAcceptsTestShouldSucceedIfAllAccepted() {
-    runTests(test.accepts(4).accepts(5,4).accepts(6));
-  }
-
-  @Test(expected = AssertionError.class)
-  public void multipleAcceptsTestShouldFailIfAnyRejected() {
-    runTests(test.accepts(4).accepts(5,3).accepts(6));
+  public void acceptsTestShouldFailIfAnyRejected() {
+    runTests(test.accepts(4,5,3));
   }
 
   // ----- Rejects -----
   @Test
-  public void singleRejectsTestShouldSucceedIfAllRejected() {
-    runTests(test.rejects(3));
+  public void rejectsTestShouldSucceedIfAllRejected() {
+    runTests(test.rejects(1,2,3));
   }
 
   @Test(expected = AssertionError.class)
-  public void singleRejectsTestShouldFailIfAnyAccepted() {
-    runTests(test.rejects(4));
-  }
-
-  @Test
-  public void multipleRejectsTestShouldSucceedIfAllRejected() {
-    runTests(test.rejects(3).rejects(2,3).rejects(1));
-  }
-
-  @Test(expected = AssertionError.class)
-  public void multipleRejectsTestShouldFailIfAnyAccepted() {
-    runTests(test.rejects(3).rejects(2,4).rejects(1));
+  public void rejectsTestShouldFailIfAnyAccepted() {
+    runTests(test.rejects(2,3,4));
   }
 
   // ----- Mixed -----
@@ -83,8 +79,6 @@ public class SinkTestCaseTest {
     runTests(test
       .rejects(1,2,3)
       .accepts(4,5,6)
-      .rejects(3,2,1)
-      .accepts(6,5,4)
     );
   }
 
@@ -92,19 +86,15 @@ public class SinkTestCaseTest {
   public void mixedTestsShouldFailIfAnyAcceptTestFails() {
     runTests(test
       .rejects(1,2,3)
-      .accepts(4,5,6)
-      .rejects(3,2,1)
-      .accepts(6,5,4,0)
+      .accepts(4,5,3)
     );
   }
 
   @Test(expected = AssertionError.class)
   public void mixedTestsShouldFailIfAnyRejectTestFails() {
     runTests(test
-      .rejects(1,2,3)
       .accepts(4,5,6)
-      .rejects(3,2,1,10)
-      .accepts(6,5,4)
+      .rejects(2,3,4)
     );
   }
 

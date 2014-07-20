@@ -20,24 +20,23 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.ArrayList;
+import java.util.Optional;
 
-// FIXME: Should probably remove support for duplicate tests.
 public class SinkTestCase {
   private static final SinkTestCase instance = new SinkTestCase(
-    null, Collections.emptyList(), Collections.emptyList());
+    null, Optional.empty(), Optional.empty());
+
+  private static final Object[] dummy = {};
 
   private final Sink<Object> sink;
-  private final Collection<Runnable> acceptTests;
-  private final Collection<Runnable> rejectTests;
+  private final Optional<Object[]> accepts;
+  private final Optional<Object[]> rejects;
 
   private SinkTestCase(Sink<Object> sink,
-      Collection<Runnable> accept, Collection<Runnable> reject) {
+      Optional<Object[]> accepts, Optional<Object[]> rejects) {
     this.sink = sink;
-    this.acceptTests = accept;
-    this.rejectTests = reject;
+    this.accepts = accepts;
+    this.rejects = rejects;
   }
 
   public static SinkTestCase getInstance() {
@@ -45,35 +44,39 @@ public class SinkTestCase {
   }
 
   public SinkTestCase accepts(Object ... values) {
-    Collection<Runnable> tmp = new ArrayList<>(acceptTests);
-    tmp.add(() -> sink.accepts((Object[]) values));
-    return new SinkTestCase(sink, Collections.unmodifiableCollection(tmp), rejectTests);
+    failIfPresent(accepts, "Already added an accepts tests.");
+    return new SinkTestCase(sink, Optional.of(values), rejects);
   }
+
   public SinkTestCase rejects(Object ... values) {
-    Collection<Runnable> tmp = new ArrayList<>(rejectTests);
-    tmp.add(() -> sink.rejects((Object[]) values));
-    return new SinkTestCase(sink, acceptTests, Collections.unmodifiableCollection(tmp));
+    failIfPresent(rejects, "Already added a rejects tests.");
+    return new SinkTestCase(sink, accepts, Optional.of(values));
   }
 
   public SinkTestCase sink(Sink<Object> sink) {
-    return new SinkTestCase(sink, acceptTests, rejectTests);
+    return new SinkTestCase(sink, accepts, rejects);
   }
 
   public SinkTestCase run() {
+    if (!(accepts.isPresent() || rejects.isPresent())) {
+      throw new IllegalStateException("Refusing to run empty test.");
+    }
     runAcceptTests();
     runRejectTests();
     return this;
   }
   SinkTestCase runAcceptTests() {
-    return run(acceptTests);
+    sink.accepts(accepts.orElse(dummy));
+    return this;
   }
   SinkTestCase runRejectTests() {
-    return run(rejectTests);
-  }
-  private SinkTestCase run(Collection<Runnable> tests) {
-    for (Runnable test : tests) {
-      test.run();
-    }
+    sink.rejects(rejects.orElse(dummy));
     return this;
+  }
+
+  private void failIfPresent(Optional<?> opt, String msg) {
+    if (opt.isPresent()) {
+      throw new IllegalStateException(msg);
+    }
   }
 }
