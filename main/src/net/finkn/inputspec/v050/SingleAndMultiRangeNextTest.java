@@ -22,6 +22,7 @@ package net.finkn.inputspec.v050;
 
 import net.finkn.inputspec.tools.Generator;
 import net.finkn.inputspec.tools.ParamCfg;
+import net.finkn.inputspec.tools.GenTestCase;
 
 import org.junit.Test;
 
@@ -55,7 +56,12 @@ import org.junit.Test;
  */
 public class SingleAndMultiRangeNextTest {
 
-  private final TestCase test = TestCase.instance;
+  // 1000 should be more than enough for relatively small ranges.
+  // A smaller number will speed up tests, but it also increases the risk
+  // of sporadic failures.
+  private final int iterations = 1000;
+
+  private final GenTestCase tc = GenTestCase.getInstance();
 
   private final String singleMin = "10";
   private final String singleMax = "14";
@@ -65,7 +71,7 @@ public class SingleAndMultiRangeNextTest {
   /** When using a singleton inclusive range, the max value is included. */
   @Test
   public void singleInclInclWithSingleValue() throws Throwable {
-    test.param(pb()
+    test(pb()
         .inclMin("1")
         .inclMax("1"))
       .expected(1).run();
@@ -74,7 +80,7 @@ public class SingleAndMultiRangeNextTest {
   /** When using a singleton exclusive range, the max value is included. */
   @Test
   public void singleExclExclWithSingleValue() throws Throwable {
-    test.param(pb()
+    test(pb()
         .exclMin("0")
         .exclMax("2"))
       .expected(1).run();
@@ -83,7 +89,7 @@ public class SingleAndMultiRangeNextTest {
   /** When using a singleton mixed range, the max value is included. */
   @Test
   public void singleInclExclWithSingleValue() throws Throwable {
-    test.param(pb()
+    test(pb()
         .inclMin("1")
         .exclMax("2"))
       .expected(1).run();
@@ -92,7 +98,7 @@ public class SingleAndMultiRangeNextTest {
   /** When using a singleton mixed range, the max value is included. */
   @Test
   public void singleExclInclWithSingleValue() throws Throwable {
-    test.param(pb()
+    test(pb()
         .exclMin("0")
         .inclMax("1"))
       .expected(1).run();
@@ -102,7 +108,7 @@ public class SingleAndMultiRangeNextTest {
   /** When using a single range, the max allowed value is ignored. */
   @Test
   public void singleInclIncl() throws Throwable {
-    test.param(pb()
+    test(pb()
         .inclMin(singleMin)
         .inclMax(singleMax))
       .expected(10,11,12,13).run(); // 14 is missing.
@@ -111,7 +117,7 @@ public class SingleAndMultiRangeNextTest {
   /** When using a single range, the max allowed value is ignored. */
   @Test
   public void singleExclExcl() throws Throwable {
-    test.param(pb()
+    test(pb()
         .exclMin(singleMin)
         .exclMax(singleMax))
       .expected(11,12).run();       // 13 is missing.
@@ -120,7 +126,7 @@ public class SingleAndMultiRangeNextTest {
   /** When using a single range, the max allowed value is ignored. */
   @Test
   public void singleInclExcl() throws Throwable {
-    test.param(pb()
+    test(pb()
         .inclMin(singleMin)
         .exclMax(singleMax))
       .expected(10,11,12).run();    // 13 is missing.
@@ -129,7 +135,7 @@ public class SingleAndMultiRangeNextTest {
   /** When using a single range, the max allowed value is ignored. */
   @Test
   public void singleExclIncl() throws Throwable {
-    test.param(pb()
+    test(pb()
         .exclMin(singleMin)
         .inclMax(singleMax))
       .expected(11,12,13).run();    // 14 is missing.
@@ -142,7 +148,7 @@ public class SingleAndMultiRangeNextTest {
    */
   @Test
   public void multiInclIncl() throws Throwable {
-    test.param(pb()
+    test(pb()
         .inclMin(multiMin)
         .inclMax(multiMax))
       .expected(10,11,12,13, 20,21,22,23, 30,31,32,33).run();
@@ -156,7 +162,7 @@ public class SingleAndMultiRangeNextTest {
    */
   @Test
   public void multiExclExcl() throws Throwable {
-    test.param(pb()
+    test(pb()
         .exclMin(multiMin)
         .exclMax(multiMax))
       .expected(11,12).run();
@@ -166,7 +172,7 @@ public class SingleAndMultiRangeNextTest {
   /** Using a multi-range with mixed limits yields an array index exception. */
   @Test(expected = ArrayIndexOutOfBoundsException.class)
   public void multiInclExcl() throws Throwable {
-    test.param(pb()
+    test(pb()
         .inclMin(multiMin)
         .exclMax(multiMax))
       .expected(10,11,12, 20,21,22, 30,31,32).run();
@@ -176,7 +182,7 @@ public class SingleAndMultiRangeNextTest {
   /** Using a multi-range with mixed limits yields an array index exception. */
   @Test(expected = ArrayIndexOutOfBoundsException.class)
   public void multiExclIncl() throws Throwable {
-    test.param(pb()
+    test(pb()
         .exclMin(multiMin)
         .inclMax(multiMax))
       .expected(11,12,13, 21,22,23, 31,32,33).run();
@@ -186,33 +192,7 @@ public class SingleAndMultiRangeNextTest {
   private static ParamCfg.Builder pb() {
     return ParamCfg.builder();
   }
-
-  // TODO: Should probably make this public and reusable in other tests.
-  private static class TestCase {
-    private static final TestCase instance = new TestCase(null, null);
-
-    private final ParamCfg param;
-    private final Object[] expected;
-
-    private TestCase(ParamCfg param, Object[] expected) {
-      this.param = param;
-      this.expected = expected;
-    }
-
-    private TestCase param(ParamCfg.Builder builder) {
-      return new TestCase(builder.build(), this.expected);
-    }
-    private TestCase expected(Object ... expected) {
-      return new TestCase(this.param, expected);
-    }
-
-    private TestCase run() throws Throwable {
-      Generator<Object> gen = Generator.fromParam(param);
-      // Generates all of the expected but nothing else.
-      // This test fails slowly but succeeds reasonably quickly.
-      gen.limit(1000).generatesOnly(expected);
-      gen.limit(10000).generatesAll(expected); // Shortcuts, so 10,000 is fine.
-      return this;
-    }
+  private GenTestCase test(ParamCfg.Builder pb) throws Throwable {
+    return tc.gen(Generator.fromParam(pb.build()).limit(iterations));
   }
 }
