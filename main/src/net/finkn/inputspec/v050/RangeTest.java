@@ -122,6 +122,29 @@ public class RangeTest extends RangeTestHelper {
           .rejects(0.8,0.7,0.9),      // 0.7 does not belong here!
       },
 
+      // Shows that floating point limits are never exclusive.
+      {
+        t(pb().type("double")
+            .exclMin("0.1")
+            .exclMax("0.3"))
+          .accepts(0.1,0.2,0.3)
+          .rejects(0.09,0.31),
+      },
+      {
+        t(pb().type("double")
+            .exclMin("0.1")
+            .inclMax("0.3"))
+          .accepts(0.1,0.2,0.3)
+          .rejects(0.09,0.31),
+      },
+      {
+        t(pb().type("double")
+            .inclMin("0.1")
+            .exclMax("0.3"))
+          .accepts(0.1,0.2,0.3)
+          .rejects(0.09,0.31),
+      },
+
       /*
       // Mixed limits. Throws ArrayIndexOutOfBounds.
       {
