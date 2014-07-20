@@ -24,15 +24,15 @@ import java.util.Optional;
 
 public class SinkTestCase {
   private static final SinkTestCase instance = new SinkTestCase(
-    null, Optional.empty(), Optional.empty());
+    Optional.empty(), Optional.empty(), Optional.empty());
 
   private static final Object[] dummy = {};
 
-  private final Sink<Object> sink;
+  private final Optional<Sink<Object>> sink;
   private final Optional<Object[]> accepts;
   private final Optional<Object[]> rejects;
 
-  private SinkTestCase(Sink<Object> sink,
+  private SinkTestCase(Optional<Sink<Object>> sink,
       Optional<Object[]> accepts, Optional<Object[]> rejects) {
     this.sink = sink;
     this.accepts = accepts;
@@ -54,10 +54,14 @@ public class SinkTestCase {
   }
 
   public SinkTestCase sink(Sink<Object> sink) {
-    return new SinkTestCase(sink, accepts, rejects);
+    failIfPresent(this.sink, "Already set a sink.");
+    return new SinkTestCase(Optional.of(sink), accepts, rejects);
   }
 
   public SinkTestCase run() {
+    if (!sink.isPresent()) {
+      throw new IllegalStateException("Sink missing!");
+    }
     if (!(accepts.isPresent() || rejects.isPresent())) {
       throw new IllegalStateException("Refusing to run empty test.");
     }
@@ -66,11 +70,11 @@ public class SinkTestCase {
     return this;
   }
   SinkTestCase runAcceptTests() {
-    sink.accepts(accepts.orElse(dummy));
+    sink.get().accepts(accepts.orElse(dummy));
     return this;
   }
   SinkTestCase runRejectTests() {
-    sink.rejects(rejects.orElse(dummy));
+    sink.get().rejects(rejects.orElse(dummy));
     return this;
   }
 

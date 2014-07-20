@@ -42,11 +42,16 @@ public class SinkTestCaseTest {
   }
 
   @Test(expected = IllegalStateException.class)
+  public void duplicateSinkShouldFail() {
+    test.sink(Sink.fromPredicate(x -> true));
+  }
+
+  @Test(expected = IllegalStateException.class)
   public void emptyTestShouldFail() {
     runTests(test); // No tests.
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalStateException.class)
   public void testWithoutSinkShouldFail() {
     runTests(SinkTestCase.getInstance().accepts(1,2,3)); // No sink.
   }
