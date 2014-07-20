@@ -41,6 +41,7 @@ import org.junit.runners.Suite.SuiteClasses;
     RangeTest.class,
     RangeTestHelperTest.class,
     SinkTest.class,
+    SinkTestCaseTest.class,
     UnitExceptionTest.class,
     UnitIterationsTest.class,
     UnitTest.class,
