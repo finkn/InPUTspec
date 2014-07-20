@@ -36,9 +36,30 @@ public class GenTestCaseTest {
     runTest(test); // No tests added.
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalStateException.class)
   public void testWithoutGeneratorShouldFail() {
     runTest(GenTestCase.getInstance().all(1,3,5)); // No generator set.
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void duplicateAllShouldFail() {
+    test.all(1,2,3).all(3,2,1);
+  }
+  @Test(expected = IllegalStateException.class)
+  public void duplicateOnlyShouldFail() {
+    test.only(1,2,3).only(3,2,1);
+  }
+  @Test(expected = IllegalStateException.class)
+  public void duplicateAnyShouldFail() {
+    test.any(1,2,3).any(3,2,1);
+  }
+  @Test(expected = IllegalStateException.class)
+  public void duplicateNoneShouldFail() {
+    test.none(1,2,3).none(3,2,1);
+  }
+  @Test(expected = IllegalStateException.class)
+  public void duplicateGenShouldFail() {
+    test.gen(Generator.fromSeq());
   }
 
   // ----- All -----

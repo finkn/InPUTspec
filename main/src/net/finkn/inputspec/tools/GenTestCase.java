@@ -24,17 +24,17 @@ import java.util.Optional;
 
 public class GenTestCase {
 
-  private static final Optional<Object[]> e = Optional.empty();
-  private static final GenTestCase instance = new GenTestCase(null, e, e, e, e);
+  private static final GenTestCase instance = new GenTestCase(Optional.empty(),
+    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
   private static final Object[] dummy = {};
 
-  private final Generator<Object> gen;
+  private final Optional<Generator<Object>> gen;
   private final Optional<Object[]> all;
   private final Optional<Object[]> only;
   private final Optional<Object[]> any;
   private final Optional<Object[]> none;
 
-  private GenTestCase(Generator<Object> gen,
+  private GenTestCase(Optional<Generator<Object>> gen,
       Optional<Object[]> all, Optional<Object[]> only,
       Optional<Object[]> any, Optional<Object[]> none) {
     this.gen = gen;
@@ -49,26 +49,33 @@ public class GenTestCase {
   }
 
   public GenTestCase expected(Object ... values) {
-    Optional<Object[]> tmp = Optional.of(values);
-    return new GenTestCase(gen, tmp, tmp, any, none);
+    return all(values).only(values);
   }
   public GenTestCase all(Object ... values) {
+    failIfPresent(all, "Already added an 'all' test.");
     return new GenTestCase(gen, Optional.of(values), only, any, none);
   }
   public GenTestCase only(Object ... values) {
+    failIfPresent(only, "Already added an 'only' test.");
     return new GenTestCase(gen, all, Optional.of(values), any, none);
   }
   public GenTestCase any(Object ... values) {
+    failIfPresent(any, "Already added an 'any' test.");
     return new GenTestCase(gen, all, only, Optional.of(values), none);
   }
   public GenTestCase none(Object ... values) {
+    failIfPresent(none, "Already added a 'none' test.");
     return new GenTestCase(gen, all, only, any, Optional.of(values));
   }
   public GenTestCase gen(Generator<Object> gen) {
-    return new GenTestCase(gen, all, only, any, none);
+    failIfPresent(this.gen, "Already set a generator.");
+    return new GenTestCase(Optional.of(gen), all, only, any, none);
   }
 
   public GenTestCase run() {
+    if (!gen.isPresent()) {
+      throw new IllegalStateException("Generator missing!");
+    }
     failUnlessTestsPresent();
     return this
       .runGeneratesAllTests()
@@ -78,22 +85,28 @@ public class GenTestCase {
   }
 
   GenTestCase runGeneratesAllTests() {
-    gen.generatesAll(all.orElse(dummy));
+    gen.get().generatesAll(all.orElse(dummy));
     return this;
   }
   GenTestCase runGeneratesOnlyTests() {
     if (only.isPresent()) {
-      gen.generatesOnly(only.get());
+      gen.get().generatesOnly(only.get());
     }
     return this;
   }
   GenTestCase runGeneratesAnyTests() {
-    gen.generatesAny(any.orElse(dummy));
+    gen.get().generatesAny(any.orElse(dummy));
     return this;
   }
   GenTestCase runGeneratesNoneTests() {
-    gen.generatesNone(none.orElse(dummy));
+    gen.get().generatesNone(none.orElse(dummy));
     return this;
+  }
+
+  private void failIfPresent(Optional<?> opt, String msg) {
+    if (opt.isPresent()) {
+      throw new IllegalStateException(msg);
+    }
   }
 
   private void failUnlessTestsPresent() {
