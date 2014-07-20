@@ -33,6 +33,7 @@ import org.junit.runners.Suite.SuiteClasses;
     DesignSpaceCfgTest.class,
     GeneratorExceptionMessageTest.class,
     GeneratorTest.class,
+    GenTestCaseTest.class,
     IntervalContainmentTest.class,
     IntervalParsingTest.class,
     MappingCfgTest.class,
