@@ -78,27 +78,27 @@ public class GenTestCase {
     }
     failUnlessTestsPresent();
     return this
-      .runGeneratesAllTests()
-      .runGeneratesOnlyTests()
-      .runGeneratesAnyTests()
-      .runGeneratesNoneTests();
+      .runGeneratesAllTest()
+      .runGeneratesOnlyTest()
+      .runGeneratesAnyTest()
+      .runGeneratesNoneTest();
   }
 
-  GenTestCase runGeneratesAllTests() {
+  GenTestCase runGeneratesAllTest() {
     gen.get().generatesAll(all.orElse(dummy));
     return this;
   }
-  GenTestCase runGeneratesOnlyTests() {
+  GenTestCase runGeneratesOnlyTest() {
     if (only.isPresent()) {
       gen.get().generatesOnly(only.get());
     }
     return this;
   }
-  GenTestCase runGeneratesAnyTests() {
+  GenTestCase runGeneratesAnyTest() {
     gen.get().generatesAny(any.orElse(dummy));
     return this;
   }
-  GenTestCase runGeneratesNoneTests() {
+  GenTestCase runGeneratesNoneTest() {
     gen.get().generatesNone(none.orElse(dummy));
     return this;
   }

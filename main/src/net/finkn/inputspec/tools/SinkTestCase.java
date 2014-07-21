@@ -65,15 +65,15 @@ public class SinkTestCase {
     if (!(accepts.isPresent() || rejects.isPresent())) {
       throw new IllegalStateException("Refusing to run empty test.");
     }
-    runAcceptTests();
-    runRejectTests();
+    runAcceptTest();
+    runRejectTest();
     return this;
   }
-  SinkTestCase runAcceptTests() {
+  SinkTestCase runAcceptTest() {
     sink.get().accepts(accepts.orElse(dummy));
     return this;
   }
-  SinkTestCase runRejectTests() {
+  SinkTestCase runRejectTest() {
     sink.get().rejects(rejects.orElse(dummy));
     return this;
   }

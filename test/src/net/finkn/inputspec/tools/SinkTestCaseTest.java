@@ -53,7 +53,7 @@ public class SinkTestCaseTest {
 
   @Test(expected = IllegalStateException.class)
   public void testWithoutSinkShouldFail() {
-    runTests(SinkTestCase.getInstance().accepts(1,2,3)); // No sink.
+    runTests(SinkTestCase.getInstance().accepts(4,5,6)); // No sink.
   }
 
   // ----- Accepts -----
