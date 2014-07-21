@@ -20,6 +20,9 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
 import org.junit.Test;
 
 public class GenTestCaseTest {
@@ -60,6 +63,15 @@ public class GenTestCaseTest {
   @Test(expected = IllegalStateException.class)
   public void duplicateGenShouldFail() {
     test.gen(Generator.fromSeq());
+  }
+
+  @Test
+  public void testShouldHaveNoTestsUnlessAdded() {
+    assertFalse(test.hasTests());
+  }
+  @Test
+  public void testShouldHaveTestsOnceAdded() {
+    assertTrue(test.all(1,3,5).hasTests());
   }
 
   // ----- All -----

@@ -58,6 +58,10 @@ public class SinkTestCase {
     return new SinkTestCase(Optional.of(sink), accepts, rejects);
   }
 
+  public boolean hasTests() {
+    return accepts.isPresent() || rejects.isPresent();
+  }
+
   public SinkTestCase run() {
     if (!sink.isPresent()) {
       throw new IllegalStateException("Sink missing!");

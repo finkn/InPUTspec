@@ -20,6 +20,9 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
 import java.util.function.Predicate;
 
 import org.junit.Test;
@@ -54,6 +57,15 @@ public class SinkTestCaseTest {
   @Test(expected = IllegalStateException.class)
   public void testWithoutSinkShouldFail() {
     runTests(SinkTestCase.getInstance().accepts(4,5,6)); // No sink.
+  }
+
+  @Test
+  public void testShouldHaveNoTestsUnlessAdded() {
+    assertFalse(test.hasTests());
+  }
+  @Test
+  public void testShouldHaveTestsOnceAdded() {
+    assertTrue(test.rejects(1,2,3).hasTests());
   }
 
   // ----- Accepts -----

@@ -72,6 +72,11 @@ public class GenTestCase {
     return new GenTestCase(Optional.of(gen), all, only, any, none);
   }
 
+  public boolean hasTests() {
+    return all.isPresent() || only.isPresent()
+      || any.isPresent() || none.isPresent();
+  }
+
   public GenTestCase run() {
     if (!gen.isPresent()) {
       throw new IllegalStateException("Generator missing!");
@@ -110,10 +115,8 @@ public class GenTestCase {
   }
 
   private void failUnlessTestsPresent() {
-    String msg = "Refusing to run empty test.";
-    if (!(all.isPresent() || only.isPresent()
-      || any.isPresent() || none.isPresent())) {
-      throw new IllegalStateException(msg);
+    if (!hasTests()) {
+      throw new IllegalStateException("Refusing to run empty test.");
     }
   }
 }
