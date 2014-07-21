@@ -82,28 +82,12 @@ public class GenTestCase {
       throw new IllegalStateException("Generator missing!");
     }
     failUnlessTestsPresent();
-    return this
-      .runGeneratesAllTest()
-      .runGeneratesOnlyTest()
-      .runGeneratesAnyTest()
-      .runGeneratesNoneTest();
-  }
 
-  GenTestCase runGeneratesAllTest() {
     gen.get().generatesAll(all.orElse(dummy));
-    return this;
-  }
-  GenTestCase runGeneratesOnlyTest() {
     if (only.isPresent()) {
       gen.get().generatesOnly(only.get());
     }
-    return this;
-  }
-  GenTestCase runGeneratesAnyTest() {
     gen.get().generatesAny(any.orElse(dummy));
-    return this;
-  }
-  GenTestCase runGeneratesNoneTest() {
     gen.get().generatesNone(none.orElse(dummy));
     return this;
   }
