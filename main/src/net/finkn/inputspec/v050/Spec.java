@@ -30,6 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    AdvancedSingleRangeNextTest.class,
     ArrayTest.class,
     BasicDesignSpaceTest.class,
     BasicDesignTest.class,
@@ -37,7 +38,8 @@ import org.junit.runners.Suite.SuiteClasses;
     IdLiteralsTest.class,
     MultiRangeMismatchTest.class,
     RangeTest.class,
-    SingleAndMultiRangeNextTest.class,
+    SimpleMultiRangeNextTest.class,
+    SimpleSingleRangeNextTest.class,
     SupportedParamIdsTest.class,
     TypeMismatchTest.class,
 })
