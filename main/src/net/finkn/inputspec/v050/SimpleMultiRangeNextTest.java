@@ -103,15 +103,6 @@ public class SimpleMultiRangeNextTest {
       // Due to exceptions, it's impossible to know which values get generated.
   }
 
-  @Test(expected = ArrayIndexOutOfBoundsException.class)
-  public void _multiExclIncl() throws Throwable {
-    test(pb()
-        .exclMin(intMin)
-        .inclMax(intMax))
-      .expected(11,12,13, 21,22,23, 31,32,33).run();
-      // Due to exceptions, it's impossible to know which values get generated.
-  }
-
   // TODO: Do these two tests belong in this class?
   // No, move them to AdvancedMultiRangeNextTest.
 
@@ -145,7 +136,7 @@ public class SimpleMultiRangeNextTest {
     DesignSpaceCfg space = DesignSpaceCfg.builder().param(x, y).build();
     Generator<Object> gen = Generator
       .fromDesignSpace(space.getDesignSpace(), y.getId())
-      .limit(iterations*10);
+      .limit(iterations);
 
     tc.gen(gen)
       .expected(9)
@@ -155,12 +146,12 @@ public class SimpleMultiRangeNextTest {
   // This is interesting. While exclusive-exclusive multi-range definitions
   // normally end up with only the first range, when expressions are involved,
   // exclusive-exclusive and inclusive-inclusive behave the same way.
-  // Since limits are defined as expressions, InPUT4j doesn't enforce non-empty
-  // ranges. However, the evaluation in this case is predictable, because X
-  // just seems to resolve to 0. So defining an empty range is trivial.
-  // The result is that the limits are swapped.
+  /**
+   * See
+   * {@link AdvancedSingleRangeNextTest#limitsAreSwappedForEmptyInclusiveRange}.
+   */
   @Test
-  public void meep() throws Throwable {
+  public void emptyRangesAreSwappedJustLikeSingleRange() throws Throwable {
     ParamCfg x = pb()
       .id("X")
       .inclMin("10")
@@ -175,7 +166,7 @@ public class SimpleMultiRangeNextTest {
     DesignSpaceCfg space = DesignSpaceCfg.builder().param(x, y).build();
     Generator<Object> gen = Generator
       .fromDesignSpace(space.getDesignSpace(), y.getId())
-      .limit(iterations*10);
+      .limit(iterations);
 
     tc.gen(gen)
       .expected(1,2,3,4,5,6)

@@ -52,6 +52,7 @@ import org.junit.Test;
  * Exclusive ranges are even more interesting, because they end up extending
  * the range to include the limits and more.
  * @see SimpleSingleRangeNextTest
+ * @see SimpleMultiRangeNextTest#multiRangesWithExpressionsBehaveStrangely()
  */
 public class AdvancedSingleRangeNextTest {
 
@@ -86,6 +87,10 @@ public class AdvancedSingleRangeNextTest {
       .expected(1,2).run();
   }
 
+  /**
+   * See
+   * {@link SimpleMultiRangeNextTest#emptyRangesAreSwappedJustLikeSingleRange}.
+   */
   @Test
   public void limitsAreSwappedForEmptyInclusiveRange() throws Throwable {
     ParamCfg dependent = pb()
