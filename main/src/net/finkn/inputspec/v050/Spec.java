@@ -39,6 +39,7 @@ import org.junit.runners.Suite.SuiteClasses;
     RangeTest.class,
     SingleAndMultiRangeNextTest.class,
     SupportedParamIdsTest.class,
+    TypeMismatchTest.class,
 })
 public class Spec {
 }

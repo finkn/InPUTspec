@@ -39,19 +39,6 @@ public class RangeTest extends RangeTestHelper {
   @Parameters
   public static Collection<TestCase[]> tests() throws InPUTException {
     return Arrays.asList(new TestCase[][] {
-      // Examine type mismatch.
-      // ONLY Integer is accepted for an integer parameter.
-      { t(pb()).accepts(1), },
-      { t(pb()).accepts((int) 1.0), },
-      { t(pb()).rejects((short) 1), },
-      { t(pb()).rejects(1L), },
-      { t(pb()).rejects(1.0), },
-      // Now the parameter is double instead of integer.
-      { t(pb().type("double")).accepts(1.0), },
-      { t(pb().type("double")).accepts((double) 1), },
-      { t(pb().type("double")).rejects(1), },
-      { t(pb().type("double")).rejects((float) 1.0), },
-
       // Examining the default range. An integer parameter should allow values
       // in [Integer.MIN_VALUE, Integer.MAX_VALUE].
       {
