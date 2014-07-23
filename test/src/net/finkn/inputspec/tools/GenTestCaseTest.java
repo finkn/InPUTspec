@@ -64,6 +64,10 @@ public class GenTestCaseTest {
   public void duplicateGenShouldFail() {
     test.gen(Generator.fromSeq());
   }
+  @Test(expected = IllegalStateException.class)
+  public void duplicateIntervalsShouldFail() {
+    test.intervals("[1,3]").intervals("[5,7]");
+  }
 
   @Test
   public void testShouldHaveNoTestsUnlessAdded() {
@@ -126,6 +130,28 @@ public class GenTestCaseTest {
   @Test(expected = AssertionError.class)
   public void testExpectedFailureBecauseNotOnly() {
     runTest(test.expected(1,3,5));
+  }
+
+  // ----- Intervals -----
+  @Test
+  public void testIntervalsSuccessWithInteger() {
+    runTest(test.intervals("[1,3]", "[5,9]"));
+  }
+  @Test(expected = AssertionError.class)
+  public void testIntervalsFailureWithDouble() {
+    runTest(test.intervals("[1,3]", "[6,8]"));
+  }
+  @Test
+  public void testIntervalsSuccessWithDouble() {
+    runTest(GenTestCase.getInstance()
+      .gen(Generator.fromSeq(1.2, 2.5, 0.4, 4.7))
+      .intervals("[0.4,1.2]", "]1.9,4.8["));
+  }
+  @Test(expected = AssertionError.class)
+  public void testIntervalsFailureWithDoubleBecauseExclusiveLimitViolated() {
+    runTest(GenTestCase.getInstance()
+      .gen(Generator.fromSeq(1.2, 2.5, 0.4, 4.7))
+      .intervals("]0.4,1.2]", "]1.9,4.8["));
   }
 
   private void runTest(GenTestCase test) {

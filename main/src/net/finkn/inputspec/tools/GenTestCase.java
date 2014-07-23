@@ -24,8 +24,9 @@ import java.util.Optional;
 
 public class GenTestCase {
 
-  private static final GenTestCase instance = new GenTestCase(Optional.empty(),
-    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+  private static final GenTestCase instance = new GenTestCase(
+    Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+    Optional.empty(), Optional.empty());
   private static final Object[] dummy = {};
 
   private final Optional<Generator<Object>> gen;
@@ -33,15 +34,18 @@ public class GenTestCase {
   private final Optional<Object[]> only;
   private final Optional<Object[]> any;
   private final Optional<Object[]> none;
+  private final Optional<Interval[]> intervals;
 
   private GenTestCase(Optional<Generator<Object>> gen,
       Optional<Object[]> all, Optional<Object[]> only,
-      Optional<Object[]> any, Optional<Object[]> none) {
+      Optional<Object[]> any, Optional<Object[]> none,
+      Optional<Interval[]> intervals) {
     this.gen = gen;
     this.all = all;
     this.only = only;
     this.any = any;
     this.none = none;
+    this.intervals = intervals;
   }
 
   public static GenTestCase getInstance() {
@@ -53,28 +57,36 @@ public class GenTestCase {
   }
   public GenTestCase all(Object ... values) {
     failIfPresent(all, "Already added an 'all' test.");
-    return new GenTestCase(gen, Optional.of(values), only, any, none);
+    return new GenTestCase(gen, Optional.of(values), only, any, none, intervals);
   }
   public GenTestCase only(Object ... values) {
     failIfPresent(only, "Already added an 'only' test.");
-    return new GenTestCase(gen, all, Optional.of(values), any, none);
+    return new GenTestCase(gen, all, Optional.of(values), any, none, intervals);
   }
   public GenTestCase any(Object ... values) {
     failIfPresent(any, "Already added an 'any' test.");
-    return new GenTestCase(gen, all, only, Optional.of(values), none);
+    return new GenTestCase(gen, all, only, Optional.of(values), none, intervals);
   }
   public GenTestCase none(Object ... values) {
     failIfPresent(none, "Already added a 'none' test.");
-    return new GenTestCase(gen, all, only, any, Optional.of(values));
+    return new GenTestCase(gen, all, only, any, Optional.of(values), intervals);
+  }
+  public GenTestCase intervals(String ... intervals) {
+    failIfPresent(this.intervals, "Already added an 'intervals' test.");
+    Interval[] tmp = new Interval[intervals.length];
+    for (int i = 0; i < intervals.length; i++) {
+      tmp[i] = Interval.valueOf(intervals[i]);
+    }
+    return new GenTestCase(gen, all, only, any, none, Optional.of(tmp));
   }
   public GenTestCase gen(Generator<Object> gen) {
     failIfPresent(this.gen, "Already set a generator.");
-    return new GenTestCase(Optional.of(gen), all, only, any, none);
+    return new GenTestCase(Optional.of(gen), all, only, any, none, intervals);
   }
 
   public boolean hasTests() {
     return all.isPresent() || only.isPresent()
-      || any.isPresent() || none.isPresent();
+      || any.isPresent() || none.isPresent() || intervals.isPresent();
   }
 
   public GenTestCase run() {
@@ -89,7 +101,23 @@ public class GenTestCase {
     }
     gen.get().generatesAny(any.orElse(dummy));
     gen.get().generatesNone(none.orElse(dummy));
+    runIntervalsTest();
     return this;
+  }
+
+  private void runIntervalsTest() {
+    if (!intervals.isPresent()) {
+      return;
+    }
+    Unit.assertAllMatch(gen.get(), x -> {
+      Number n = (Number) x;
+      for (Interval interval : intervals.get()) {
+        if (interval.contains(n)) {
+          return true;
+        }
+      }
+      return false;
+    });
   }
 
   private void failIfPresent(Optional<?> opt, String msg) {
