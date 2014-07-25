@@ -20,33 +20,36 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import java.io.ByteArrayInputStream;
+import se.miun.itm.input.model.InPUTException;
+import se.miun.itm.input.model.design.DesignSpace;
 
 /**
+ * A tool for checking whether a configuration is legal.
+ * This is a very early and basic version. A more advanced version might
+ * make a good candidate for a stand-alone tool.
+ *
  * @author Christoffer Fink
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-    CodeMappingCfgTest.class,
-    ConfigValidatorTest.class,
-    DesignSpaceCfgTest.class,
-    GeneratorExceptionMessageTest.class,
-    GeneratorTest.class,
-    GenTestCaseTest.class,
-    IntervalContainmentTest.class,
-    IntervalParsingTest.class,
-    MappingCfgTest.class,
-    ParamCfgTest.class,
-    RangeTest.class,
-    RangeTestHelperTest.class,
-    SinkTest.class,
-    SinkTestCaseTest.class,
-    UnitExceptionTest.class,
-    UnitIterationsTest.class,
-    UnitTest.class,
-    XmlTest.class,
-})
-public class Tests {
+public class ConfigValidator {
+  private ConfigValidator() {
+  }
+
+  public void validParamConfig(ParamCfg ... param) {
+    validDesignSpaceConfig(DesignSpaceCfg.builder().param(param).build());
+  }
+  public void validDesignSpaceConfig(DesignSpaceCfg space) {
+    validDesignSpaceConfig(space.xml());
+  }
+  public void validDesignSpaceConfig(String spaceXml) {
+    try {
+      new DesignSpace(new ByteArrayInputStream(spaceXml.getBytes()));
+    } catch (Throwable e) {
+      throw new AssertionError("Illegal config. Error: " + e.getMessage());
+    }
+  }
+
+  public static ConfigValidator getInstance() {
+    return new ConfigValidator();
+  }
 }
