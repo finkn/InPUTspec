@@ -45,6 +45,23 @@ public class AdvancedMultiRangeNextTest {
   private final ParamCfg dependee = ParamCfg.builder()
     .id("A").inclMin("10").inclMax("20").build();
 
+  /**
+   * When defining multi-ranges using expressions, only the last range is used.
+   * This is in contrast with {@link SimpleMultiRangeNextTest#multiExclExcl}.
+   * Note that this test is largely orthogonal. It does not depend on
+   * references resolving to 0, nor on any peculiarities with ranges.
+   */
+  @Test
+  public void multiRangesWithExpressionsOnlyUseLastRange() throws Throwable {
+    ParamCfg dependent = pb()
+      .inclMin("(A*0)+1, (A*0)+10, (A*0)+1000, (A*0)+9")
+      .inclMax("(A*0)+2, (A*0)+20, (A*0)+9000, (A*0)+9")
+      .build();
+
+    test(dependent.getId(), dependee, dependent)
+      .expected(9).run();
+  }
+
   // The behavior in this test depends on 3 different bugs(?).
   //
   // 1) DesignSpace.next() does not properly evaluate expressions.
@@ -58,8 +75,19 @@ public class AdvancedMultiRangeNextTest {
   // ranges. Then, because 0+9 and 0+10 evaluate to 9 and 10, [19,30] is reduced
   // to [9,10] = {9,10}. The maximum of 9 and 10 is 10. So finally, the set of
   // legal values is {9,10} \ {10} = {9}.
+  /**
+   * This test demonstrates how some other test results interact to give rise
+   * to surprising behavior.
+   * <ul>
+   *   <li>{@link AdvancedSingleRangeNextTest#referencesResolveToZero}</li>
+   *   <li>
+   *     {@link SimpleSingleRangeNextTest the maximum legal value is discarded}
+   *   </li>
+   *   <li>{@link #multiRangesWithExpressionsOnlyUseLastRange}
+   * </ul>
+   */
   @Test
-  public void multiRangesWithExpressionsBehaveStrangely() throws Throwable {
+  public void surprisingInteraction() throws Throwable {
     ParamCfg dependent = pb()
       // [30,100] ∪ [100,400] ∪ [400,1000] ∪ [19,30] = [19,1000]
       .inclMin("A+20, A*10, A*40, A+9")
@@ -71,15 +99,16 @@ public class AdvancedMultiRangeNextTest {
   }
 
   /**
-   * See
-   * {@link AdvancedSingleRangeNextTest#limitsAreSwappedForEmptyInclusiveRange}.
-   * This test relies on only the last range being in effect.
+   * Empty ranges work the same for single and multi-ranges.
+   * This test relies on only the last range being in effect, as demonstrated
+   * by {@link #multiRangesWithExpressionsOnlyUseLastRange}.
+   * @see AdvancedSingleRangeNextTest#limitsAreSwappedForEmptyInclusiveRange
    */
   @Test
   public void emptyRangesAreSwappedJustLikeSingleRange() throws Throwable {
     ParamCfg dependent = pb()
-      .exclMin("A+20, A*10, A*40, A+5")
-      .exclMax("A+80, A*20, A*50, A+1")
+      .exclMin("A+20, A*10, A*40, (A*0)+5")
+      .exclMax("A+80, A*20, A*50, (A*0)+1")
       .build();
 
     test(dependent.getId(), dependee, dependent)
