@@ -137,6 +137,17 @@ public class AdvancedSingleRangeNextTest {
       .expected(0).run();
   }
 
+  /** Whitespace in expressions is ignored. */
+  @Test
+  public void whitespaceInExpressionsIsIgnored() throws Throwable {
+    ParamCfg dependent = pb()
+        .inclMin("A +   Math .sqrt (Math . log(  Math. exp ( 3 -1) )* 2) ")
+        .inclMax("A+Math.sqrt(Math.log(Math.exp(3-1))*2)")
+        .build();
+    test(dependent.getId(), dependee, dependent)
+      .expected(2).run();
+  }
+
   // TODO: Do these tests belong in this class?
   // Does it make more sense to put them in a test that merely examines which
   // configurations can be successfully imported, or here, where they fit in
