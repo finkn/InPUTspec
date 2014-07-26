@@ -115,6 +115,58 @@ public class AdvancedMultiRangeNextTest {
       .expected(1,2,3,4,5,6).run();
   }
 
+  /**
+   * Just as with single ranges, math expressions without references to other
+   * parameters are illegal.
+   * @see AdvancedSingleRangeNextTest#simpleMathLibraryExpressionIsIllegal
+   */
+  @Test(expected = NumberFormatException.class)
+  public void limitsWithMathFunctionWithoutParamReferenceAreIllegal() throws Throwable {
+    ParamCfg dependent = pb()
+      .inclMin("Math.PI, Math.sqrt(4)")
+      .inclMax("Math.PI, Math.sqrt(4)")
+      .build();
+
+    test(dependent.getId(), dependee, dependent)
+      .expected().run();
+  }
+
+  /**
+   * Multi-ranges can use math library functions as long as at least one of
+   * the expressions references a parameter.
+   * Note that only one expression in each limit definition must include a
+   * parameter reference.
+   * <p>
+   * This test depends on {@link #multiRangesWithExpressionsOnlyUseLastRange}.
+   */
+  @Test
+  public void oneParamReferenceNeededToAllowMathFunction() throws Throwable {
+    ParamCfg dependent = pb()
+      .inclMin("(A*0) + Math.PI, Math.sqrt(4)")
+      .inclMax("Math.PI, (A*0) + Math.sqrt(4)")
+      .build();
+
+    test(dependent.getId(), dependee, dependent)
+      .expected(2).run();
+  }
+
+  /**
+   * This test demonstrates that range definitions that include commas don't
+   * cause any problems.
+   * <p>
+   * This test depends on {@link #multiRangesWithExpressionsOnlyUseLastRange}.
+   */
+  @Test
+  public void expressionsInvolvingCommaAreValid() throws Throwable {
+    ParamCfg dependent = pb()
+      .inclMin("(A*0) + Math.max(A,1), Math.pow(2,3)")
+      .inclMax("(A*0) + Math.max(A,1), Math.pow(2,3)")
+      .build();
+
+    test(dependent.getId(), dependee, dependent)
+      .expected(8).run();
+  }
+
   private static ParamCfg.Builder pb() {
     return ParamCfg.builder();
   }
