@@ -52,7 +52,7 @@ import org.junit.Test;
  * Exclusive ranges are even more interesting, because they end up extending
  * the range to include the limits and more.
  * @see SimpleSingleRangeNextTest
- * @see SimpleMultiRangeNextTest#multiRangesWithExpressionsBehaveStrangely()
+ * @see AdvancedMultiRangeNextTest#multiRangesWithExpressionsBehaveStrangely()
  */
 public class AdvancedSingleRangeNextTest {
 
@@ -89,7 +89,7 @@ public class AdvancedSingleRangeNextTest {
 
   /**
    * See
-   * {@link SimpleMultiRangeNextTest#emptyRangesAreSwappedJustLikeSingleRange}.
+   * {@link AdvancedMultiRangeNextTest#emptyRangesAreSwappedJustLikeSingleRange}.
    */
   @Test
   public void limitsAreSwappedForEmptyInclusiveRange() throws Throwable {

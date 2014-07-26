@@ -42,6 +42,7 @@ import org.junit.Test;
  * @author Christoffer Fink
  * @see MultiRangeMismatchTest
  * @see SimpleSingleRangeNextTest
+ * @see AdvancedMultiRangeNextTest
  */
 public class SimpleMultiRangeNextTest {
 
@@ -101,76 +102,6 @@ public class SimpleMultiRangeNextTest {
         .inclMax(intMax))
       .expected(11,12,13, 21,22,23, 31,32,33).run();
       // Due to exceptions, it's impossible to know which values get generated.
-  }
-
-  // TODO: Do these two tests belong in this class?
-  // No, move them to AdvancedMultiRangeNextTest.
-
-  // The behavior in this test depends on 3 different bugs(?).
-  //
-  // 1) DesignSpace.next() does not properly evaluate expressions.
-  //    While X is defined to be in [10,20], the expression is evaluated as if
-  //    X was 0.
-  // 2) When defining multi-ranges containing expressions, the first
-  //    three ranges are discarded. So only the last range counts.
-  // 3) The maximum legal value is also discarded.
-  //
-  // So [19,1000] is first reduced to [19,30] by discarding the first three
-  // ranges. Then, because 0+9 and 0+10 evaluate to 9 and 10, [19,30] is reduced
-  // to [9,10] = {9,10}. The maximum of 9 and 10 is 10. So finally, the set of
-  // legal values is {9,10} \ {10} = {9}.
-  @Test
-  public void multiRangesWithExpressionsBehaveStrangely() throws Throwable {
-    ParamCfg x = pb()
-      .id("X")
-      .inclMin("10")
-      .inclMax("20")
-      .build();
-    ParamCfg y = pb()
-      .id("Y")
-      // [30,100] ∪ [100,400] ∪ [400,1000] ∪ [19,30] = [19,1000]
-      .inclMin("X+20, X*10, X*40, X+9")
-      .inclMax("X+80, X*20, X*50, X+10")
-      .build();
-
-    DesignSpaceCfg space = DesignSpaceCfg.builder().param(x, y).build();
-    Generator<Object> gen = Generator
-      .fromDesignSpace(space.getDesignSpace(), y.getId())
-      .limit(iterations);
-
-    tc.gen(gen)
-      .expected(9)
-      .run();
-  }
-
-  // This is interesting. While exclusive-exclusive multi-range definitions
-  // normally end up with only the first range, when expressions are involved,
-  // exclusive-exclusive and inclusive-inclusive behave the same way.
-  /**
-   * See
-   * {@link AdvancedSingleRangeNextTest#limitsAreSwappedForEmptyInclusiveRange}.
-   */
-  @Test
-  public void emptyRangesAreSwappedJustLikeSingleRange() throws Throwable {
-    ParamCfg x = pb()
-      .id("X")
-      .inclMin("10")
-      .inclMax("20")
-      .build();
-    ParamCfg y = pb()
-      .id("Y")
-      .exclMin("X+20, X*10, X*40, X+5")
-      .exclMax("X+80, X*20, X*50, X+1")
-      .build();
-
-    DesignSpaceCfg space = DesignSpaceCfg.builder().param(x, y).build();
-    Generator<Object> gen = Generator
-      .fromDesignSpace(space.getDesignSpace(), y.getId())
-      .limit(iterations);
-
-    tc.gen(gen)
-      .expected(1,2,3,4,5,6)
-      .run();
   }
 
   private static ParamCfg.Builder pb() {

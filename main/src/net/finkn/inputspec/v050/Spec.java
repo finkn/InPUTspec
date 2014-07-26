@@ -31,6 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     AdvancedSingleRangeNextTest.class,
+    AdvancedMultiRangeNextTest.class,
     ArrayTest.class,
     BasicDesignSpaceTest.class,
     BasicDesignTest.class,
