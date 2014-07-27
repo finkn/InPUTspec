@@ -40,7 +40,7 @@ import java.util.stream.Stream;
  * A Design Space configuration.
  * This class is immutable.
  *
- * @version 1.0
+ * @version 1.1
  * @author Christoffer Fink
  */
 public class DesignSpaceCfg {
@@ -77,6 +77,11 @@ public class DesignSpaceCfg {
 
   public static Builder builder() {
     return new Builder();
+  }
+
+  /** Shortcut for quickly creating an instance from one or more parameters. */
+  public static DesignSpaceCfg getInstance(ParamCfg ... params) {
+    return builder().param(params).build();
   }
 
   public IDesignSpace getDesignSpace() throws InPUTException {
