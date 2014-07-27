@@ -148,6 +148,36 @@ public class AdvancedSingleRangeNextTest {
       .expected(2).run();
   }
 
+  @Test(expected = RuntimeException.class)
+  public void arrayElementReferencesAreIllegal() throws Throwable {
+    ParamCfg dependee = pb()
+      .id("A")
+      .type("integer[3]")
+      .build();
+    ParamCfg dependent = pb()
+      .inclMin("A.1 + 1")
+      .build();
+    test(dependent.getId(), dependee, dependent)
+      .only(1).run();
+  }
+
+  @Test
+  public void referencesToNestedParametersAreLegal() throws Throwable {
+    ParamCfg dependee = Helper.pointParam;
+    ParamCfg dependent = pb()
+      .id("NotX")
+      .inclMin("Point.X + 1")
+      .inclMax("Point.X + 1")
+      .build();
+    CodeMappingCfg mapping = CodeMappingCfg.getInstance(Helper.pointMapping);
+    DesignSpaceCfg space = DesignSpaceCfg.builder()
+      .mapping(mapping)
+      .param(dependee, dependent)
+      .build();
+    test(space, dependent.getId())
+      .expected(1).run();
+  }
+
   // TODO: Do these tests belong in this class?
   // Does it make more sense to put them in a test that merely examines which
   // configurations can be successfully imported, or here, where they fit in
@@ -190,6 +220,9 @@ public class AdvancedSingleRangeNextTest {
   // Move to Generator?
   private GenTestCase test(String id, ParamCfg ... params) throws Throwable {
     DesignSpaceCfg space = DesignSpaceCfg.builder().param(params).build();
+    return test(space, id);
+  }
+  private GenTestCase test(DesignSpaceCfg space, String id) throws Throwable {
     return testCase.gen(Generator
       .fromDesignSpace(space.getDesignSpace(), id).limit(iterations)
     );
