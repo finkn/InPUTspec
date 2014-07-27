@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  * A Code Mapping configuration.
  * This class is immutable.
  *
- * @version 1.0
+ * @version 1.1
  * @author Christoffer Fink
  */
 public class CodeMappingCfg {
@@ -73,6 +73,11 @@ public class CodeMappingCfg {
   /** Returns a builder that can create instances of this class. */
   public static Builder builder() {
     return new Builder();
+  }
+
+  /** Shortcut for quickly creating an instance from one or more mappings. */
+  public static CodeMappingCfg getInstance(MappingCfg ... mappings) {
+    return builder().mapping(mappings).build();
   }
 
   /**
