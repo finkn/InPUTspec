@@ -23,6 +23,7 @@ package net.finkn.inputspec.tools;
 import net.finkn.inputspec.tools.types.Point;
 
 import se.miun.itm.input.model.InPUTException;
+import se.miun.itm.input.model.design.IDesign;
 
 /**
  * Helper for writing more concise tests.
@@ -60,5 +61,13 @@ public class Helper {
   public static GenTestCase genTest(String id, ParamCfg ... cfgs) throws InPUTException {
     DesignSpaceCfg space = DesignSpaceCfg.builder().param(cfgs).build();
     return genTest.gen(Generator.fromDesignSpace(space.getDesignSpace(), id));
+  }
+
+  public static IDesign design(ParamCfg ... params) throws InPUTException {
+    return DesignSpaceCfg.builder()
+      .param(params)
+      .build()
+      .getDesignSpace()
+      .nextDesign("Design");
   }
 }
