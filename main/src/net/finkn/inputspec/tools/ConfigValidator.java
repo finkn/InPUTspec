@@ -21,7 +21,6 @@ SOFTWARE.
 package net.finkn.inputspec.tools;
 
 import java.io.ByteArrayInputStream;
-import se.miun.itm.input.model.InPUTException;
 import se.miun.itm.input.model.design.DesignSpace;
 
 /**
