@@ -36,6 +36,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BasicDesignSpaceTest.class,
     BasicDesignTest.class,
     BooleanLiteralsTest.class,
+    FixedNumericTest.class,
     IdLiteralsTest.class,
     MultiRangeMismatchTest.class,
     SetValueTest.class,
