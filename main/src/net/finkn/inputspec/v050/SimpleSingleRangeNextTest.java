@@ -212,6 +212,19 @@ public class SimpleSingleRangeNextTest {
       .expected(Integer.MAX_VALUE - 1, Integer.MAX_VALUE - 2).run();
   }
 
+  /**
+   * Defining a boolean parameter using limits is legal but, presumably,
+   * inconsequential.
+   */
+  @Test
+  public void boolParamWithLimitsIsLegal() throws Throwable {
+    test(pb()
+        .type("boolean")
+        .inclMin("1")
+        .inclMax("3"))
+      .expected(true, false).run();
+  }
+
   private static ParamCfg.Builder pb() {
     return ParamCfg.builder();
   }
