@@ -41,7 +41,6 @@ import org.junit.runners.Suite.SuiteClasses;
     ParamCfgTest.class,
     RangeTest.class,
     RangeTestCaseTest.class,
-    RangeTestHelperTest.class,
     SinkTest.class,
     SinkTestCaseTest.class,
     UnitExceptionTest.class,
