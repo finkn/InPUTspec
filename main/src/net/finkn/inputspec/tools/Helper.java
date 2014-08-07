@@ -53,6 +53,12 @@ public class Helper {
   public static SinkTestCase sinkTest(ParamCfg.Builder builder) throws InPUTException {
     return sinkTest.sink(Sink.fromParam(builder.build()));
   }
+  public static SinkTestCase sinkTest(IDesign design, String id) throws InPUTException {
+    return sinkTest.sink(Sink.fromDesign(design, id));
+  }
+  public static SinkTestCase sinkTest(String id, ParamCfg ... cfgs) throws InPUTException {
+    return sinkTest(design(cfgs), id);
+  }
 
   public static GenTestCase genTest(ParamCfg.Builder builder) throws InPUTException {
     return genTest.gen(Generator.fromParam(builder.build()));
