@@ -32,6 +32,11 @@ import org.junit.Test;
 
 import se.miun.itm.input.model.design.IDesign;
 
+/**
+ * Tests how fixed numeric parameters work in InPUT4j 0.5.
+ *
+ * @author Christoffer Fink
+ */
 public class FixedNumericTest {
 
   /** When a parameter is fixed, only the fixed value is generated. */
