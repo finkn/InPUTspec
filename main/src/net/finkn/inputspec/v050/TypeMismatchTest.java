@@ -35,7 +35,16 @@ import org.junit.runners.Parameterized.Parameters;
 
 import se.miun.itm.input.model.InPUTException;
 
-// Only exactly matching types are accepted.
+/**
+ * Shows that only exact type matches are accepted in v0.5.
+ * That is, for an integer parameter, neither short nor long values are
+ * legal. Similarly, a double parameter cannot be set to either a float
+ * nor any integer value.
+ * <p>
+ * Note that only numeric parameters are currently being tested.
+ *
+ * @author Christoffer Fink
+ */
 @RunWith(value = Parameterized.class)
 public class TypeMismatchTest {
 
