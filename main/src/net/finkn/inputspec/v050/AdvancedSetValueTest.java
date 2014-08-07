@@ -20,31 +20,49 @@ SOFTWARE.
 */
 package net.finkn.inputspec.v050;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static net.finkn.inputspec.tools.Helper.*;
+import net.finkn.inputspec.tools.ParamCfg;
+
+import org.junit.Test;
+
+import se.miun.itm.input.model.design.IDesign;
 
 /**
- * A suite of all specification tests for version 0.5.
+ * Tests which values a design accepts for a parameter, depending on how that
+ * parameter was defined.
+ * These tests involve dependencies on other parameters.
+ *
  * @author Christoffer Fink
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-    AdvancedSetValueTest.class,
-    AdvancedSingleRangeNextTest.class,
-    AdvancedMultiRangeNextTest.class,
-    ArrayTest.class,
-    BasicDesignSpaceTest.class,
-    BasicDesignTest.class,
-    BooleanLiteralsTest.class,
-    FixedNumericTest.class,
-    IdLiteralsTest.class,
-    MultiRangeMismatchTest.class,
-    SetValueTest.class,
-    SimpleMultiRangeNextTest.class,
-    SimpleSingleRangeNextTest.class,
-    SupportedParamIdsTest.class,
-    TypeMismatchTest.class,
-})
-public class Spec {
+public class AdvancedSetValueTest {
+
+  private final ParamCfg dependee = ParamCfg.builder()
+    .id("A")
+    .inclMin("1")
+    .inclMax("3")
+    .build();
+
+  /**
+   * When defined relative to another parameter, legal values depend on the
+   * <strong>current</strong> value of the referenced parameter.
+   */
+  @Test
+  public void valuesAreLegalRelativeToCurrentValueOfReferencedParam() throws Throwable {
+    ParamCfg dependent = pb()
+      .inclMin("A + 2")
+      .exclMax("A + 4") // [A+2,A+4[ = { A+2, A+3 }
+      .build();
+
+    IDesign design = design(dependent, dependee);
+    int a = design.getValue("A");
+
+    // Set A to a different value.
+    a = a == 1 ? 2 : 1;
+    design.setValue("A", a);
+
+    sinkTest(design, dependent.getId())
+      .accepts(a + 2, a + 3)
+      .rejects(a, a + 4)
+      .run();
+  }
 }
