@@ -62,6 +62,7 @@ import se.miun.itm.input.model.InPUTException;
  * @version 1.0
  */
 @RunWith(value = Parameterized.class)
+@Deprecated
 public class RangeTestHelper {
 
   private final TestCase test;

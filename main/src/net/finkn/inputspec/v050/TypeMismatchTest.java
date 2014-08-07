@@ -20,46 +20,59 @@ SOFTWARE.
 */
 package net.finkn.inputspec.v050;
 
+import static net.finkn.inputspec.tools.Helper.pb;
+import static net.finkn.inputspec.tools.Helper.sinkTest;
+
 import java.util.Arrays;
 import java.util.Collection;
 
-import net.finkn.inputspec.tools.RangeTestHelper;
+import net.finkn.inputspec.tools.SinkTestCase;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import se.miun.itm.input.model.InPUTException;
 
-// TODO: Do not extend RangeTestHelper?
 // Only exactly matching types are accepted.
-public class TypeMismatchTest extends RangeTestHelper {
+@RunWith(value = Parameterized.class)
+public class TypeMismatchTest {
 
-  public TypeMismatchTest(TestCase test) throws Throwable {
-    super(test);
+  private final SinkTestCase test;
+
+  public TypeMismatchTest(SinkTestCase test) throws Throwable {
+    this.test = test;
+  }
+
+  @Test
+  public void test() {
+    test.run();
   }
 
   @Parameters
-  public static Collection<TestCase[]> tests() throws InPUTException {
-    return Arrays.asList(new TestCase[][] {
-      { t(pb()).accepts(1), },
-      { t(pb()).accepts((int) 1.0), },
-      { t(pb()).accepts(Integer.valueOf(1)), },
-      { t(pb()).accepts((Number) 1), },
-      { t(pb()).rejects((short) 1), },
-      { t(pb()).rejects(1L), },
-      { t(pb()).rejects(1.0), },
-      { t(pb()).rejects("1"), },
+  public static Collection<SinkTestCase[]> tests() throws InPUTException {
+    return Arrays.asList(new SinkTestCase[][] {
+      { sinkTest(pb()).accepts(1), },
+      { sinkTest(pb()).accepts((int) 1.0), },
+      { sinkTest(pb()).accepts(Integer.valueOf(1)), },
+      { sinkTest(pb()).accepts((Number) 1), },
+      { sinkTest(pb()).rejects((short) 1), },
+      { sinkTest(pb()).rejects(1L), },
+      { sinkTest(pb()).rejects(1.0), },
+      { sinkTest(pb()).rejects("1"), },
 
-      { t(pb().type("double")).accepts(1.0), },
-      { t(pb().type("double")).accepts((double) 1), },
-      { t(pb().type("double")).rejects(1), },
-      { t(pb().type("double")).rejects((float) 1.0), },
-      { t(pb().type("double")).rejects("1.0"), },
+      { sinkTest(pb().type("double")).accepts(1.0), },
+      { sinkTest(pb().type("double")).accepts((double) 1), },
+      { sinkTest(pb().type("double")).rejects(1), },
+      { sinkTest(pb().type("double")).rejects((float) 1.0), },
+      { sinkTest(pb().type("double")).rejects("1.0"), },
 
-      { t(pb().type("boolean")).accepts(true), },
-      { t(pb().type("boolean")).accepts(false), },
-      { t(pb().type("boolean")).accepts(Boolean.TRUE), },
-      { t(pb().type("boolean")).rejects("true"), },
-      { t(pb().type("boolean")).rejects(Boolean.TRUE.toString()), },
+      { sinkTest(pb().type("boolean")).accepts(true), },
+      { sinkTest(pb().type("boolean")).accepts(false), },
+      { sinkTest(pb().type("boolean")).accepts(Boolean.TRUE), },
+      { sinkTest(pb().type("boolean")).rejects("true"), },
+      { sinkTest(pb().type("boolean")).rejects(Boolean.TRUE.toString()), },
     });
   }
 }
