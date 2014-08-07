@@ -69,7 +69,7 @@ public class SimpleSingleRangeNextTest {
 
   /** When using a singleton inclusive range, the max value is included. */
   @Test
-  public void singleInclInclWithSingleValue() throws Throwable {
+  public void inclInclWithSingleValue() throws Throwable {
     test(pb()
         .inclMin("1")
         .inclMax("1"))
@@ -78,7 +78,7 @@ public class SimpleSingleRangeNextTest {
 
   /** When using a singleton exclusive range, the max value is included. */
   @Test
-  public void singleExclExclWithSingleValue() throws Throwable {
+  public void exclExclWithSingleValue() throws Throwable {
     test(pb()
         .exclMin("0")
         .exclMax("2"))
@@ -87,7 +87,7 @@ public class SimpleSingleRangeNextTest {
 
   /** When using a singleton mixed range, the max value is included. */
   @Test
-  public void singleInclExclWithSingleValue() throws Throwable {
+  public void inclExclWithSingleValue() throws Throwable {
     test(pb()
         .inclMin("1")
         .exclMax("2"))
@@ -96,7 +96,7 @@ public class SimpleSingleRangeNextTest {
 
   /** When using a singleton mixed range, the max value is included. */
   @Test
-  public void singleExclInclWithSingleValue() throws Throwable {
+  public void exclInclWithSingleValue() throws Throwable {
     test(pb()
         .exclMin("0")
         .inclMax("1"))
@@ -106,7 +106,7 @@ public class SimpleSingleRangeNextTest {
 
   /** When using a single range, the max allowed value is ignored. */
   @Test
-  public void singleInclIncl() throws Throwable {
+  public void inclInclMaxIgnored() throws Throwable {
     test(pb()
         .inclMin(intMin)
         .inclMax(intMax))
@@ -115,7 +115,7 @@ public class SimpleSingleRangeNextTest {
 
   /** When using a single range, the max allowed value is ignored. */
   @Test
-  public void singleExclExcl() throws Throwable {
+  public void exclExclMaxIgnored() throws Throwable {
     test(pb()
         .exclMin(intMin)
         .exclMax(intMax))
@@ -124,7 +124,7 @@ public class SimpleSingleRangeNextTest {
 
   /** When using a single range, the max allowed value is ignored. */
   @Test
-  public void singleInclExcl() throws Throwable {
+  public void inclExclMaxIgnored() throws Throwable {
     test(pb()
         .inclMin(intMin)
         .exclMax(intMax))
@@ -133,7 +133,7 @@ public class SimpleSingleRangeNextTest {
 
   /** When using a single range, the max allowed value is ignored. */
   @Test
-  public void singleExclIncl() throws Throwable {
+  public void exclInclMaxIgnored() throws Throwable {
     test(pb()
         .exclMin(intMin)
         .inclMax(intMax))
@@ -185,7 +185,7 @@ public class SimpleSingleRangeNextTest {
    * limit to roll around to min.
    * <strong>Note that the behavior of this test depends on the maximum legal
    * values being ignored, as demonstrated in
-   * {@link #singleInclIncl}, among others.</strong>
+   * {@link #inclInclMaxIgnored}, among others.</strong>
    * @see #underflowingMinRollsAroundToMax
    **/
   @Test
@@ -201,7 +201,7 @@ public class SimpleSingleRangeNextTest {
    * limit to roll around to max.
    * <strong>Note that the behavior of this test depends on the maximum legal
    * values being ignored, as demonstrated in
-   * {@link #singleInclIncl}, among others.</strong>
+   * {@link #inclInclMaxIgnored}, among others.</strong>
    * @see #overflowingMaxRollsAroundToMin
    **/
   @Test
