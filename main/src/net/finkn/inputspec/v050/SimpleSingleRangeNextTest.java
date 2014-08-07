@@ -180,6 +180,38 @@ public class SimpleSingleRangeNextTest {
       .expected(fMin, 0.0f, fMax).run(); // Limits are NOT exclusive.
   }
 
+  /**
+   * Setting max to a value that is outside of the range of the type causes the
+   * limit to roll around to min.
+   * <strong>Note that the behavior of this test depends on the maximum legal
+   * values being ignored, as demonstrated in
+   * {@link #singleInclIncl}, among others.</strong>
+   * @see #underflowingMinRollsAroundToMax
+   **/
+  @Test
+  public void overflowingMaxRollsAroundToMin() throws Throwable {
+    test(pb()
+        .inclMin(Integer.MIN_VALUE)
+        .inclMax(((long) Integer.MAX_VALUE) + 3))
+      .expected(Integer.MIN_VALUE, Integer.MIN_VALUE + 1).run();
+  }
+
+  /**
+   * Setting min to a value that is outside of the range of the type causes the
+   * limit to roll around to max.
+   * <strong>Note that the behavior of this test depends on the maximum legal
+   * values being ignored, as demonstrated in
+   * {@link #singleInclIncl}, among others.</strong>
+   * @see #overflowingMaxRollsAroundToMin
+   **/
+  @Test
+  public void underflowingMinRollsAroundToMax() throws Throwable {
+    test(pb()
+        .inclMin(((long) Integer.MIN_VALUE) - 3)
+        .inclMax(Integer.MAX_VALUE))
+      .expected(Integer.MAX_VALUE - 1, Integer.MAX_VALUE - 2).run();
+  }
+
   private static ParamCfg.Builder pb() {
     return ParamCfg.builder();
   }
