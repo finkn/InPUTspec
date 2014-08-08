@@ -40,6 +40,7 @@ import org.junit.runners.Suite.SuiteClasses;
     FixedNumericTest.class,
     IdLiteralsTest.class,
     MultiRangeMismatchTest.class,
+    SetFixedTest.class,
     SetValueTest.class,
     SimpleMultiRangeNextTest.class,
     SimpleSingleRangeNextTest.class,
