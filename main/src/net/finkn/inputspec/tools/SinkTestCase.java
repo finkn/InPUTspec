@@ -22,6 +22,22 @@ package net.finkn.inputspec.tools;
 
 import java.util.Optional;
 
+/**
+ * A buildable test case for testing a {@link Sink}.
+ * While primarily intended to examine values accepted by the {@code setValue}
+ * method of a design to see what effects various parameter
+ * configurations have, this class can be used with any sink.
+ * <p>
+ * The expected behavior of the sink can be set by adding values that
+ * are expected to be accepted or rejected by the sink.
+ * Setting the same kind of test multiple times (multiple calls to
+ * {@link #accept}, for example) is not allowed.
+ * Executing the test case is not allowed if no expectations have been set.
+ * <p>
+ * This class is immutable.
+ *
+ * @author Christoffer Fink
+ */
 public class SinkTestCase {
   private static final SinkTestCase instance = new SinkTestCase(
     Optional.empty(), Optional.empty(), Optional.empty());
@@ -43,25 +59,33 @@ public class SinkTestCase {
     return instance;
   }
 
+  /** All these values should be accepted by the sink. */
   public SinkTestCase accepts(Object ... values) {
     failIfPresent(accepts, "Already added an accepts tests.");
     return new SinkTestCase(sink, Optional.of(values), rejects);
   }
 
+  /** All these values should be rejected by the sink. */
   public SinkTestCase rejects(Object ... values) {
     failIfPresent(rejects, "Already added a rejects tests.");
     return new SinkTestCase(sink, accepts, Optional.of(values));
   }
 
+  /** Set the sink. */
   public SinkTestCase sink(Sink<Object> sink) {
     failIfPresent(this.sink, "Already set a sink.");
     return new SinkTestCase(Optional.of(sink), accepts, rejects);
   }
 
+  /** Check whether any tests have been added. */
   public boolean hasTests() {
     return accepts.isPresent() || rejects.isPresent();
   }
 
+  /**
+   * Execute the test.
+   * @throws IllegalStateException if there are no tests to run
+   */
   public SinkTestCase run() {
     if (!sink.isPresent()) {
       throw new IllegalStateException("Sink missing!");
