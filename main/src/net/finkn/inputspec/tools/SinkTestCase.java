@@ -31,7 +31,7 @@ import java.util.Optional;
  * The expected behavior of the sink can be set by adding values that
  * are expected to be accepted or rejected by the sink.
  * Setting the same kind of test multiple times (multiple calls to
- * {@link #accept}, for example) is not allowed.
+ * {@link #accepts}, for example) is not allowed.
  * Executing the test case is not allowed if no expectations have been set.
  * <p>
  * This class is immutable.
