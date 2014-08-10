@@ -37,6 +37,7 @@ import org.junit.runners.Suite.SuiteClasses;
     BasicDesignSpaceTest.class,
     BasicDesignTest.class,
     BooleanLiteralsTest.class,
+    CodeMappingCachingTest.class,
     DesignSpaceCachingTest.class,
     FixedNumericTest.class,
     IdLiteralsTest.class,
