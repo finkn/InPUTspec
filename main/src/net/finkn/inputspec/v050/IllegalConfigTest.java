@@ -20,34 +20,26 @@ SOFTWARE.
 */
 package net.finkn.inputspec.v050;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import net.finkn.inputspec.tools.*;
+
+import org.junit.Test;
 
 /**
- * A suite of all specification tests for version 0.5.
+ * Misc tests demonstrating illegal configurations in InPUT4j v0.5.
+ * It is unclear whether a separate class for such tests is appropriate.
+ *
  * @author Christoffer Fink
+ * @see LegalConfigTest
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-    AdvancedSetValueTest.class,
-    AdvancedSingleRangeNextTest.class,
-    AdvancedMultiRangeNextTest.class,
-    ArrayTest.class,
-    BasicDesignSpaceTest.class,
-    BasicDesignTest.class,
-    BooleanLiteralsTest.class,
-    FixedNumericTest.class,
-    IdLiteralsTest.class,
-    IllegalConfigTest.class,
-    LegalConfigTest.class,
-    MultiRangeMismatchTest.class,
-    SetFixedTest.class,
-    SetValueTest.class,
-    SimpleMultiRangeNextTest.class,
-    SimpleSingleRangeNextTest.class,
-    SupportedParamIdsTest.class,
-    TypeMismatchTest.class,
-})
-public class Spec {
+public class IllegalConfigTest {
+  private final ConfigValidator validator = ConfigValidator.getInstance();
+
+  @Test(expected = AssertionError.class)
+  public void inclusiveAndExclusiveLimitIsIllegal() {
+    ParamCfg param = ParamCfg.builder()
+      .inclMin("1")
+      .exclMin("3")
+      .build();
+    validator.validParamConfig(param);
+  }
 }
