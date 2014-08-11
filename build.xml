@@ -67,7 +67,7 @@
   <!-- Run all unit tests, unless a specific test case is requested. -->
   <target name="test" depends="compile_test" description="Run unit tests">
     <property name="tests.unit" value="net.finkn.inputspec.tools.Tests" />
-    <junit printsummary="no" haltonerror="yes" haltonfailure="yes" fork="yes">
+    <junit printsummary="no" haltonerror="yes" haltonfailure="yes" fork="fork">
       <formatter type="brief" usefile="false" />
       <classpath refid="test.classpath" />
       <test name="${testcase}" if="testcase" />
@@ -78,7 +78,7 @@
   <!-- Run all specification tests, unless a specific test is requested. -->
   <target name="spec" depends="test" description="Run specification tests">
     <property name="spec.v050" value="net.finkn.inputspec.v050.Spec" />
-    <junit printsummary="no" haltonerror="yes" haltonfailure="yes" fork="yes">
+    <junit printsummary="no" haltonerror="yes" haltonfailure="yes" fork="fork">
       <formatter type="brief" usefile="false" />
       <classpath refid="test.classpath" />
       <test name="${spectest}" if="spectest" />
