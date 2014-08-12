@@ -20,6 +20,8 @@ SOFTWARE.
 */
 package net.finkn.inputspec.tools;
 
+import net.finkn.inputspec.tools.types.*;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -29,8 +31,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
+    AccessorTesterTest.class,
     CodeMappingCfgTest.class,
     ConfigValidatorTest.class,
+    CustomAccessorTesterTest.class,
     DesignSpaceCfgTest.class,
     GeneratorExceptionMessageTest.class,
     GeneratorTest.class,
