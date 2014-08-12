@@ -40,6 +40,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  *
  * @author Christoffer Fink
  * @see CodeMappingCachingTest
+ * @see DesignCachingTest
  */
 public class DesignSpaceCachingTest {
 

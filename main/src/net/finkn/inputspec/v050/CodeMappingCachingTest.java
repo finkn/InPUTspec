@@ -39,6 +39,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * They could be moved in the future.
  *
  * @author Christoffer Fink
+ * @see DesignCachingTest
  * @see DesignSpaceCachingTest
  */
 public class CodeMappingCachingTest {
