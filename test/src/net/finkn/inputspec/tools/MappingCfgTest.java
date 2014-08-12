@@ -170,6 +170,16 @@ public class MappingCfgTest {
   }
 
   @Test
+  public void paramWithMultipleParamsShouldSetIdToAbsoluteId() {
+    ParamCfg a = ParamCfg.builder().id("A").build();
+    ParamCfg b = ParamCfg.builder().id("B").build();
+    ParamCfg c = ParamCfg.builder().id("C").build();
+    MappingCfg mapping = builder.param(a,b,c).build();
+    String id = mapping.getId();
+    assertThat(id, is(equalTo("A.B.C")));
+  }
+
+  @Test
   public void targetShouldSetTypeToFullClassName() {
     MappingCfg mapping = builder.target(Integer.class).build();
     String type = mapping.getType();

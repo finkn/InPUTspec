@@ -38,18 +38,24 @@ import java.util.stream.Stream;
  * <p>
  * This class is immutable.
  *
- * @version 1.0
+ * @version 1.1
  * @author Christoffer Fink
  */
 // FIXME: Support both
 // Mapping + (Wrapper|Complex) and
 // MappingType + (Wrapper|Complex)
 public class MappingCfg {
+
   /**
-   * Separator used when joining together parameter IDs generate a constructor
-   * attribute.
+   * Separator used when joining together parameter IDs to generate a
+   * constructor attribute.
    */
-  public static final String DELIM = " ";
+  public static final String CONSTRUCTOR_DELIM = " ";
+  /**
+   * Separator used when joining together parameter IDs to form the absolute
+   * ID of a nested parameter.
+   */
+  public static final String NESTING_DELIM = ".";
 
   private final String id;
   private final String add;
@@ -164,7 +170,7 @@ public class MappingCfg {
 
     /**
      * Returns a Builder with the id set to {@code id}.
-     * @see #param(ParamCfg)
+     * @see #param(ParamCfg...)
      */
     public Builder id(String id) {
       this.id = id;
@@ -222,9 +228,23 @@ public class MappingCfg {
       return type(type.getId());
     }
 
-    /** Convenience method for setting the ID to match the parameter. */
-    public Builder param(ParamCfg param) {
-      this.id = param.getId();
+    /**
+     * Convenience method for setting the ID to match the parameter(s).
+     * The mapping is assumed to map the last parameter listed.
+     * If only one parameter is given, then the situation is straightforward.
+     * When more than one parameter is given, then each parameter is assumed
+     * to be nested inside the previous one, with the last parameter at the
+     * deepest level. The IDs are then strung together to form the absolute ID
+     * of the last parameter. So the two cases are ultimately the same.
+     * The ID is set to map to a parameter with an ID that may or may not need
+     * to be adjusted to take ancestors into account.
+     * <p>
+     * So {@code param(point)} might produce an ID of {@code "Point"}, and
+     * {@code param(point, x)} might produce an ID of {@code "Point.X"},
+     * depending on the IDs of the parameters.
+     */
+    public Builder param(ParamCfg ... params) {
+      this.id = joinParameters(NESTING_DELIM, Stream.of(params));
       return this;
     }
 
@@ -235,11 +255,7 @@ public class MappingCfg {
 
     /** Convenience method for setting a constructor string. */
     public Builder nested(Stream<ParamCfg> parameters) {
-      String tmp = String.join(DELIM, parameters
-        .map(ParamCfg::getId)
-        .collect(Collectors.toList())
-      );
-      return constructor(tmp);
+      return constructor(joinParameters(CONSTRUCTOR_DELIM, parameters));
     }
 
     /**
@@ -293,6 +309,13 @@ public class MappingCfg {
         return new MappingCfg(id, add, null, null, null, type, mappingType);
       }
       return new MappingCfg(id, null, constructor, get, set, type, mappingType);
+    }
+
+    private String joinParameters(String delim, Stream<ParamCfg> parameters) {
+      return String.join(delim, parameters
+        .map(ParamCfg::getId)
+        .collect(Collectors.toList())
+      );
     }
   }
 
