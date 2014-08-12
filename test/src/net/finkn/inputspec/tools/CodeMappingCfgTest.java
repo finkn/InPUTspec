@@ -40,7 +40,14 @@ public class CodeMappingCfgTest {
   @Test
   public void defaultBuilderShouldUseDefaultId() {
     CodeMappingCfg mapping = builder.build();
-    assertThat(mapping.getId(), is(equalTo(CodeMappingCfg.DEFAULT_ID)));
+    assertThat(mapping.getId(), startsWith(CodeMappingCfg.DEFAULT_ID));
+  }
+
+  @Test
+  public void builderShouldCreateDesignSpacesWithSemiUniqueIds() {
+    String id1 = builder.build().getId();
+    String id2 = builder.build().getId();
+    assertThat(id1, is(not(equalTo(id2))));
   }
 
   @Test

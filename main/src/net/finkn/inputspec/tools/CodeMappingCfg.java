@@ -82,16 +82,19 @@ public class CodeMappingCfg {
 
   /**
    * Builder of Code Mapping configurations. Uses a default ID.
-   * @version 1.0
+   * @version 1.1
    * @author Christoffer Fink
    */
   public static class Builder {
+    private static long counter = 0;
+    private boolean idSet = false;
     private String id = DEFAULT_ID;
     private Collection<MappingCfg> mappings = new ArrayList<>();
 
     /** Returns a builder with the id set to {@code id}. */
     public Builder id(String id) {
       this.id = id;
+      idSet = true;
       return this;
     }
 
@@ -105,7 +108,15 @@ public class CodeMappingCfg {
 
     /** Builds a configuration based on the current builder state. */
     public CodeMappingCfg build() {
-      return new CodeMappingCfg(id, mappings);
+      return new CodeMappingCfg(getId(), mappings);
+    }
+
+    private String getId() {
+      if (idSet) {
+        return id;
+      } else {
+        return DEFAULT_ID + "_" + counter++;
+      }
     }
   }
 }
