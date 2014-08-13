@@ -88,7 +88,9 @@
 
   <target name="doc" description="Generate javadoc documentation">
     <delete dir="${main.doc}" />
-    <javadoc destdir="${main.doc}" failonerror="true">
+    <javadoc destdir="${main.doc}" failonerror="true"
+             Windowtitle="InPUTspec Documentation"
+             Doctitle="InPUTspec Documentation" >
       <arg line="-quiet" />
       <classpath refid="main.compile.classpath" />
       <fileset dir="${main.src}">
