@@ -32,6 +32,9 @@ package net.finkn.inputspec.tools.types;
  * @author Christoffer Fink
  */
 public class CustomAccessorTester {
+  private static int globalSetterCount = 0;
+  private static int globalGetterCount = 0;
+
   private int getterInvocations = 0;
   private int setterInvocations = 0;
   // The data is public to provide a back door so that it can be
@@ -46,10 +49,12 @@ public class CustomAccessorTester {
 
   public int customGetMethod() {
     getterInvocations++;
+    globalGetterCount++;
     return data;
   }
   public void customSetMethod(int data) {
     setterInvocations++;
+    globalSetterCount++;
     this.data = data;
   }
 
@@ -58,5 +63,17 @@ public class CustomAccessorTester {
   }
   public int getSetterInvocations() {
     return setterInvocations;
+  }
+
+  public static int getGlobalGetterCount() {
+    return globalGetterCount;
+  }
+  public static int getGlobalSetterCount() {
+    return globalSetterCount;
+  }
+
+  public static void resetGlobal() {
+    globalSetterCount = 0;
+    globalGetterCount = 0;
   }
 }

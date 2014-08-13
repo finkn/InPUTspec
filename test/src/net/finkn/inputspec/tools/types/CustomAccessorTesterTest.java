@@ -64,4 +64,23 @@ public class CustomAccessorTesterTest {
     // Number of invocations should have increased.
     assertThat(tester.getSetterInvocations(), is(equalTo(2)));
   }
+
+  @Test
+  public void testGlobalCounters() {
+    tester.resetGlobal();
+    assertThat(tester.getGlobalSetterCount(), is(equalTo(0)));
+    assertThat(tester.getGlobalGetterCount(), is(equalTo(0)));
+
+    tester.customSetMethod(3);
+    tester.customSetMethod(5);
+    tester.customGetMethod();
+    tester.customGetMethod();
+
+    assertThat(tester.getGlobalSetterCount(), is(equalTo(2)));
+    assertThat(tester.getGlobalGetterCount(), is(equalTo(2)));
+
+    tester.resetGlobal();
+    assertThat(tester.getGlobalSetterCount(), is(equalTo(0)));
+    assertThat(tester.getGlobalGetterCount(), is(equalTo(0)));
+  }
 }
