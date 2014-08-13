@@ -38,6 +38,7 @@ public class CustomAccessorTester {
 
   private static int globalSetterCount = 0;
   private static int globalGetterCount = 0;
+  private static int instanceCount = 0;
 
   private int getterInvocations = 0;
   private int setterInvocations = 0;
@@ -45,10 +46,13 @@ public class CustomAccessorTester {
   // examined without invoking the accessors.
   public int data = 0;
 
-  public CustomAccessorTester() { }
+  public CustomAccessorTester() {
+    instanceCount++;
+  }
 
   public CustomAccessorTester(int data) {
     this.data = data;
+    instanceCount++;
   }
 
   public int customGetMethod() {
@@ -74,6 +78,10 @@ public class CustomAccessorTester {
   }
   public static int getGlobalSetterCount() {
     return globalSetterCount;
+  }
+
+  public static int getInstanceCount() {
+    return instanceCount;
   }
 
   public static void resetGlobal() {

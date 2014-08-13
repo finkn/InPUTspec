@@ -83,4 +83,12 @@ public class CustomAccessorTesterTest {
     assertThat(tester.getGlobalSetterCount(), is(equalTo(0)));
     assertThat(tester.getGlobalGetterCount(), is(equalTo(0)));
   }
+
+  @Test
+  public void instanceCountShouldIncreaseWhenCreatingInstances() {
+    int count = tester.getInstanceCount();
+    new CustomAccessorTester();
+    new CustomAccessorTester(3);
+    assertThat(tester.getInstanceCount(), is(equalTo(count + 2)));
+  }
 }
