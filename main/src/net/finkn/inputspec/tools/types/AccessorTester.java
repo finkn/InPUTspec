@@ -21,20 +21,14 @@ SOFTWARE.
 package net.finkn.inputspec.tools.types;
 
 /**
- * A simple class for experimenting with accessor invocations in the context
- * of different code mapping configurations.
- * When an accessor is invoked, a counter is increased.
- * Here an "accessor" means either get or set method.
- * <p>
- * In contrast to {@link CustomAccessorTester}, this class has two pairs of
- * accessor methods. One pair uses the same custom naming scheme that
- * {@link CustomAccessorTester} uses. The other pair uses the default naming
- * scheme. This means that this class can be used to test custom or default
- * accessors.
+ * Like {@link InitTester}, but this class also has default accessors.
+ * That is, it has accessors with those names that InPUT4j would infer
+ * if the inner parameter corresponding to the "data" field in this
+ * class were called "Data".
  * 
  * @author Christoffer Fink
  */
-public class AccessorTester extends CustomAccessorTester {
+public class AccessorTester extends InitTester {
 
   public AccessorTester() {
   }

@@ -26,13 +26,13 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-public class CustomAccessorTesterTest {
-  private final CustomAccessorTester tester = new CustomAccessorTester(1);
+public class InitTesterTest {
+  private final InitTester tester = new InitTester(1);
 
   @Test
   public void fieldShouldMatchConstructorArg() {
     assertThat(tester.data, is(equalTo(1)));
-    CustomAccessorTester tester = new CustomAccessorTester(2);
+    InitTester tester = new InitTester(2);
     assertThat(tester.data, is(equalTo(2)));
   }
 
@@ -87,8 +87,8 @@ public class CustomAccessorTesterTest {
   @Test
   public void instanceCountShouldIncreaseWhenCreatingInstances() {
     int count = tester.getInstanceCount();
-    new CustomAccessorTester();
-    new CustomAccessorTester(3);
+    new InitTester();
+    new InitTester(3);
     assertThat(tester.getInstanceCount(), is(equalTo(count + 2)));
   }
 }

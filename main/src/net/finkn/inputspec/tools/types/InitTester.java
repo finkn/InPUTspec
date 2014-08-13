@@ -21,17 +21,14 @@ SOFTWARE.
 package net.finkn.inputspec.tools.types;
 
 /**
- * A simple class for testing custom accessors in the code mapping.
- * When an accessor is invoked, a counter is increased.
- * Here an "accessor" means either get or set method.
- * <p>
- * In contrast to {@link AccessorTester}, this class has only one pair of
- * accessor methods. This class only uses a custom naming scheme, which means
- * that data can't be initialized through a default accessor by accident.
+ * A tool for examining the relationship between parameter initialization
+ * and object instantiation.
+ * The class keeps track of the number of instances as well as invocations
+ * of the accessors.
  * 
  * @author Christoffer Fink
  */
-public class CustomAccessorTester {
+public class InitTester {
 
   public static final String SETTER = "customSetMethod";
   public static final String GETTER = "customGetMethod";
@@ -46,11 +43,11 @@ public class CustomAccessorTester {
   // examined without invoking the accessors.
   public int data = 0;
 
-  public CustomAccessorTester() {
+  public InitTester() {
     instanceCount++;
   }
 
-  public CustomAccessorTester(int data) {
+  public InitTester(int data) {
     this.data = data;
     instanceCount++;
   }

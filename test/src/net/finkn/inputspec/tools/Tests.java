@@ -34,7 +34,7 @@ import org.junit.runners.Suite.SuiteClasses;
     AccessorTesterTest.class,
     CodeMappingCfgTest.class,
     ConfigValidatorTest.class,
-    CustomAccessorTesterTest.class,
+    InitTesterTest.class,
     DesignSpaceCfgTest.class,
     GeneratorExceptionMessageTest.class,
     GeneratorTest.class,
