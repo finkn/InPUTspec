@@ -32,6 +32,10 @@ package net.finkn.inputspec.tools.types;
  * @author Christoffer Fink
  */
 public class CustomAccessorTester {
+
+  public static final String SETTER = "customSetMethod";
+  public static final String GETTER = "customGetMethod";
+
   private static int globalSetterCount = 0;
   private static int globalGetterCount = 0;
 
