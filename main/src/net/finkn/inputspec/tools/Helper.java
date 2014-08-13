@@ -29,8 +29,12 @@ import se.miun.itm.input.model.design.IDesign;
  * Helper for writing more concise tests.
  * Exports common configurations and small functions that are common to
  * multiple tests.
+ *
+ * @author Christoffer Fink
  */
 public class Helper {
+
+  private static final String defaultDesignId = "Design";
 
   private static final GenTestCase genTest = GenTestCase.getInstance();
   private static final SinkTestCase sinkTest = SinkTestCase.getInstance();
@@ -53,9 +57,11 @@ public class Helper {
   public static SinkTestCase sinkTest(ParamCfg.Builder builder) throws InPUTException {
     return sinkTest.sink(Sink.fromParam(builder.build()));
   }
+
   public static SinkTestCase sinkTest(IDesign design, String id) throws InPUTException {
     return sinkTest.sink(Sink.fromDesign(design, id));
   }
+
   public static SinkTestCase sinkTest(String id, ParamCfg ... cfgs) throws InPUTException {
     return sinkTest(design(cfgs), id);
   }
@@ -70,10 +76,15 @@ public class Helper {
   }
 
   public static IDesign design(ParamCfg ... params) throws InPUTException {
+    return design(null, params);
+  }
+
+  public static IDesign design(CodeMappingCfg mapping, ParamCfg ... params) throws InPUTException {
     return DesignSpaceCfg.builder()
       .param(params)
+      .mapping(mapping)
       .build()
       .getDesignSpace()
-      .nextDesign("Design");
+      .nextDesign(defaultDesignId);
   }
 }
