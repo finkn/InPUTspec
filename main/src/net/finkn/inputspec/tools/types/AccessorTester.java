@@ -34,41 +34,19 @@ package net.finkn.inputspec.tools.types;
  * 
  * @author Christoffer Fink
  */
-public class AccessorTester {
-  private int getterInvocations = 0;
-  private int setterInvocations = 0;
-  // The data is public to provide a back door so that it can be
-  // examined without invoking the accessors.
-  public int data = 0;
+public class AccessorTester extends CustomAccessorTester {
 
-  public AccessorTester() { }
+  public AccessorTester() {
+  }
 
   public AccessorTester(int data) {
-    this.data = data;
+    super(data);
   }
 
   public int getData() {
-    getterInvocations++;
-    return data;
+    return super.customGetMethod();
   }
   public void setData(int data) {
-    setterInvocations++;
-    this.data = data;
-  }
-
-  public int customGetMethod() {
-    getterInvocations++;
-    return data;
-  }
-  public void customSetMethod(int data) {
-    setterInvocations++;
-    this.data = data;
-  }
-
-  public int getGetterInvocations() {
-    return getterInvocations;
-  }
-  public int getSetterInvocations() {
-    return setterInvocations;
+    super.customSetMethod(data);
   }
 }

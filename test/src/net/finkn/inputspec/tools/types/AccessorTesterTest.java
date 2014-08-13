@@ -30,13 +30,6 @@ public class AccessorTesterTest {
   private final AccessorTester tester = new AccessorTester(1);
 
   @Test
-  public void fieldShouldMatchConstructorArg() {
-    assertThat(tester.data, is(equalTo(1)));
-    AccessorTester tester = new AccessorTester(2);
-    assertThat(tester.data, is(equalTo(2)));
-  }
-
-  @Test
   public void defaultGetterShouldReturnData() {
     assertThat(tester.getData(), is(equalTo(tester.data)));
     tester.data = 2;
@@ -44,38 +37,9 @@ public class AccessorTesterTest {
   }
 
   @Test
-  public void customGetterShouldReturnData() {
-    assertThat(tester.customGetMethod(), is(equalTo(tester.data)));
-    tester.data = 2;
-    assertThat(tester.customGetMethod(), is(equalTo(tester.data)));
-  }
-
-  @Test
   public void defaultSetterShouldSetData() {
     tester.setData(2);
     assertThat(tester.data, is(equalTo(2)));
-  }
-
-  @Test
-  public void customSetterShouldSetData() {
-    tester.customSetMethod(2);
-    assertThat(tester.data, is(equalTo(2)));
-  }
-
-  @Test
-  public void invokingCustomAccessorsShouldIncreaseCounters() {
-    // Should start off at 0 invocations.
-    assertThat(tester.getGetterInvocations(), is(equalTo(0)));
-    assertThat(tester.getSetterInvocations(), is(equalTo(0)));
-    // Get data.
-    assertThat(tester.customGetMethod(), is(equalTo(1)));
-    // Number of invocations should have increased.
-    assertThat(tester.getGetterInvocations(), is(equalTo(1)));
-    // Set data.
-    tester.customSetMethod(3);
-    tester.customSetMethod(2);
-    // Number of invocations should have increased.
-    assertThat(tester.getSetterInvocations(), is(equalTo(2)));
   }
 
   @Test
