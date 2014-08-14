@@ -31,6 +31,9 @@ package net.finkn.inputspec.tools.types;
  */
 public class AccessorTester extends InitTester {
 
+  public static final String SETTER = "setData";
+  public static final String GETTER = "getData";
+
   public AccessorTester() {
   }
 
