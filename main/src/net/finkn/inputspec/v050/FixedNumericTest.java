@@ -58,6 +58,8 @@ public class FixedNumericTest {
   /**
    * When a parameter has both a fixed value and a range, only the fixed value
    * is generated, even if that value is outside of the range.
+   * This is consistent with the behavior demonstrated in
+   * {@link SetFixedTest#parametersCanBeFixedToOutOfRangeValues}.
    */
   @Test
   public void fixedTakesPrecedenceOverLimits() throws Throwable {

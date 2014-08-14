@@ -51,7 +51,11 @@ public class SetFixedTest {
   }
 
   // TODO: link to a test showing how this affects design creation.
-  /** Fixing a parameter to an out-of-range value is legal. */
+  /**
+   * Fixing a parameter to an out-of-range value is legal.
+   * This is consistent with the behavior demonstrated in
+   * {@link FixedNumericTest#fixedTakesPrecedenceOverLimits}.
+   */
   @Test
   public void parametersCanBeFixedToOutOfRangeValues() throws Throwable {
     space.setFixed(id, "5"); // 5 ∉ [1,3]
