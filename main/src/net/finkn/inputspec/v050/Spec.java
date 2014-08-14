@@ -31,6 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     AccessorNamingTest.class,
+    AccessorTest.class,
     AdvancedSetValueTest.class,
     AdvancedSingleRangeNextTest.class,
     AdvancedMultiRangeNextTest.class,
