@@ -27,6 +27,7 @@ package net.finkn.inputspec.tools.types;
  * class were called "Data".
  * 
  * @author Christoffer Fink
+ * @see net.finkn.inputspec.v050.AccessorNamingTest
  */
 public class AccessorTester extends InitTester {
 
