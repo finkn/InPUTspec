@@ -40,10 +40,11 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * @author Christoffer Fink
  */
 public class SupportedParamIdsTest {
-  private final ParamCfg arrayParam = ParamCfg.builder()
-    .type("integer[1]").build();
-  private final DesignSpaceCfg arraySpace = DesignSpaceCfg.builder()
-    .param(arrayParam).build();
+
+  private final ParamCfg param = ParamCfg.builder()
+    .type("integer[1]")
+    .build();
+  private final DesignSpaceCfg arraySpace = DesignSpaceCfg.getInstance(param);
 
   /**
    * This test shows that the IDs of array elements (such as "X.1") are members
@@ -55,7 +56,7 @@ public class SupportedParamIdsTest {
       .nextDesign("Design").getSupportedParamIds();
     // Expecting {'X', 'X.1'}.
     assertThat(2, is(equalTo(ids.size())));
-    assertThat(ids, hasItem(arrayParam.getId() + ".1"));
+    assertThat(ids, hasItem(param.getId() + ".1"));
   }
 
   /**
@@ -68,7 +69,7 @@ public class SupportedParamIdsTest {
     Set<String> ids = arraySpace.getDesignSpace().getSupportedParamIds();
     // Expecting {'X'}.
     assertThat(1, is(equalTo(ids.size())));
-    assertThat(ids, hasItem(arrayParam.getId()));
+    assertThat(ids, hasItem(param.getId()));
   }
 
   /**
@@ -78,7 +79,7 @@ public class SupportedParamIdsTest {
   @Test
   public void designsAndDesignSpacesSupportDifferentIds() throws Throwable {
     IDesignSpace space = DesignSpaceCfg.builder()
-      .param(arrayParam).build().getDesignSpace();
+      .param(param).build().getDesignSpace();
     IDesign design = space.nextDesign("Design");
     assertNotEquals(space.getSupportedParamIds(), design.getSupportedParamIds());
   }

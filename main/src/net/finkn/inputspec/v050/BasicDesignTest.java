@@ -25,9 +25,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Set;
 
-import net.finkn.inputspec.tools.DesignSpaceCfg;
-import net.finkn.inputspec.tools.ParamCfg;
-import net.finkn.inputspec.tools.TestCleanup;
+import net.finkn.inputspec.tools.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,16 +41,16 @@ import se.miun.itm.input.model.design.IDesign;
  * @author Christoffer Fink
  */
 public class BasicDesignTest {
+
   private final String badId = "Nonexistent";
-  private final ParamCfg paramCfg = ParamCfg.builder().build();
-  private final DesignSpaceCfg spaceCfg = DesignSpaceCfg.builder()
-      .param(paramCfg).build();
+  private final ParamCfg param = ParamCfg.builder().build();
+  private final String id = param.getId();
   private IDesign design;
 
   @Before
   public void setup() throws Throwable {
-    this.design = spaceCfg.getDesignSpace().nextDesign("Design");
-    assertThat(badId, is(not(equalTo(paramCfg.getId()))));
+    this.design = Helper.design(param);
+    assertThat(badId, is(not(equalTo(id))));
   }
 
   /**
@@ -64,7 +62,7 @@ public class BasicDesignTest {
   public void supportedParamIdsContainsIdOfTheParameter() throws Throwable {
     Set<String> ids = design.getSupportedParamIds();
     assertThat(1, is(equalTo(ids.size())));
-    assertThat(ids, hasItem(paramCfg.getId()));
+    assertThat(ids, hasItem(id));
   }
 
   /**
@@ -73,7 +71,7 @@ public class BasicDesignTest {
    */
   @Test
   public void getValueReturnsSomeValueForSupportedId() throws Throwable {
-    assertThat(design.getValue(paramCfg.getId()), is(not(nullValue())));
+    assertThat(design.getValue(id), is(not(nullValue())));
   }
 
   /**
@@ -91,7 +89,6 @@ public class BasicDesignTest {
    */
   @Test
   public void setValueChangesTheValueOfTheSupportedId() throws Throwable {
-    String id = paramCfg.getId();
     Integer originalValue = design.getValue(id);
     design.setValue(id, originalValue + 1);
     Integer currentValue = design.getValue(id);

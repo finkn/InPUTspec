@@ -28,7 +28,6 @@ import java.util.Set;
 
 import net.finkn.inputspec.tools.DesignSpaceCfg;
 import net.finkn.inputspec.tools.ParamCfg;
-import net.finkn.inputspec.tools.TestCleanup;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +43,9 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * @author Christoffer Fink
  */
 public class BasicDesignSpaceTest {
-  private final ParamCfg paramCfg = ParamCfg.builder().build();
-  private final DesignSpaceCfg spaceCfg = DesignSpaceCfg.builder()
-      .param(paramCfg).build();
+
+  private final ParamCfg param = ParamCfg.builder().build();
+  private final DesignSpaceCfg spaceCfg = DesignSpaceCfg.getInstance(param);
   private IDesignSpace space;
 
   @Before
@@ -63,7 +62,7 @@ public class BasicDesignSpaceTest {
   public void supportedParamIdsContainsIdOfTheParameter() throws Throwable {
     Set<String> ids = space.getSupportedParamIds();
     assertThat(1, is(equalTo(ids.size())));
-    assertThat(ids, hasItem(paramCfg.getId()));
+    assertThat(ids, hasItem(param.getId()));
   }
 
   /**
@@ -72,7 +71,7 @@ public class BasicDesignSpaceTest {
    */
   @Test
   public void nextProducesSomeValueWhenUsingSupportedId() throws Throwable {
-    assertThat(space.next(paramCfg.getId()), is(not(nullValue())));
+    assertThat(space.next(param.getId()), is(not(nullValue())));
   }
 
   /**
