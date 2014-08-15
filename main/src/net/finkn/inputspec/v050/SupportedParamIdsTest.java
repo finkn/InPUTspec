@@ -39,7 +39,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  *
  * @author Christoffer Fink
  */
-public class SupportedParamIdsTest extends TestCleanup {
+public class SupportedParamIdsTest {
   private final ParamCfg arrayParam = ParamCfg.builder()
     .type("integer[1]").build();
   private final DesignSpaceCfg arraySpace = DesignSpaceCfg.builder()

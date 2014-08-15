@@ -42,7 +42,7 @@ import se.miun.itm.input.model.design.IDesign;
  * @see net.finkn.inputspec.v050.SupportedParamIdsTest
  * @author Christoffer Fink
  */
-public class BasicDesignTest extends TestCleanup {
+public class BasicDesignTest {
   private final String badId = "Nonexistent";
   private final ParamCfg paramCfg = ParamCfg.builder().build();
   private final DesignSpaceCfg spaceCfg = DesignSpaceCfg.builder()

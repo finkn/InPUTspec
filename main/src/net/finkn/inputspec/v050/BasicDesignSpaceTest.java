@@ -43,7 +43,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * @see net.finkn.inputspec.v050.SupportedParamIdsTest
  * @author Christoffer Fink
  */
-public class BasicDesignSpaceTest extends TestCleanup {
+public class BasicDesignSpaceTest {
   private final ParamCfg paramCfg = ParamCfg.builder().build();
   private final DesignSpaceCfg spaceCfg = DesignSpaceCfg.builder()
       .param(paramCfg).build();
