@@ -109,4 +109,22 @@ public class ArrayTest {
     int[] array = { -1, -2, -3, };
     design.setValue(arrayId, array);
   }
+
+  /**
+   * {@code getValue} returns a new instance when getting the value of an
+   * array parameter.
+   */
+  @Test
+  public void gettingAnArrayReturnsNewInstance() throws Throwable {
+    assertThat(design.getValue(arrayId), not(sameInstance(design.getValue(arrayId))));
+  }
+
+  /** Modifying an array does not change the corresponding parameter value. */
+  @Test
+  public void modifyingArrayDoesNotUpdateParameter() throws Throwable {
+    int[] x = design.getValue(arrayId);
+    x[0] = x[1] = x[2] = 1;
+    int[] y = design.getValue(arrayId);
+    assertThat(x, is(not(equalTo(y))));
+  }
 }
