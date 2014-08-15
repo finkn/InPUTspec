@@ -20,17 +20,14 @@ SOFTWARE.
 */
 package net.finkn.inputspec.v050;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import net.finkn.inputspec.tools.DesignSpaceCfg;
-import net.finkn.inputspec.tools.ParamCfg;
+import net.finkn.inputspec.tools.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import se.miun.itm.input.model.design.IDesign;
-import se.miun.itm.input.model.design.IDesignSpace;
 
 /**
  * These tests demonstrate how InPUT handles certain aspects of arrays.
@@ -38,17 +35,19 @@ import se.miun.itm.input.model.design.IDesignSpace;
  * @author Christoffer Fink
  */
 public class ArrayTest {
+
   private final ParamCfg arrayParam = ParamCfg.builder()
-    .type("integer[3]").inclMin("0").build();
-  private final DesignSpaceCfg arraySpace = DesignSpaceCfg.builder()
-    .param(arrayParam).build();
-  private IDesignSpace space;
+    .type("integer[3]")
+    .inclMin(0)
+    .build();
+  private final String arrayId = arrayParam.getId();
+  private final String firstElemId = arrayId + ".1";
+
   private IDesign design;
 
   @Before
   public void setup() throws Throwable {
-    space = arraySpace.getDesignSpace();
-    design = space.nextDesign("Design");
+    design = Helper.design(arrayParam);
   }
 
   /**
@@ -57,9 +56,9 @@ public class ArrayTest {
    */
   @Test
   public void arrayElementsMatchValuesAtElementIds() throws Throwable {
-    int[] x = design.getValue("X");
+    int[] x = design.getValue(arrayId);
     for (int i = 0; i < x.length; i++) {
-      String elementId = "X." + (i+1);
+      String elementId = arrayId + "." + (i+1);
       int element = design.getValue(elementId);
       assertThat(x[i], is(equalTo(element)));
     }
@@ -71,10 +70,10 @@ public class ArrayTest {
    */
   @Test
   public void settingAnArrayElementUpdatesTheArray() throws Throwable {
-    int[] x = design.getValue("X");
+    int[] x = design.getValue(arrayId);
     int element = x[0] + 1;
-    design.setValue("X.1", element);
-    x = design.getValue("X");
+    design.setValue(firstElemId, element);
+    x = design.getValue(arrayId);
 
     assertThat(x[0], is(equalTo(element)));
   }
@@ -85,10 +84,10 @@ public class ArrayTest {
    */
   @Test
   public void settingAnArrayUpdatesTheElements() throws Throwable {
-    int oldX1 = design.getValue("X.1");
+    int oldX1 = design.getValue(firstElemId);
     int[] array = { oldX1 + 1, 2, 3, };
-    design.setValue("X", array);
-    int newX1 = design.getValue("X.1");
+    design.setValue(arrayId, array);
+    int newX1 = design.getValue(firstElemId);
 
     assertThat(newX1, is(equalTo(array[0])));
   }
@@ -99,7 +98,7 @@ public class ArrayTest {
   @Test(expected = IllegalArgumentException.class)
   public void settingElementToOutOfRangeValueIsIllegal() throws Throwable {
     int value = -1;
-    design.setValue("X.1", value);
+    design.setValue(firstElemId, value);
   }
 
   /**
@@ -108,6 +107,6 @@ public class ArrayTest {
   @Test(expected = IllegalArgumentException.class)
   public void settingArrayToOutOfRangeValuesIsIllegal() throws Throwable {
     int[] array = { -1, -2, -3, };
-    design.setValue("X", array);
+    design.setValue(arrayId, array);
   }
 }
