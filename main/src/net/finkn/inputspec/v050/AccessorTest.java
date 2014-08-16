@@ -74,6 +74,24 @@ public class AccessorTest {
     this.design = Helper.design(withoutConstructorMapping, testerParam);
   }
 
+  /** Setter is invoked while initializing the outer parameter. */
+  @Test
+  public void initializationInvokesSetterIfEnabled() throws Throwable {
+    InitTester tester = design.getValue(testerId);
+    assertThat(tester.getSetterInvocations(), is(equalTo(1)));
+  }
+
+  /** Fetching outer parameter only invokes setter the first time. */
+  @Test
+  public void setterIsOnlyInvokedByTheFirstFetch() throws Throwable {
+    int setterBaseline = InitTester.getGlobalSetterCount();
+    design.getValue(testerId);
+    design.getValue(testerId);
+    design.getValue(testerId);
+    int setterCount = InitTester.getGlobalSetterCount();
+    assertThat(setterCount, is(equalTo(setterBaseline + 1)));
+  }
+
   /**
    * Accessors are never invoked if the nested parameter was set by
    * the constructor. Note that getters are never invoked either way.
