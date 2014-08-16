@@ -213,7 +213,7 @@ public class AccessorTest {
     return TestParameters.builder().inner(inner).outer(outer);
   }
 
-  private static class TestParameters {
+  public static class TestParameters {
     public final String dataId; // Absolute ID.
     public final ParamCfg testerParam;
     public final CodeMappingCfg withConstructor;
