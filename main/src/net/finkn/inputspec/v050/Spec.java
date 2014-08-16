@@ -51,6 +51,7 @@ import org.junit.runners.Suite.SuiteClasses;
     SetValueTest.class,
     SimpleMultiRangeNextTest.class,
     SimpleSingleRangeNextTest.class,
+    SparamTest.class,
     SupportedParamIdsTest.class,
     TypeMismatchTest.class,
 })
