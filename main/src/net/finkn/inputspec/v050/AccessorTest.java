@@ -41,6 +41,14 @@ import se.miun.itm.input.model.design.IDesign;
 /**
  * Examines under which circumstances InPUT4j invokes accessors and when it
  * does not.
+ * The same tests are run with multiple configurations. In particular, two
+ * different classes are used, one of which has no accessors that match the
+ * default names. We can therefore be confident that InPUT4j indeed attempts
+ * to use custom names when set.
+ * <p>
+ * The tests examine a counter to show that getters are not invoked, but
+ * one configuration also shows this by setting a ridiculous getter name,
+ * which does not provoke any adverse reaction.
  *
  * @author Christoffer Fink
  */
@@ -67,16 +75,18 @@ public class AccessorTest {
   }
 
   /**
-   * Custom accessors are never invoked if the nested parameter was set using
-   * a constructor argument. Note that getters are never invoked.
+   * Accessors are never invoked if the nested parameter was set by
+   * the constructor. Note that getters are never invoked either way.
    */
   @Test
-  public void constructorArgDisablesSetter() throws Throwable {
+  public void constructorInitializationDisablesSetter() throws Throwable {
     // Use the mapping with a constructor for this test.
     IDesign design = Helper.design(withConstructorMapping, testerParam);
 
     InitTester tester = design.getValue(testerId);
     design.setValue(dataId, 1);
+    // Other tests show that getters aren't invoked. Just checking that
+    // this is still the case when constructor initialization is used.
     design.getValue(dataId);
 
     // No accessors have been invoked.
@@ -87,6 +97,8 @@ public class AccessorTest {
   /** Getter is not invoked when getting the corresponding value. */
   @Test
   public void customGetterIsNotInvokedWhenGettingValue() throws Throwable {
+    // Fetch outer first to force initialization.
+    // Otherwise, getter might not be invoked anyway.
     InitTester tester = design.getValue(testerId);
     design.getValue(dataId);
     assertThat(tester.getGetterInvocations(), is(equalTo(0)));
@@ -94,11 +106,11 @@ public class AccessorTest {
 
   /**
    * {@code setValue} only invokes setter if the outer parameter has been
-   * been fetched.
+   * been fetched (initialized).
    */
   @Test
   public void setterOnlyInvokedIfOuterParamHasBeenFetched() throws Throwable {
-    // This does not interact with lazy/eager initialization.
+    // This interacts with lazy initialization.
     InitTester.resetGlobal();
     design.setValue(dataId, 1);
     design.setValue(dataId, 2);
@@ -109,13 +121,12 @@ public class AccessorTest {
    * Setter is invoked when setting inner parameter using {@code setValue},
    * provided that the outer parameter has first been fetched and that the 
    * inner parameter was not initialized using the constructor.
-   * @see #constructorArgDisablesSetter
+   * @see #constructorInitializationDisablesSetter
    * @see #setterOnlyInvokedIfOuterParamHasBeenFetched
    */
   @Test
   public void setterIsInvokedWhenSettingValue() throws Throwable {
     InitTester tester = design.getValue(testerId);
-    // Setter was probably called to initialize the object.
     int baseline = tester.getSetterInvocations();
     design.setValue(dataId, 2);
     design.setValue(dataId, 3);
