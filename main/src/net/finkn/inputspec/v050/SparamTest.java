@@ -36,6 +36,7 @@ import se.miun.itm.input.model.design.IDesign;
  *
  * @author Christoffer Fink
  * @see AccessorTest
+ * @see ValueConsistencyTest
  */
 public class SparamTest {
 

@@ -54,6 +54,7 @@ import org.junit.runners.Suite.SuiteClasses;
     SparamTest.class,
     SupportedParamIdsTest.class,
     TypeMismatchTest.class,
+    ValueConsistencyTest.class,
 })
 public class Spec {
 }
