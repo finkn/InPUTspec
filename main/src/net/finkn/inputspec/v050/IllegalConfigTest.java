@@ -42,4 +42,21 @@ public class IllegalConfigTest {
       .build();
     validator.validParamConfig(param);
   }
+
+  @Test(expected = AssertionError.class)
+  public void circularDependenciesAreIllegal() {
+    ParamCfg a = ParamCfg.builder()
+      .id("A")
+      .inclMin("B + 1")
+      .build();
+    ParamCfg b = ParamCfg.builder()
+      .id("B")
+      .inclMin("C + 1")
+      .build();
+    ParamCfg c = ParamCfg.builder()
+      .id("C")
+      .inclMin("A + 1")
+      .build();
+    validator.validParamConfig(a, b, c);
+  }
 }
