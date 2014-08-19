@@ -47,6 +47,7 @@ import org.junit.runners.Suite.SuiteClasses;
     IllegalConfigTest.class,
     LegalConfigTest.class,
     MultiRangeMismatchTest.class,
+    NestedDependencyTest.class,
     SetFixedTest.class,
     SetValueTest.class,
     SimpleMultiRangeNextTest.class,
