@@ -75,6 +75,16 @@ public class Helper {
     return genTest.gen(Generator.fromDesignSpace(space.getDesignSpace(), id));
   }
 
+  public static CodeMappingCfg codeMapping(ParamCfg param, Class<?> type) {
+    return CodeMappingCfg.getInstance(MappingCfg.builder()
+      .infer(param, type).nested(param.getNested()).build()
+    );
+  }
+
+  public static MappingCfg mapping(ParamCfg param, Class<?> type) {
+    return MappingCfg.builder().infer(param, type).nested(param.getNested()).build();
+  }
+
   public static IDesign design(ParamCfg ... params) throws InPUTException {
     return design(null, params);
   }
