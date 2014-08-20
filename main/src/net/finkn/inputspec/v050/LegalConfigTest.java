@@ -43,10 +43,4 @@ public class LegalConfigTest {
       .build();
     validator.validParamConfig(param);
   }
-
-  @Test
-  public void designSpaceWithDuplicateParameterIdsIsLegal() {
-    ParamCfg param = ParamCfg.getDefault();
-    validator.validDesignSpaceConfig(DesignSpaceCfg.getInstance(param, param));
-  }
 }
