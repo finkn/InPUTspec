@@ -67,28 +67,28 @@ public class InitTesterTest {
 
   @Test
   public void testGlobalCounters() {
-    tester.resetGlobal();
-    assertThat(tester.getGlobalSetterCount(), is(equalTo(0)));
-    assertThat(tester.getGlobalGetterCount(), is(equalTo(0)));
+    InitTester.resetGlobal();
+    assertThat(InitTester.getGlobalSetterCount(), is(equalTo(0)));
+    assertThat(InitTester.getGlobalGetterCount(), is(equalTo(0)));
 
     tester.customSetMethod(3);
     tester.customSetMethod(5);
     tester.customGetMethod();
     tester.customGetMethod();
 
-    assertThat(tester.getGlobalSetterCount(), is(equalTo(2)));
-    assertThat(tester.getGlobalGetterCount(), is(equalTo(2)));
+    assertThat(InitTester.getGlobalSetterCount(), is(equalTo(2)));
+    assertThat(InitTester.getGlobalGetterCount(), is(equalTo(2)));
 
-    tester.resetGlobal();
-    assertThat(tester.getGlobalSetterCount(), is(equalTo(0)));
-    assertThat(tester.getGlobalGetterCount(), is(equalTo(0)));
+    InitTester.resetGlobal();
+    assertThat(InitTester.getGlobalSetterCount(), is(equalTo(0)));
+    assertThat(InitTester.getGlobalGetterCount(), is(equalTo(0)));
   }
 
   @Test
   public void instanceCountShouldIncreaseWhenCreatingInstances() {
-    int count = tester.getInstanceCount();
+    int count = InitTester.getInstanceCount();
     new InitTester();
     new InitTester(3);
-    assertThat(tester.getInstanceCount(), is(equalTo(count + 2)));
+    assertThat(InitTester.getInstanceCount(), is(equalTo(count + 2)));
   }
 }
