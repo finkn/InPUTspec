@@ -24,6 +24,7 @@ import net.finkn.inputspec.tools.types.Point;
 
 import se.miun.itm.input.model.InPUTException;
 import se.miun.itm.input.model.design.IDesign;
+import se.miun.itm.input.model.design.IDesignSpace;
 
 /**
  * Helper for writing more concise tests.
@@ -90,11 +91,18 @@ public class Helper {
   }
 
   public static IDesign design(CodeMappingCfg mapping, ParamCfg ... params) throws InPUTException {
+    return space(mapping, params).nextDesign(defaultDesignId);
+  }
+
+  public static IDesignSpace space(ParamCfg ... params) throws InPUTException {
+    return space(null, params);
+  }
+
+  public static IDesignSpace space(CodeMappingCfg mapping, ParamCfg ... params) throws InPUTException {
     return DesignSpaceCfg.builder()
-      .param(params)
       .mapping(mapping)
+      .param(params)
       .build()
-      .getDesignSpace()
-      .nextDesign(defaultDesignId);
+      .getDesignSpace();
   }
 }
