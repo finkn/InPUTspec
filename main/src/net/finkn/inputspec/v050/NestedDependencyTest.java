@@ -161,28 +161,6 @@ public class NestedDependencyTest {
     assertThat(design.getValue("Second.D"), is(equalTo(1)));
   }
 
-  // TODO: More tests are needed!
-  // The situation turns out to be much more complicated, but it's getting
-  // late now. :p
-  // After adding more tests, this should probably be moved.
-  @Test
-  public void outerParametersOvershadowInnerParameters() throws Throwable {
-    ParamCfg x = pb().id("X").interval("[3,3]").build();
-    ParamCfg y = pb().id("Y").interval("[4,4]").build();
-    ParamCfg point = pb()
-      .id("X").interval("[1,1]").add()
-      .id("Y").interval("[2,2]").add()
-      .id("Point").structured()
-      .build();
-
-    MappingCfg mapping = mapping(point, Point.class);
-    CodeMappingCfg codeMapping = CodeMappingCfg.getInstance(mapping);
-    IDesign design = design(codeMapping, x, y, point);
-    // Note, 3 ∉ [1,1] and 4 ∉ [2,2]!
-    assertThat(design.getValue("Point.X"), is(equalTo(3)));
-    assertThat(design.getValue("Point.Y"), is(equalTo(4)));
-  }
-
   private IDesign getDesign(ParamCfg point) throws Throwable {
     return design(codeMapping(point, Point.class), point);
   }
