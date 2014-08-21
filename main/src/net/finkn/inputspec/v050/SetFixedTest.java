@@ -30,6 +30,7 @@ import net.finkn.inputspec.tools.DesignSpaceCfg;
 import org.junit.Before;
 import org.junit.Test;
 
+import se.miun.itm.input.model.InPUTException;
 import se.miun.itm.input.model.design.IDesignSpace;
 
 /**
@@ -80,5 +81,19 @@ public class SetFixedTest {
     space.setFixed(id, "1");
     space.setFixed(id, "2");
     assertThat(space.next(id), is(equalTo(2)));
+  }
+
+  /** Setting a fixed parameter to a new value is illegal. */
+  @Test(expected = InPUTException.class)
+  public void setValueOnFixedParamIsIllegalIfValuesDiffer() throws Throwable {
+    space.setFixed(id, "1");
+    space.nextDesign("Design").setValue(id, 2);
+  }
+
+  /** Setting a fixed parameter to the same value is legal. */
+  @Test
+  public void setValueOnFixedParamIsLegalIfValuesMatch() throws Throwable {
+    space.setFixed(id, "1");
+    space.nextDesign("Design").setValue(id, 1);
   }
 }
