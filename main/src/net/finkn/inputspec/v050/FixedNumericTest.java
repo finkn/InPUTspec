@@ -30,6 +30,7 @@ import net.finkn.inputspec.tools.ParamCfg;
 
 import org.junit.Test;
 
+import se.miun.itm.input.model.InPUTException;
 import se.miun.itm.input.model.design.IDesign;
 
 /**
@@ -71,30 +72,35 @@ public class FixedNumericTest {
   }
 
   /**
-   * When a parameter is fixed to a value that is in the range that is also
-   * defined, setting that parameter to the fixed value in a design is legal.
-   * @see #setValueWithFixedOutOfRangeValueIsIllegal()
+   * When a parameter is fixed to a value that is in the range (that is
+   * defined implicitly in this case), setting that parameter to the fixed
+   * value in a design is legal.
+   * @see #setValueWithFixedOutOfRangeValueIsIllegal
+   * @see #settingFixedToNewValueIsIllegal
    */
   @Test
-  public void setValueWithFixedWorksIfInRange() throws Throwable {
-    ParamCfg param = pb()
-      .inclMin("3")
-      .inclMax("3")
-      .fixed("3")
-      .build();
+  public void settingValueToFixedValueIsLegal() throws Throwable {
+    ParamCfg param = pb().fixed(3).build();
+    design(param).setValue(param.getId(), 3);
+  }
 
-    IDesign design = design(param);
-
-    int value = design.getValue(param.getId());
-    assertThat(value, is(equalTo(3)));
-    design.setValue(param.getId(), value);
+  /**
+   * Setting the value of a fixed parameter to a new, different value is
+   * illegal, even when it would otherwise be in range.
+   * This is consistent with the behavior demonstrated in
+   * {@link SetFixedTest#setValueOnFixedParamIsIllegalIfValuesDiffer}.
+   */
+  @Test(expected = InPUTException.class)
+  public void settingFixedToNewValueIsIllegal() throws Throwable {
+    ParamCfg param = pb().fixed(3).build();
+    design(param).setValue(param.getId(), 1);
   }
 
   /**
    * When a parameter is fixed to a value that is outside the range, setting
    * the parameter to the value it already has is illegal.
-   * @see #fixedTakesPrecedenceOverLimits()
-   * @see #setValueWithFixedWorksIfInRange()
+   * @see #fixedTakesPrecedenceOverLimits
+   * @see #settingFixedToNewValueIsIllegal
    */
   @Test
   public void setValueWithFixedOutOfRangeValueIsIllegal() throws Throwable {
