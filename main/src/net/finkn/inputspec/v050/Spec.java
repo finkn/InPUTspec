@@ -43,6 +43,7 @@ import org.junit.runners.Suite.SuiteClasses;
     DesignCachingTest.class,
     DesignSpaceCachingTest.class,
     DuplicateIdTest.class,
+    ExtendScopeTest.class,
     FixedNumericTest.class,
     IdLiteralsTest.class,
     IllegalConfigTest.class,
