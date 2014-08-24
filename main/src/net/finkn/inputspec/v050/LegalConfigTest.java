@@ -38,8 +38,8 @@ public class LegalConfigTest {
   public void boolParamWithLimitsIsLegal() {
     ParamCfg param = ParamCfg.builder()
       .type("boolean")
-      .inclMin("1")
-      .inclMax("3")
+      .inclMin(1)
+      .inclMax(3)
       .build();
     validator.validParamConfig(param);
   }

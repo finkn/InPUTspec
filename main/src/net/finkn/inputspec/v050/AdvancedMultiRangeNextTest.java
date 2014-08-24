@@ -43,7 +43,7 @@ public class AdvancedMultiRangeNextTest {
   private final GenTestCase testCase = GenTestCase.getInstance();
 
   private final ParamCfg dependee = ParamCfg.builder()
-    .id("A").inclMin("10").inclMax("20").build();
+    .id("A").inclMin(10).inclMax(20).build();
 
   /**
    * When defining multi-ranges using expressions, only the last range is used.

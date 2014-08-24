@@ -37,8 +37,8 @@ public class IllegalConfigTest {
   @Test(expected = AssertionError.class)
   public void inclusiveAndExclusiveLimitIsIllegal() {
     ParamCfg param = ParamCfg.builder()
-      .inclMin("1")
-      .exclMin("3")
+      .inclMin(1)
+      .exclMin(3)
       .build();
     validator.validParamConfig(param);
   }

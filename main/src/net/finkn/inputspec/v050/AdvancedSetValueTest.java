@@ -38,8 +38,8 @@ public class AdvancedSetValueTest {
 
   private final ParamCfg dependee = ParamCfg.builder()
     .id("A")
-    .inclMin("1")
-    .inclMax("3")
+    .inclMin(1)
+    .inclMax(3)
     .build();
 
   /**

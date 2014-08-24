@@ -44,7 +44,7 @@ public class FixedNumericTest {
   @Test
   public void fixedWorksAsExpected() throws Throwable {
     genTest(pb()
-        .fixed("3"))
+        .fixed(3))
       .expected(3).run();
   }
 
@@ -52,7 +52,7 @@ public class FixedNumericTest {
   @Test
   public void fixedValuesAreTruncatedForIntegerParameters() throws Throwable {
     genTest(pb()
-        .fixed("3.9"))
+        .fixed(3.9))
       .expected(3).run();
   }
 
@@ -65,9 +65,9 @@ public class FixedNumericTest {
   @Test
   public void fixedTakesPrecedenceOverLimits() throws Throwable {
     genTest(pb()
-        .inclMin("1")
-        .inclMax("2")
-        .fixed("3"))
+        .inclMin(1)
+        .inclMax(2)
+        .fixed(3))
       .expected(3).run();
   }
 
@@ -105,9 +105,9 @@ public class FixedNumericTest {
   @Test
   public void setValueWithFixedOutOfRangeValueIsIllegal() throws Throwable {
     ParamCfg param = pb()
-      .inclMin("1")
-      .inclMax("2")
-      .fixed("3")
+      .inclMin(1)
+      .inclMax(2)
+      .fixed(3)
       .build();
 
     IDesign design = design(param);

@@ -71,8 +71,8 @@ public class SimpleSingleRangeNextTest {
   @Test
   public void inclInclWithSingleValue() throws Throwable {
     test(pb()
-        .inclMin("1")
-        .inclMax("1"))
+        .inclMin(1)
+        .inclMax(1))
       .expected(1).run();
   }
 
@@ -80,8 +80,8 @@ public class SimpleSingleRangeNextTest {
   @Test
   public void exclExclWithSingleValue() throws Throwable {
     test(pb()
-        .exclMin("0")
-        .exclMax("2"))
+        .exclMin(0)
+        .exclMax(2))
       .expected(1).run();
   }
 
@@ -89,8 +89,8 @@ public class SimpleSingleRangeNextTest {
   @Test
   public void inclExclWithSingleValue() throws Throwable {
     test(pb()
-        .inclMin("1")
-        .exclMax("2"))
+        .inclMin(1)
+        .exclMax(2))
       .expected(1).run();
   }
 
@@ -98,8 +98,8 @@ public class SimpleSingleRangeNextTest {
   @Test
   public void exclInclWithSingleValue() throws Throwable {
     test(pb()
-        .exclMin("0")
-        .inclMax("1"))
+        .exclMin(0)
+        .inclMax(1))
       .expected(1).run();
   }
 
@@ -220,8 +220,8 @@ public class SimpleSingleRangeNextTest {
   public void boolParamWithLimitsIsLegal() throws Throwable {
     test(pb()
         .type("boolean")
-        .inclMin("1")
-        .inclMax("3"))
+        .inclMin(1)
+        .inclMax(3))
       .expected(true, false).run();
   }
 

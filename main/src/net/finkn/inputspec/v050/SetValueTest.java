@@ -52,8 +52,8 @@ public class SetValueTest {
   @Test
   public void limitsAreAcceptedWhenUsingInclusiveRange() throws Throwable {
     sinkTest(pb()
-        .inclMin("1")
-        .inclMax("3"))
+        .inclMin(1)
+        .inclMax(3))
       .accepts(1,2,3)
       .rejects(0,4)
       .run();
@@ -63,8 +63,8 @@ public class SetValueTest {
   @Test
   public void limitsAreRejectedWhenUsingExclusiveIntegerRange() throws Throwable {
     sinkTest(pb()
-        .exclMin("1")
-        .exclMax("3"))
+        .exclMin(1)
+        .exclMax(3))
       .accepts(2)
       .rejects(0,1,3,4)
       .run();
@@ -74,8 +74,8 @@ public class SetValueTest {
   @Test
   public void floatLimitsAreTruncatedForIntegerParameters() throws Throwable {
     sinkTest(pb()
-        .exclMin("1.5")
-        .inclMax("3.5")) // Same as ]1,3].
+        .exclMin(1.5)
+        .inclMax(3.5)) // Same as ]1,3].
       .accepts(2,3)
       .rejects(1,4)
       .run();
@@ -163,8 +163,8 @@ public class SetValueTest {
   public void excludedLimitsAreAccepted() throws Throwable {
     sinkTest(pb()
         .type("double")
-        .exclMin("0.1")
-        .exclMax("0.3"))
+        .exclMin(0.1)
+        .exclMax(0.3))
       .accepts(0.1,0.2,0.3)
       .rejects(0.09,0.31)
       .run();
@@ -175,8 +175,8 @@ public class SetValueTest {
   public void excludedMinIsAcceptedInMixedRange() throws Throwable {
     sinkTest(pb()
         .type("double")
-        .exclMin("0.1")
-        .inclMax("0.3"))
+        .exclMin(0.1)
+        .inclMax(0.3))
       .accepts(0.1,0.2,0.3)
       .rejects(0.09,0.31)
       .run();
@@ -187,8 +187,8 @@ public class SetValueTest {
   public void excludedMaxIsAcceptedInMixedRange() throws Throwable {
     sinkTest(pb()
         .type("double")
-        .inclMin("0.1")
-        .exclMax("0.3"))
+        .inclMin(0.1)
+        .exclMax(0.3))
       .accepts(0.1,0.2,0.3)
       .rejects(0.09,0.31)
       .run();
