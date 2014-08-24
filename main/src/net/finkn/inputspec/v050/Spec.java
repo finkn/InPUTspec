@@ -50,6 +50,7 @@ import org.junit.runners.Suite.SuiteClasses;
     LegalConfigTest.class,
     MultiRangeMismatchTest.class,
     NestedDependencyTest.class,
+    ReadOnlyDesignTest.class,
     SetFixedTest.class,
     SetValueTest.class,
     SimpleMultiRangeNextTest.class,

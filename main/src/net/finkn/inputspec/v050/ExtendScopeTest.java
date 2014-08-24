@@ -35,6 +35,7 @@ import se.miun.itm.input.model.design.IDesign;
  * Note that extending a design does not add the supported parameter IDs
  * of the extending design to the extended design.
  *
+ * @see ReadOnlyDesignTest
  * @author Christoffer Fink
  */
 public class ExtendScopeTest {
