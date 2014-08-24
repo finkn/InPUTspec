@@ -43,7 +43,7 @@ import se.miun.itm.input.model.design.IDesign;
 public class BasicDesignTest {
 
   private final String badId = "Nonexistent";
-  private final ParamCfg param = ParamCfg.builder().build();
+  private final ParamCfg param = ParamCfg.getDefault();
   private final String id = param.getId();
   private IDesign design;
 

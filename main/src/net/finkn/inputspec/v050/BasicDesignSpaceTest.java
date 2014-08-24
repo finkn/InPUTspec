@@ -44,7 +44,7 @@ import se.miun.itm.input.model.design.IDesignSpace;
  */
 public class BasicDesignSpaceTest {
 
-  private final ParamCfg param = ParamCfg.builder().build();
+  private final ParamCfg param = ParamCfg.getDefault();
   private final DesignSpaceCfg spaceCfg = DesignSpaceCfg.getInstance(param);
   private IDesignSpace space;
 
