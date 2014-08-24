@@ -23,6 +23,7 @@ package net.finkn.inputspec.v050;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static net.finkn.inputspec.tools.Helper.*;
 
 import net.finkn.inputspec.tools.ParamCfg;
 import net.finkn.inputspec.tools.DesignSpaceCfg;
@@ -40,15 +41,14 @@ import se.miun.itm.input.model.design.IDesignSpace;
  */
 public class SetFixedTest {
 
-  private final ParamCfg param = ParamCfg.builder()
-    .inclMin(1).inclMax(3).build();
+  private final ParamCfg param = pb().interval("[1,3]").build();
   private final String id = param.getId();
 
   private IDesignSpace space;
 
   @Before
   public void setup() throws Throwable {
-    this.space = DesignSpaceCfg.getInstance(param).getDesignSpace();
+    this.space = space(param);
   }
 
   // TODO: link to a test showing how this affects design creation.
@@ -95,5 +95,33 @@ public class SetFixedTest {
   public void setValueOnFixedParamIsLegalIfValuesMatch() throws Throwable {
     space.setFixed(id, "1");
     space.nextDesign("Design").setValue(id, 1);
+  }
+
+  /**
+   * Fixing a parameter to {@code null} makes the parameter unfixed.
+   * In contrast to {@link #setFixedToNullUnfixesParameter}, this test
+   * unfixes a parameter that was originally unfixed in the configuration, but
+   * was subsequently fixed by {@code setFixed}.
+   */
+  @Test
+  public void setFixedToNullCancelsPreviousFix() throws Throwable {
+    space.setFixed(id, "1");
+    space.setFixed(id, null);
+    space.nextDesign("Design").setValue(id, 2);
+  }
+
+  /**
+   * Fixing a parameter to {@code null} makes the parameter unfixed.
+   * In contrast to {@link #setFixedToNullCanclesPreviousFix}, this test
+   * unfixes a parameter that was defined as fixed in the configuration.
+   * The effect is the same in both cases.
+   */
+  @Test
+  public void setFixedToNullUnfixesParameter() throws Throwable {
+    ParamCfg fixed = pb().fixed(1).build();
+    String id = fixed.getId();
+    space = space(fixed);
+    space.setFixed(id, null);
+    space.nextDesign("Design").setValue(id, 2);
   }
 }
