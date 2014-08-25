@@ -116,7 +116,7 @@ public class SetFixedTest {
 
   /**
    * Fixing a parameter to {@code null} makes the parameter unfixed.
-   * In contrast to {@link #setFixedToNullCanclesPreviousFix}, this test
+   * In contrast to {@link #setFixedToNullCancelsPreviousFix}, this test
    * unfixes a parameter that was defined as fixed in the configuration.
    * The effect is the same in both cases.
    */
