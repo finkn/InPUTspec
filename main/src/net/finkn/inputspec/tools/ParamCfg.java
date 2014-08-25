@@ -108,6 +108,9 @@ public class ParamCfg {
   }
 
   private String getTag() {
+    if (paramType.equals(ParamType.CHOICE)) {
+      return X.SCHOICE;
+    }
     return paramType.equals(ParamType.NUMERIC) ? X.NPARAM : X.SPARAM;
   }
   private Map<String, Optional<? extends Object>> getAttributes() {
@@ -234,6 +237,12 @@ public class ParamCfg {
       return this;
     }
 
+    /** Configures the builder for building choice parameters. */
+    public Builder choice() {
+      paramType = ParamType.CHOICE;
+      return this;
+    }
+
     /**
      * Resets everything except for nested parameters. This behavior allows a
      * parameter to accumulate nested parameters (using {@code #add()}) without
@@ -302,6 +311,6 @@ public class ParamCfg {
   }
 
   private enum ParamType {
-    NUMERIC, STRUCTURED,
+    NUMERIC, STRUCTURED, CHOICE,
   }
 }

@@ -193,6 +193,12 @@ public class ParamCfgTest {
     assertNull(param.getType());
   }
 
+  @Test
+  public void builderShouldNotUseDefaultTypeForSChoice() {
+    ParamCfg param = builder.choice().build();
+    assertNull(param.getType());
+  }
+
   // Because the same builder is used, both first and second should be added
   // to the nested parameters of two. However, one was built after only first
   // was added, and adding second should only affect two, not one. So one
@@ -258,5 +264,12 @@ public class ParamCfgTest {
     xml = p3.xml();
     assertStringContainsAll(xml, X.ID, X.TYPE, X.FIXED, X.INCLMIN, X.EXCLMIN,
       X.INCLMAX, X.EXCLMAX, X.NPARAM, X.SPARAM, "X", "Y", "Z");
+  }
+
+  @Test
+  public void xmlOfChoiceShouldIncludeTag() {
+    ParamCfg param = ParamCfg.builder().choice().build();
+    String xml = param.xml();
+    assertThat(xml, containsString(X.SCHOICE));
   }
 }

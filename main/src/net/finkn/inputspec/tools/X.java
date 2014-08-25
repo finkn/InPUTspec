@@ -33,6 +33,7 @@ public class X {
   // Tags
   public static final String NPARAM = Q.NPARAM;
   public static final String SPARAM = Q.SPARAM;
+  public static final String SCHOICE = Q.SCHOICE;
   public static final String DESIGN_SPACE = Q.DESIGN_SPACE_ROOT;
   public static final String CODE_MAPPING = Q.MAPPINGS;
   // Attributes
