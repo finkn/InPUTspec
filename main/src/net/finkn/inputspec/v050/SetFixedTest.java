@@ -83,7 +83,11 @@ public class SetFixedTest {
     assertThat(space.next(id), is(equalTo(2)));
   }
 
-  /** Setting a fixed parameter to a new value is illegal. */
+  /**
+   * Setting a fixed parameter to a new value is illegal.
+   * As {@link FixedNumericTest#settingFixedToNewValueIsIllegal} shows,
+   * a parameter that was fixed in the configuration produces the same result.
+   */
   @Test(expected = InPUTException.class)
   public void setValueOnFixedParamIsIllegalIfValuesDiffer() throws Throwable {
     space.setFixed(id, "1");
