@@ -46,7 +46,6 @@ public class ParamCfg {
 
   private static final ParamCfg defaultParam = builder().build();
 
-  // TODO: Use Optionals?
   private final String id;
   private final String type;
   private final String fixed;
@@ -108,11 +107,9 @@ public class ParamCfg {
   }
 
   private String getTag() {
-    if (paramType.equals(ParamType.CHOICE)) {
-      return X.SCHOICE;
-    }
-    return paramType.equals(ParamType.NUMERIC) ? X.NPARAM : X.SPARAM;
+    return paramType.TAG;
   }
+
   private Map<String, Optional<? extends Object>> getAttributes() {
     Map<String, Optional<? extends Object>> attrib = new HashMap<>();
     attrib.put(X.ID, Optional.ofNullable(getId()));
@@ -124,6 +121,7 @@ public class ParamCfg {
     attrib.put(X.EXCLMAX, range.exclMax());
     return attrib;
   }
+
   private List<String> getChildren(int level) {
     return getNested().map(x -> x.xml(level + 1)).collect(Collectors.toList());
   }
@@ -227,20 +225,17 @@ public class ParamCfg {
 
     /** Configures the builder for building numeric parameters. */
     public Builder numeric() {
-      paramType = ParamType.NUMERIC;
-      return this;
+      return setParamType(ParamType.NUMERIC);
     }
 
     /** Configures the builder for building structured parameters. */
     public Builder structured() {
-      paramType = ParamType.STRUCTURED;
-      return this;
+      return setParamType(ParamType.STRUCTURED);
     }
 
     /** Configures the builder for building choice parameters. */
     public Builder choice() {
-      paramType = ParamType.CHOICE;
-      return this;
+      return setParamType(ParamType.CHOICE);
     }
 
     /**
@@ -308,9 +303,22 @@ public class ParamCfg {
     private static String getNParamType(String type) {
       return type != null ? type : DEFAULT_TYPE;
     }
+
+    private Builder setParamType(ParamType t) {
+      paramType = t;
+      return this;
+    }
   }
 
   private enum ParamType {
-    NUMERIC, STRUCTURED, CHOICE,
+    NUMERIC(X.NPARAM),
+    STRUCTURED(X.SPARAM),
+    CHOICE(X.SCHOICE);
+
+    public final String TAG;
+
+    private ParamType(String tag) {
+      TAG = tag;
+    }
   }
 }
