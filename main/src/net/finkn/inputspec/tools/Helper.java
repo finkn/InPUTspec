@@ -76,14 +76,26 @@ public class Helper {
     return genTest.gen(Generator.fromDesignSpace(space.getDesignSpace(), id));
   }
 
-  public static CodeMappingCfg codeMapping(ParamCfg param, Class<?> type) {
+  public static CodeMappingCfg codeMapping(Class<?> type, ParamCfg param) {
     return CodeMappingCfg.getInstance(MappingCfg.builder()
-      .infer(param, type).nested(param.getNested()).build()
+      .infer(type, param).nested(param.getNested()).build()
     );
   }
+  @Deprecated
+  public static CodeMappingCfg codeMapping(ParamCfg param, Class<?> type) {
+    return codeMapping(type, param);
+  }
 
+  public static MappingCfg mapping(Class<?> type, ParamCfg ... params) {
+    ParamCfg last = params[params.length-1];
+    return MappingCfg.builder()
+      .infer(type, params)
+      .nested(last.getNested())
+      .build();
+  }
+  @Deprecated
   public static MappingCfg mapping(ParamCfg param, Class<?> type) {
-    return MappingCfg.builder().infer(param, type).nested(param.getNested()).build();
+    return mapping(type, param);
   }
 
   public static IDesign design(ParamCfg ... params) throws InPUTException {

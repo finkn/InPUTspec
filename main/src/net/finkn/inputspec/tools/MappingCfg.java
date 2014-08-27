@@ -158,6 +158,7 @@ public class MappingCfg {
    * @see #infer(ParamCfg, Class)
    * @see #infer(ParamCfg, MappingCfg)
    * @author Christoffer Fink
+   * @version 1.0
    */
   public static class Builder {
     private String id;
@@ -261,9 +262,14 @@ public class MappingCfg {
     /**
      * Returns a builder that is set to produce a Mapping that maps the
      * given parameter to the given type.
+     * @deprecated since 1.0 - use infer(Class, ParamCfg...) instead.
      */
+    @Deprecated
     public Builder infer(ParamCfg param, Class<?> type) {
       return this.mapping().param(param).target(type);
+    }
+    public Builder infer(Class<?> type, ParamCfg ... params) {
+      return this.mapping().param(params).target(type);
     }
 
     /**
